@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeniCheck</title>
+    <link rel="stylesheet" href="../Css/Styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="../Resources/Img/SenaLogo.png">
+</head>
+
+<body>
+     <div id="render-aqui"></div>
+
+    <!-- Cuadro de inicio de sesion -->
+    <template id="login-template"> 
+        <div class="container mt-0.2 d-flex justify-content-center">
+            <div class="card p-4" id="containerLogin">
+                <h1 class="card-title" style="color: #00304D;"><strong>¡Bienvenido!, inicia sesión para usar <span
+                            style="color: #39A900;">SeniCheck</span></strong>
+                </h1>
+
+                
+                <form>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="selectRol">
+                            <option disabled selected hidden>
+                            </option>
+                            <option value="3">Bienestar al aprendiz</option>
+                            <option value="2">Coordinador</option>
+                            <option value="1">Instructor</option>
+                        </select>
+                        <label for="floatingSelectGrid"><strong>Selecciona tu tipo de rol</strong></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="emailInput">
+                        <label for="floatingInput"><strong>Correo electrónico</strong></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="passwordInput">
+                        <label for="floatingPassword"><strong>Contraseña</strong></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btnLogin" data-bs-toggle="modal"
+                        data-bs-target="#noneDataModal">
+                        <strong>Iniciar Sesión</strong>
+                    </button>
+                    
+
+                </form>
+
+                <!-- Modal  de falta de datos ingresados -->
+                <div class="modal fade" id="noneDataModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <img src="../Resources/Img/errorIcon.png" alt="" class="mb-3">
+                                <h1><strong style="color: #00304D;">ERROR</strong></h1>
+                                <h1 id="modalMessageError"><strong style="color: #39A900;">Por favor, rellena el campo
+                                        de
+                                        respuesta</strong></h1>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    id="btnCloseModal"><strong>Cerrar</strong></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </template>
+
+    
+    <div class="container-fluid d-flex" id="workArea">
+        <!-- HTML -->
+        <div class="card p-2" id="optionMenu">
+            <!-- Parte superior del menú lateral -->
+            <div class="d-flex justify-content-center">
+                <a href="#" onclick="location.reload();">
+                    <img src="../Resources/Img/SenaLogo.png" alt="" id="SenaLogo">
+                </a>
+            </div>
+
+            <!-- Barra de busqueda del menú lateral-->
+            <form>
+                <div class="search-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                    <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search"
+                        id="searchBar">
+                </div>
+            </form>
+
+            <!-- Botones de navegacion del menú lateral -->
+             <!--<form id="formLogin">
+                  <div class="mb-3">
+                    <label for="correo" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="correo" required>
+                  </div>
+                  <div class="mb-3">
+                     <label for="contraseña" class="form-label">Contraseña</label>
+                     <input type="password" class="form-control" id="contraseña" required>
+                 </div>
+                 <button   type="submit" class="boton-login">Iniciar sesión</button>
+                 <div id="mensajeLogin" style="color: red; margin-top: 10px;"></div>
+               </form>-->
+    
+
+
+            <div class="d-flex align-content-stretch flex-wrap" id="btnNavegation">
+                <div id="btnNavegationMenu">
+                    <button class="btnNavegation" type="button" id="btnCheckCourse"><strong>Marcar
+                            asistencia</strong></button>
+                    <button class="btnNavegation" type="button" id="btnCheckHistory"><strong>Ver
+                            Historial</strong></button>
+                    <button class="btnNavegation" type="button" id="btnMakeReport"><strong>Generar
+                            reporte</strong></button>
+                    <button class="btnNavegation" type="button" id="btnFollowUpPlan"><strong>Plan
+                            seguimiento</strong></button>
+                    <button class="btnNavegation" type="button" id="btnCheckNotifications"><strong>Ver
+                            notificaciones</strong></button>
+                    <button class="btnNavegation" type="button" id="btnCheckUserManual"><strong>¿Necesitas
+                            ayuda?</strong></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Espacio o Area de trabajo -->
+        <div class="card d-flex justify-content-center" id="spaceWork">
+
+            <!-- Encabezado -->
+            <div class="titulo">
+                <h1 id="title" class="card-title p-2" style="color: #00304D; height: auto;">
+                    <strong>Bienvenido de nuevo, ¿<span style="color: #39A900;">Qué deseas realizar el dia de
+                            hoy</span>?</strong>
+                </h1>
+                <div id="subTitle" style="width: 90%; margin: 0 auto;">
+                    <div style="width: 90%; margin: 0 auto;">
+                        <div class="d-flex flex-column align-items-center" style="width: 100%;">
+                            <div class="d-flex justify-content-center align-items-center" style="color:#00304D; ">
+                                <strong>Selecciona una opción en el menú lateral:</strong>
+                                <button class="btn btn-primary" type="button" id="btnReport"
+                                    style="width: 20vh; margin-left: 30vh; font-size: 18px;">
+                                    <strong>Generar reporte</strong>
+                                </button>
+                            </div>
+                            <div class="linea-horizontal"
+                                style="width: 100%; height: 2px; background-color: #00304D; margin-top: 10px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="w-100 d-flex align-items-center mb-3 justify-content-center">
+                    <div class="search-container d-flex align-items-center mb-3 justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                        <input class="form-control me-2" type="search" placeholder="Realizar busqueda"
+                            aria-label="Search" id="searchBarSpaceWork">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contenido modificable -->
+            <div class="container d-flex flex-column mb-3" id="dynamicContentContainer">
+                <!-- Aca se mostrara el contenido dinamico desde la vista -->
+            </div>
+
+            <!-- Pie de pagina -->
+            <p class="pie-de-pagina" style="color:#989898; font-size: 20px; margin: 1vh;">
+                <strong>2024 - Servicio Nacional de Aprendizaje Sena</strong>
+            </p>
+
+        </div>
+
+        <!-- Modal de opciones -->
+        <div class="modal fade" id="optionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D; ">
+                            <strong>Por favor, selecciona una <span style="color: #39A900;">opción</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex" id="btnNavegation">
+                            <button class="btnNavegation" type="button" a href="..."
+                                id="btnMakeAssistance"><strong>Registrar
+                                    asistencia</strong></button>
+                            <button class="btnNavegation" type="button" a href="..."
+                                id="btnCheckHistory"><strong>Historial
+                                    asistencia</strong></button>
+                            <button class="btnNavegation" type="button" a href="..." id="btnMakeReport"><strong>Generar
+                                    reporte</strong></button>
+                            <button class="btnNavegation" type="button" a href="..."
+                                id="btnCheckUserManual"><strong>¿Necesitas
+                                    ayuda?</strong></button>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de ver notificación -->
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estudiante en <span style="color: #39A900;">riesgo</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+
+                        <div style="text-align: start; margin: 1vh; font-size: 20px;">
+                            <strong style="color: #00304D;">Bienestar al aprendiz:</strong>
+                            <p class="card-text">
+                                <small class="text-body-secondary" style="font-size: 15px;"><strong>Enviada 7 de
+                                        octubre
+                                        del 2024, 13:00</strong></small>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#sendMessageModal" id="btnreplyMessage">
+                            <strong>Responder notificación</strong>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseModal">
+                            <strong>Cerrar</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de responder mensaje -->
+        <div class="modal fade" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Por favor, escribe tu <span style="color: #39A900;">respuesta</span></strong>
+                        </h1>
+                    </div>
+                    <!-- Formulario dentro del modal -->
+                    <form id="responseForm">
+                        <div class="modal-body d-flex flex-column align-items-center justify-content-center"
+                            style="width: 100%; height: 100%;">
+                            <!-- Campo para el título de la respuesta -->
+                            <div class="mb-3" style="width: 100%;">
+                                <input type="text" class="form-control" id="titleInput"
+                                    placeholder="Escribe el título de tu respuesta" required>
+                            </div>
+
+                            <!-- Campo para la respuesta -->
+                            <div class="mb-3" style="width: 100%;">
+                                <textarea class="form-control" id="answerInput" rows="3"
+                                    placeholder="Escribe tu respuesta aquí..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center" style="width: 100%;">
+                            <button type="submit" class="btn btn-primary" id="btnSendMessage"><strong>Enviar
+                                    respuesta</strong></button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="btnCloseModal"><strong>Cerrar</strong></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de marcar asistencia -->
+        <div class="modal fade" id="asistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D; ">
+                            <strong>Estas vizualizando el <span style="color: #39A900;">marcar
+                                    asistencia</span>:</strong>
+                        </h1>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="container d-flex align-items-center justify-content-center"
+                            id="filtrerContainerAsist">
+                            <div class="d-flex align-items-center gap-3" style="width: 100%;">
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectMes">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Enero</option>
+                                        <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5">Mayo</option>
+                                        <option value="6">Junio</option>
+                                        <option value="7">Julio</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option>
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                    <label for="selectMes" style="margin-top: 1vh;"><strong>Seleccionar
+                                            mes</strong></label>
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Semana 1</option>
+                                        <option value="2">Semana 2</option>
+                                        <option value="3">Semana 3</option>
+                                        <option value="4">Semana 4</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>Seleccionar
+                                            semana</strong></label>
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectBloque">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">06:00-10:00 "Mañana"</option>
+                                        <option value="2">10:00-14:00 "Mediodia"</option>
+                                        <option value="3">14:00-18:00 "Tarde"</option>
+                                    </select>
+                                    <label for="selectBloque" style="margin-top: 1vh;"><strong>Seleccionar
+                                            bloque</strong></label>
+                                </div>
+                                <button class="btn btn-primary" type="button"
+                                    id="btnFiltrerCourse"><strong>Filtrar</strong></button>
+                            </div>
+                        </div>
+
+                        <div class="container d-flex flex-column mb-3 align-items-center justify-content-center"
+                            id="asistContainer" style="height: auto;">
+
+                            <!-- <div class="d-flex align-items-center mb-2" id="dayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Lunes 12</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Asistido</option>
+                                        <option value="2">No asistido</option>
+                                        <option value="3">Justificado</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>
+                                            Marcar asistencia</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="dayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Martes
+                                    13</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Asistido</option>
+                                        <option value="2">No asistido</option>
+                                        <option value="3">Justificado</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>
+                                            Marcar asistencia</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="dayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Miercoles
+                                    14</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Asistido</option>
+                                        <option value="2">No asistido</option>
+                                        <option value="3">Justificado</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>
+                                            Marcar asistencia</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="dayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Jueves
+                                    15</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Asistido</option>
+                                        <option value="2">No asistido</option>
+                                        <option value="3">Justificado</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>
+                                            Marcar asistencia</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="dayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Viernes
+                                    16</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Asistido</option>
+                                        <option value="2">No asistido</option>
+                                        <option value="3">Justificado</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>
+                                            Marcar asistencia</strong>
+                                    </label>
+                                </div>
+                            </div> -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnSaveData"><strong>Guardar cambios</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de historial de asistencia del aprendiz -->
+        <div class="modal fade" id="historyAsistModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D; ">
+                            <strong>Estas vizualizando el <span style="color: #39A900;">historial
+                                    asistencia</span>:</strong>
+                        </h1>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="container d-flex align-items-center justify-content-center"
+                            id="filtrerContainerAsistHistory">
+                            <div class="d-flex align-items-center gap-3" style="width: 100%;">
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectMes">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Enero</option>
+                                        <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5">Mayo</option>
+                                        <option value="6">Junio</option>
+                                        <option value="7">Julio</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option>
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                    <label for="selectMes" style="margin-top: 1vh;"><strong>Seleccionar
+                                            mes</strong></label>
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectSemana">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">Semana 1</option>
+                                        <option value="2">Semana 2</option>
+                                        <option value="3">Semana 3</option>
+                                        <option value="4">Semana 4</option>
+                                    </select>
+                                    <label for="selectSemana" style="margin-top: 1vh;"><strong>Seleccionar
+                                            semana</strong></label>
+                                </div>
+                                <div class="form-floating" style="width: 200px;">
+                                    <select class="form-select" id="selectBloque">
+                                        <option disabled selected hidden></option>
+                                        <option value="1">06:00-10:00 "Mañana"</option>
+                                        <option value="2">10:00-14:00 "Mediodia"</option>
+                                        <option value="3">14:00-18:00 "Tarde"</option>
+                                    </select>
+                                    <label for="selectBloque" style="margin-top: 1vh;"><strong>Seleccionar
+                                            bloque</strong></label>
+                                </div>
+                                <button class="btn btn-primary" type="button"
+                                    id="btnFiltrerDayHistory"><strong>Filtrar</strong></button>
+                            </div>
+                        </div>
+
+                        <div class="container d-flex flex-column mb-3 align-items-center justify-content-center"
+                            id="historyDayContainer" style="height: auto;">
+
+                            <div class="d-flex align-items-center mb-2" id="HistoryDayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Lunes 12</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnHistoryAsist"
+                                    style="background-color: #39a900;"><strong>Asistido</strong></button>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="HistoryDayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Martes
+                                    13</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnHistoryAsist"
+                                    style="background-color: #39a900;"><strong>Asistido</strong></button>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="HistoryDayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Miercoles
+                                    14</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#MoreDetaillFillUpModal" id="btnHistoryAsist"
+                                    style="background-color: #f6c307;">
+                                    <strong>Justificado</strong></button>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="HistoryDayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Jueves
+                                    15</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <button class="btn btn-primary" type="button" id="btnHistoryAsist"
+                                    style="background-color: #39a900;"><strong>Asistido</strong></button>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-2" id="HistoryDayContentCard"
+                                style="width: 100%; max-width: 1100px;">
+                                <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div"
+                                    id="iconImg" style="width: 50px;">
+                                <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Viernes
+                                    16</strong>
+                                <div class="flex-grow-1">
+                                </div>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#uploadJustificationModal" id="btnHistoryAsist"
+                                    style="background-color: #fc0505;"><strong>Inasistido</strong>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnSaveData"><strong>Guardar cambios</strong></button>
+                        <button type="button" class="btn btn-secondary" id="btnSaveIndividualReport"><strong>Generar
+                                reporte de estudiante</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de ver notificación -->
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estudiante en <span style="color: #39A900;">riesgo</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+
+                        <div style="text-align: start; margin: 1vh; font-size: 20px;">
+                            <strong style="color: #00304D;">Bienestar al aprendiz:</strong>
+                            <p class="card-text">
+                                <small class="text-body-secondary" style="font-size: 15px;"><strong>Enviada 7 de
+                                        octubre
+                                        del 2024, 13:00</strong></small>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#sendMessageModal" id="btnreplyMessage">
+                            <strong>Responder notificación</strong>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseModal">
+                            <strong>Cerrar</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de advertencia de plan de mejoramiento -->
+        <div class="modal fade" id="warningFillUpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+
+                    <div class="modal-body">
+
+                        <div class="container d-flex flex-column align-items-center justify-content-center mb-3"
+                            id="uploadContainer" style="height: auto; width: 60vh; text-align: center;">
+                            <div class="modal-body text-center">
+                                <img src="../Resources/Img/infoIcon.png" alt="" class="mb-3">
+                                <h1 id="modalMessageError">Este estudiante no cuenta con plan de seguimiento
+                                    actualmente. ¿<strong style="color: #39A900;">Deseas agendar uno nuevo</strong>?
+                                </h1>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#uploadFillUpModal" id="btnSendFillUpPlan">
+                            <strong>Aceptar</strong>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cancelar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de subir plan de mejoramiento -->
+        <div class="modal fade" id="uploadFillUpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estas subiendo un <span style="color: #39A900;">plan de seguimiento</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="container d-flex flex-column align-items-center justify-content-center mb-3"
+                            id="uploadContainer" style="height: auto; width: 60vh; text-align: center;">
+                            <!-- Aquí aseguramos que el contenedor esté centrado -->
+                            <form id="responseForm" style="width: 100%; max-width: 500px;">
+                                <!-- Campo para el título de la respuesta -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="titleInput"
+                                        placeholder="Escribe el título de tu plan de seguimiento" required>
+                                </div>
+
+                                <!-- Campo para la respuesta -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="answerInput" rows="3"
+                                        placeholder="Escribe la argumentación del plan de seguimiento"
+                                        required></textarea>
+                                </div>
+
+                                <!-- Botón para subir documento -->
+                                <label for="fileUpload"
+                                    class="btn btn-primary align-items-center justify-content-center"
+                                    id="btnUploadFile">
+                                    <strong>Subir documento</strong>
+                                </label>
+                                <input type="file" id="fileUpload" style="display: none;">
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-primary" id="btnSendFillUpPlan"><strong>Subir plan de
+                                seguimiento</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de ver plan de mejoramiento -->
+        <div class="modal fade" id="MoreDetaillFillUpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estudiante en <span style="color: #39A900;">plan de mejoramiento</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        <div style="text-align: start; margin: 1vh; font-size: 20px;">
+                            <strong id="nombreEstudiantePlan" style="color: #00304D;">Nombre del Estudiante</strong>
+                            <p class="card-text">
+                                <small class="text-body-secondary" style="font-size: 15px;">
+                                    <strong id="fechaPlan">Creado el 7 de octubre del 2024, 13:00</strong>
+                                </small>
+                            </p>
+
+                            <p id="descripcionPlan" style="margin-bottom: 15px;">
+                                Se ha iniciado un plan de mejoramiento para abordar las dificultades académicas del
+                                estudiante.
+                                Este plan tiene como objetivo proporcionar apoyo adicional y estrategias para superar
+                                los
+                                desafíos actuales en su proceso de aprendizaje y desarrollo académico.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#updateFillUpModal" id="btnreplyMessage">
+                            <strong>Actualizar plan de seguimiento</strong>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseModal">
+                            <strong>Cerrar</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de actualizar plan de mejoramiento -->
+        <div class="modal fade" id="updateFillUpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estas actualizando un <span style="color: #39A900;">plan de
+                                    seguimiento</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="container d-flex flex-column align-items-center justify-content-center mb-3"
+                            id="uploadContainer" style="height: auto; width: 60vh; text-align: center;">
+                            <!-- Aquí aseguramos que el contenedor esté centrado -->
+                            <form id="responseForm" style="width: 100%; max-width: 500px;">
+                                <!-- Campo para el título de la respuesta -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="titleInput"
+                                        placeholder="Actualice el título de tu plan de seguimiento" required>
+                                </div>
+
+                                <!-- Campo para la respuesta -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="answerInput" rows="3"
+                                        placeholder="Actualice la argumentación del plan de seguimiento"
+                                        required></textarea>
+                                </div>
+
+                                <!-- Botón para subir documento -->
+                                <label for="fileUpload"
+                                    class="btn btn-primary align-items-center justify-content-center"
+                                    id="btnUploadFile">
+                                    <strong>Subir documento</strong>
+                                </label>
+                                <input type="file" id="fileUpload" style="display: none;">
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-primary" id="btnSendFillUpPlan"><strong>Actualizar plan de
+                                seguimiento</strong></button>
+                        <button type="button" class="btn btn-primary" id="btnSendFillUpPlan"><strong>Eliminar plan de
+                                seguimiento</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de subir justificación -->
+        <div class="modal fade" id="uploadJustificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D; ">
+                            <strong>Estas realizando la subida de una <span
+                                    style="color: #39A900;">justificación</span>:</strong>
+                        </h1>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="container d-flex flex-column align-items-center justify-content-center mb-3"
+                            id="uploadContainer" style="height: auto; width: 60vh; text-align: center;">
+                            <!-- Aquí aseguramos que el contenedor esté centrado -->
+                            <form id="responseForm" style="width: 100%; max-width: 500px;">
+                                <!-- Campo para el título de la respuesta -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="titleInput"
+                                        placeholder="Escribe el título de la justificación" required>
+                                </div>
+
+                                <!-- Campo para la respuesta -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="answerInput" rows="3"
+                                        placeholder="Escribe la argumentación de la justificación" required></textarea>
+                                </div>
+
+                                <!-- Botón para subir documento -->
+                                <label for="fileUpload"
+                                    class="btn btn-primary align-items-center justify-content-center"
+                                    id="btnUploadFile">
+                                    <strong>Subir documento</strong>
+                                </label>
+                                <input type="file" id="fileUpload" style="display: none;">
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-primary" id="btnSendMessage"><strong>Enviar
+                                respuesta</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de actualizar plan de mejoramiento -->
+        <div class="modal fade" id="updateJustificationModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content align-items-center">
+                    <div class="modal-header">
+                        <h1 class="card-title" style="color: #00304D;">
+                            <strong>Estas actualizando una <span style="color: #39A900;">justificación</span>:</strong>
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="container d-flex flex-column align-items-center justify-content-center mb-3"
+                            id="uploadContainer" style="height: auto; width: 60vh; text-align: center;">
+                            <!-- Aquí aseguramos que el contenedor esté centrado -->
+                            <form id="responseForm" style="width: 100%; max-width: 500px;">
+                                <!-- Campo para el título de la respuesta -->
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="titleInput"
+                                        placeholder="Actualice el título de la justificación" required>
+                                </div>
+
+                                <!-- Campo para la respuesta -->
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="answerInput" rows="3"
+                                        placeholder="Actualice la argumentación de la justificación"
+                                        required></textarea>
+                                </div>
+
+                                <!-- Botón para subir documento -->
+                                <label for="fileUpload"
+                                    class="btn btn-primary align-items-center justify-content-center"
+                                    id="btnUploadFile">
+                                    <strong>Subir documento</strong>
+                                </label>
+                                <input type="file" id="fileUpload" style="display: none;">
+                            </form>
+                          
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer justify-content-center" style="width: 100%;">
+                        <button type="button" class="btn btn-primary" id="btnSendFillUpPlan"><strong>Actualizar
+                                justificación</strong></button>
+                        <button type="button" class="btn btn-primary" id="btnSendFillUpPlan"><strong>Eliminar
+                                justificación</strong></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btnCloseModal"><strong>Cerrar</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--  Cuadro de area de trabajo  -->
+    <template>
+    </template>
+
+    <!-- Scripts -->
+    <script src="./View/Vista.js">  </script>
+    <script src="./Model/Modelo.js"></script>
+    <script src="./Controller/Controlador.js"></script>
+
+    <!-- Script de inicialización -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modelo = new Modelo();
+            const vista = new Vista();
+            const controlador = new Controlador(modelo, vista);
+
+
+
+            
+
+
+
+        });
+
+
+
+
+        
+    </script>
+
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formLogin");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const correo = document.getElementById("correo").value;
+      const contraseña = document.getElementById("contraseña").value;
+
+      try {
+        const res = await fetch("http://localhost:3000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ correo, contraseña })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("token", data.token);
+          alert("✅ Login exitoso");
+          // Aquí puedes mostrar otras vistas si deseas
+        } else {
+          document.getElementById("mensajeLogin").textContent = data.mensaje;
+        }
+      } catch (error) {
+        document.getElementById("mensajeLogin").textContent = "Error al conectar con el servidor.";
+      }
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const template = document.getElementById("login-template");
+    const clon = template.content.cloneNode(true);
+    document.getElementById("render-aqui").appendChild(clon);
+
+    // Espera que el formulario esté ya en el DOM
+    setTimeout(() => {
+      const form = document.querySelector("form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("emailInput").value;
+        const password = document.getElementById("passwordInput").value;
+        const rol = document.getElementById("selectRol").value;
+
+        if (!email || !password || !rol) {
+          alert("Todos los campos son obligatorios.");
+          return;
+        }
+
+        try {
+            console.log("➡️ Enviando fetch con:", email, password);
+
+          const response = await fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+           body: JSON.stringify({ email, contraseña: password, rol })
+
+          });
+
+
+          const data = await response.json();
+         
+         
+          console.log("⬅️ Respuesta recibida:", data);
+
+
+          if (response.ok) {
+            alert("Inicio de sesión exitoso.");
+            // Guardar token si se recibe
+            localStorage.setItem("token", data.token);
+            // Redirigir si quieres
+            // window.location.href = "dashboard.html";
+          } else {
+            alert("Error: " + data.message);
+          }
+        } catch (error) {
+          console.error("Error al conectar con el servidor:", error);
+          alert("No se pudo conectar al servidor.");
+        }
+      });
+    }, 0);
+  });
+  
+</script>
+
+<script>
+  document.getElementById('loginButton').addEventListener('click', async (e) => {
+    e.preventDefault(); // evita recargar la página
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const mensaje = document.getElementById('loginMensaje');
+
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          contraseña: password// 👈 importante: así lo espera el backend
+        })
+      });
+
+      const data = await res.json();
+      console.log('🔁 Respuesta del backend:', data);
+
+      if (res.ok) {
+        const nombre = data.usuario?.nombre || 'Usuario'; // por si llega vacío
+        mensaje.innerHTML = `<div class="alert alert-success">Bienvenida ${nombre}, has iniciado sesión correctamente.</div>`;
+      } else {
+        mensaje.innerHTML = `<div class="alert alert-danger">${data.mensaje || 'Credenciales incorrectas'}</div>`;
+      }
+
+    } catch (error) {
+      mensaje.innerHTML = '<div class="alert alert-danger">Error al conectar con el servidor</div>';
+      console.error('❌ Error en login:', error);
+    }
+  });
+</script>
+
+
+<script>
+  document.getElementById('loginButton')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email')?.value;
+    const password = document.getElementById('password')?.value;
+    const mensaje = document.getElementById('loginMensaje');
+
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          contraseña: password
+        })
+      });
+
+      const data = await res.json();
+      console.log('🔁 Respuesta del backend:', data);
+
+      if (res.ok) {
+        const nombre = data.usuario?.nombre || 'Usuario';
+        mensaje.innerHTML = '<div class="alert alert-success">Bienvenida ' + nombre + ', has iniciado sesión correctamente.</div>';
+      } else {
+        mensaje.innerHTML = '<div class="alert alert-danger">' + (data.mensaje || 'Credenciales incorrectas') + '</div>';
+      }
+
+    } catch (error) {
+      mensaje.innerHTML = '<div class="alert alert-danger">Error al conectar con el servidor</div>';
+      console.error('❌ Error en login:', error);
+    }
+  });
+</script>
+
+</body>
+
+</html>
