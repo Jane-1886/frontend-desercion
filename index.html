@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Css/formulario_creacion_usuarios.css">
+    <title>Creación de Roles prueba</title>
+</head>
+<body>
+    
+    <div id="root">
+        <h1 class="title">
+            <span class="title-black">Creación de </span>
+            <span class="title-green">Roles</span>
+        </h1>
+        <form id="roleForm">
+            <div class="form-group">
+                <input type="text" id="username" name="username" placeholder="Nombre Usuario">
+            </div>
+            <div class="form-group">
+                <select id="role" name="role">
+                    <option disabled selected hidden>Rol</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="coordinador">Coordinación</option>
+                    <option value="bienestar">Bienestar al Aprendiz</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="Correo Electrónico">
+            </div>
+            <div class="form-group password-container">
+                <input type="password" id="password" name="password" placeholder="Contraseña" autocomplete="off">
+                <img id="togglePassword" class="toggle-eye" src="Img/eye_on.png" alt="Mostrar Contraseña">
+            </div>
+            <div class="form-group password-container">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Contraseña" autocomplete="off">
+                <img id="toggleConfirmPassword" class="toggle-eye" src="Img/eye_on.png" alt="Mostrar Contraseña">
+            </div>
+            <button type="submit">Crear Usuario</button>
+        </form>
+    </div>
+
+    
+        <script type="module" src="/src/main.jsx"></script>
+
+</body>
+</html>

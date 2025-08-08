@@ -1,0 +1,309 @@
+.body-listado-aprendices {
+  margin: 0;
+  padding: 0;
+  font-family: "Work Sans", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 40px;
+  background-color: #f0f0f0;
+  background-image: url('/Img/BackgroundsNormal.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #00304D;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #39A900;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+/* Contenedores principales */
+.form-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  overflow-y: auto;
+}
+.izquierda {
+  width: 270px;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  margin: 0 10px;
+  flex: 0 0 280px;
+}
+.derecha {
+  flex: 1;
+  padding: 15px;
+  background: white;
+  margin: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 90vh;               /* ✅ Limita el alto al 90% de la pantalla */
+  overflow-y: auto;           /* ✅ Activa el scroll vertical si se necesita */
+  overflow-x: hidden;
+}
+
+
+/* Títulos y textos */
+.titulo {
+    color: #00304D;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.lista-titulo {
+  color: #00304D;
+  font-weight: 700;
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+/* Elementos visuales */
+.linea {
+  width: 100%;
+  height: 2px;
+  background-color: #00304D;
+  margin-top: 5px;
+}
+.ficha-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.ficha-imagen {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+.ficha {
+  color: #00304D;
+  font-size: 32px;
+  font-weight: bold;
+}
+.pie-de-pagina {
+  color: #aaa;
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* Búsqueda */
+.busqueda input,
+.campo-busqueda input {
+  padding: 15px 40px;
+  border: 1px solid #999;
+  border-radius: 15px;
+  background-color: white;
+  color: black;
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+}
+.icono-lupa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+
+/* Botones */
+.boton,
+.boton-reporte,
+.boton-historial,
+.boton-salir,
+.boton-modal {
+  background-color: #00304D;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 900;
+  transition: background-color 0.3s ease;
+}
+.boton:hover,
+.boton-reporte:hover,
+.boton-historial:hover,
+.boton-salir:hover,
+.boton-modal:hover {
+  background-color: #39A900;
+}
+.boton {
+  padding: 15px;
+  margin: 5px 0;
+  width: 100%;
+  font-size: 18px;
+}
+.boton-reporte {
+  padding: 10px 15px;
+  font-size: 18px;
+  margin-left: 540px;
+}
+.boton-historial {
+  background-color: #00304D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;              /* ⬅️ más pequeño */
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;                /* ⬅️ letra más pequeña */
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+.boton-historial:hover {
+  background-color: #39A900;
+}
+
+.boton-salir {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+}
+.boton-salir .flecha {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/* Aprendices */
+.lista-aprendices {
+  max-height: 600px;      /* ⬆️ Más espacio visible */
+  min-height: 400px;      /* ⬇️ Asegura que se vea más grande siempre */
+  overflow-y: auto;       /* Scroll vertical si se necesita */
+  overflow-x: hidden;
+  margin-top: 10px;
+}
+
+.aprendiz-div {
+  background-color: white;
+  color: #00304D;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;               /* ⬅️ Más compacto */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 15px;
+   max-height: 90vh;         /* ✅ Limita la altura del modal */
+  overflow-y: auto;
+}
+.contenedor-principal {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
+    height: 100vh;
+    gap: 10px;
+}
+.imagen-aprendiz {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.modal-historial {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+}
+.volver-btn-fijo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 6px 12px;
+  background: #00304D;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s;
+}
+
+.volver-btn-fijo:hover {
+  background: #39A900;
+}
+
+
+
+

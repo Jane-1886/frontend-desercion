@@ -1,0 +1,350 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    background-color: #f0f0f0;
+    background-image: url('/Img/BackgroundsNormal.png');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.form-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.izquierda {
+    width: 14%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    margin: 0 20px;
+}
+
+.derecha {
+    width: 58%;
+    height: 80%;
+    padding: 15px;
+    background: white;
+    margin: 40px 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo {
+    color: #00304D;
+    font-size: 32px; 
+    font-weight: 700; 
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+.sub-div {
+    background: white; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    width: 90%; 
+    max-width: 1200px; 
+    margin-top: 20px; 
+    max-height: 500px; 
+    overflow-y: auto; 
+    padding: 10px; 
+    padding-bottom: 160px; 
+}
+
+.busqueda-instructores {
+    padding: 10px; 
+    border: 1px solid #999; 
+    border-radius: 15px; /* Bordes más redondeados */
+    background-color: white; 
+    color: black; 
+    width: 90%; 
+    max-width: 400px; 
+    margin: 20px auto 15px; 
+    font-size: 16px; 
+    font-weight: bold; 
+}
+
+.linea {
+    width: 100%; 
+    height: 2px; 
+    background-color: #00304D; 
+    margin: 10px 0; 
+}
+
+.texto-lista {
+    color: #00304D; 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin: 20px 0; /* Aumentar el margen superior para moverlo hacia abajo */
+    align-self: flex-start; 
+}
+
+.instructor-container {
+    display: flex;
+    flex-direction: column; 
+    width: 100%; 
+    max-height: 250px; 
+    overflow-y: auto; 
+    margin-top: 10px; 
+}
+
+.instructor {
+    background: white; 
+    border: 1px solid #ddd; 
+    border-radius: 15px; 
+    padding: 5px;  
+    margin: 8px 0; 
+    text-align: left; 
+    display: flex; 
+    align-items: center; 
+    height: 50px; 
+    color: #00304D; 
+    max-width: 95%; 
+    font-size: 18px;  
+    font-weight: bold; 
+}
+
+.instructor-imagen {
+    width: 40px; 
+    height: 40px; 
+    margin-right: 10px; 
+}
+
+.instructor-container::-webkit-scrollbar {
+    width: 12px; 
+}
+
+.instructor-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.instructor-container::-webkit-scrollbar-thumb {
+    background: #00304D;
+    border-radius: 10px;
+}
+
+.instructor-container::-webkit-scrollbar-thumb:hover {
+    background: #39A900;
+}
+
+.label {
+    margin-bottom: 5px; 
+    font-weight: bold; 
+}
+
+.pie-de-pagina {
+    color: #aaa;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: auto;
+}
+
+.boton {
+    padding: 15px;
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px 0;
+    width: calc(100% - 10px);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.boton:hover {
+    background-color: #39A900; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.busqueda {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.izquierda .busqueda input {
+    padding: 15px 30px; 
+    border: 1px solid #999; 
+    border-radius: 15px; 
+    background-color: white; 
+    color: black; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: block;
+    width: calc(100% - 60px); 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.icono-lupa {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 30px; 
+    pointer-events: none; 
+}
+
+.izquierda .busqueda input::placeholder {
+    color: #aaa; 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.botones-container {
+    margin-top: auto; 
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.imagen-header {
+    width: 150px; 
+    height: 150px; 
+    margin-bottom: 20px;
+}
+
+.seleccionar-boton {
+    padding: 10px 20px; 
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+    cursor: pointer;
+    margin-left: auto; 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 18px; 
+    font-weight: 800; 
+}
+
+.seleccionar-boton:hover {
+    background-color: #39A900; 
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 15px; /* Bordes redondos */
+}
+
+.modal-text {
+    color: black; /* Color negro */
+    font-size: 26px; /* Tamaño de fuente aumentado */
+    font-weight: bold; /* Texto en negrita */
+    margin: 20px 0;
+}
+
+.modal-subtext {
+    color: #00304D; /* Color especificado */
+    font-size: 22px; /* Tamaño de fuente ajustado */
+    font-weight: bold; /* Texto en negrita */
+    margin: 10px 0;
+}
+
+.modal-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Estilos para los botones del modal */
+.modal-button {
+    background-color: #00304D; /* Color del botón */
+    color: white;
+    border: none;
+    padding: 15px 30px; /* Aumentar tamaño del botón */
+    margin: 10px 20px; /* Separación entre botones */
+    cursor: pointer;
+    font-size: 18px; /* Aumentar tamaño de la fuente */
+    font-weight: bold; /* Texto en negrita */
+    border-radius: 10px; /* Bordes redondos moderados */
+    transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+    background-color: #39A900; /* Color al pasar el mouse */
+}
+
+/* Estilos para el texto de la pregunta en el primer modal */
+.modal-question {
+    color: #00304D; /* Color especificado */
+    font-size: 24px; /* Tamaño de fuente aumentado */
+    font-weight: bold; /* Texto en negrita */
+    margin: 20px 0;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 1200px) {
+    .izquierda, .derecha {
+        max-width: 100%; /* Sin máximo en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .titulo, .texto-lista {
+        font-size: 1.5em; /* Ajustar tamaño de fuente */
+    }
+
+    .boton, .seleccionar-boton {
+        font-size: 0.9em; /* Ajustar tamaño de fuente */
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo, .texto-lista {
+        font-size: 1.2em; /* Ajustar tamaño de fuente en móviles */
+    }
+
+    .busqueda-instructores, .izquierda .busqueda input {
+        width: 80%; /* Ajustar el ancho en móviles */
+    }
+
+    .imagen-header {
+        width: 100px; /* Reducir tamaño del logo en móviles */
+    }
+}

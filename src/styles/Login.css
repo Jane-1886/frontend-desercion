@@ -1,0 +1,138 @@
+/* Contenedor principal */
+/*.form-container {
+  max-width: 250px;
+  margin: 10px auto;
+  padding: 30px 20px;
+  background-color: #0caa50;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+}
+
+/* Título */
+/*.title {
+  font-size: 22px;
+  margin-bottom: 25px;
+  color: #00304D;
+}
+
+/* Grupo de entrada */
+/*.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Entradas y select */
+/*.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* Botón */
+/*button {
+  width: 100%;
+  padding: 10px;
+  background-color: #39A900;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2f8600;
+}
+
+/* Enlace inferior */
+/*.crear-cuenta-link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.crear-cuenta-link span {
+  color: #00304D;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+  /* Fondo general con imagen institucional */
+.login-background {
+  height: 100vh;
+  background: url('/Img/BackgroundsNormal.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tarjeta de login */
+.login-card {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 300px;
+}
+
+/* Título */
+.login-title {
+  font-size: 28px;
+  color: #00304D;
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+/* Campos */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: "Work Sans", sans-serif;
+}
+
+/* Botón */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #39A900;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #2e7d00;
+}
+
+/* Enlace inferior */
+.crear-cuenta-link {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.crear-cuenta-link span {
+  color: #00304D;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+

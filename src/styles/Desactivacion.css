@@ -1,0 +1,330 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    background-color: #f0f0f0;
+    background-image: url('/Img/BackgroundsNormal.png');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.form-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.izquierda {
+    width: 14%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    margin: 0 20px;
+}
+
+.derecha {
+    width: 58%;
+    height: 80%;
+    padding: 15px;
+    background: white;
+    margin: 40px 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo {
+    color: #00304D;
+    font-size: 32px; 
+    font-weight: 700; 
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+.sub-div {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    width: 90%; 
+    max-width: 1200px; 
+    margin-top: 20px; 
+    max-height: 700px; 
+    overflow-y: auto; 
+    padding: 10px; 
+}
+
+.sub-div-titulo {
+    color: #00304D;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left; 
+    margin: 10px 0 0 0;
+    align-self: flex-start; 
+}
+
+.sub-div::-webkit-scrollbar {
+    width: 10px;
+}
+
+.sub-div::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sub-div::-webkit-scrollbar-thumb {
+    background: #00304D;
+    border-radius: 10px;
+}
+
+.sub-div::-webkit-scrollbar-thumb:hover {
+    background: #39A900;
+}
+
+.label {
+    margin-bottom: 5px; 
+    font-weight: bold; 
+}
+
+.pie-de-pagina {
+    color: #aaa;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: auto;
+}
+
+.boton {
+    padding: 15px;
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px 0;
+    width: calc(100% - 10px);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.boton:hover {
+    background-color: #39A900; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.busqueda {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.izquierda .busqueda input {
+    padding: 15px 30px; 
+    border: 1px solid #999; 
+    border-radius: 15px; 
+    background-color: white; 
+    color: black; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: block;
+    width: calc(100% - 60px); 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.icono-lupa {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 30px; 
+    pointer-events: none; 
+}
+
+.izquierda .busqueda input::placeholder {
+    color: #aaa; 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.botones-container {
+    margin-top: auto; 
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.imagen-header {
+    width: 150px; 
+    height: 150px; 
+    margin-bottom: 20px;
+}
+
+.linea-separadora {
+    border: none; 
+    height: 2px; 
+    background-color: #00304D; 
+    width: 100%; 
+    margin: 10px 0;
+}
+
+.espaciado-boton {
+    margin-top: 50px; 
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap; 
+}
+
+.boton-con-imagen {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin: 0 20px; 
+}
+
+.boton-con-imagen .imagen-boton {
+    width: 100px; 
+    height: 100px; 
+    object-fit: contain; 
+    margin-bottom: 5px; 
+    display: block; 
+}
+
+.boton-desactivar, .boton-activar {
+    width: 250px; 
+    padding: 15px; 
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-size: 18px; 
+    margin-top: 5px; 
+    margin-bottom: 40px; 
+    display: flex;
+    justify-content: center; 
+}
+
+.boton-desactivar:hover, .boton-activar:hover {
+    background-color: #39A900; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el contenedor del botón de salir */
+.flecha-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilo para el botón de salir */
+.boton-flecha {
+    padding: 15px 30px;  /* Tamaño aumentado */
+    font-size: 22px; /* Aumento del tamaño de la fuente */
+    font-weight: bold; /* Hacemos el texto en negrita */
+    background-color: #00304D; /* Color base */
+    color: white;
+    border: 2px solid white; /* Borde blanco */
+    border-radius: 8px;  /* Bordes más redondeados */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, border-color 0.3s;  /* Suaviza el cambio de color */
+}
+
+/* Efecto hover */
+.boton-flecha:hover {
+    background-color: #39A900; /* Cambio de color de fondo al pasar el ratón */
+    border-color: #39A900; /* Cambio de color del borde en hover */
+}
+
+/* Estilo de la flecha dentro del botón */
+.boton-flecha i {
+    font-size: 24px; /* Tamaño adecuado para la flecha */
+    margin-right: 10px; /* Espacio entre la flecha y el texto */
+}
+
+/* Aquí se pueden agregar más estilos que tengas en el archivo original */
+
+
+/* Media Queries para Responsividad */
+@media (max-width: 1200px) {
+    .izquierda, .derecha {
+        width: 40%; /* Reduce el ancho */
+        margin: 10px;
+    }
+
+    .form-container {
+        flex-direction: column; /* Cambia a columna */
+        width: 90%; /* Asegúrate de que el contenedor ocupe más espacio */
+    }
+
+    .titulo {
+        font-size: 28px; /* Reduce el tamaño de fuente */
+    }
+
+    .sub-div {
+        width: 100%; /* Ajusta el ancho */
+    }
+}
+
+@media (max-width: 768px) {
+    .izquierda, .derecha {
+        width: 100%; /* Ocupa todo el ancho */
+        margin: 10px 0; /* Cambia el margen */
+    }
+
+    .titulo {
+        font-size: 24px; /* Tamaño de fuente más pequeño */
+    }
+
+    .boton {
+        font-size: 16px; /* Reduce el tamaño de los botones */
+        padding: 10px; /* Ajusta el padding */
+    }
+
+    .imagen-header {
+        width: 100px; /* Ajusta el tamaño de la imagen */
+        height: 100px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo {
+        font-size: 20px; /* Más reducción en tamaños */
+    }
+
+    .sub-div-titulo {
+        font-size: 20px; /* Reduce también los títulos internos */
+    }
+
+    .label {
+        font-size: 14px; /* Reduce el tamaño de las etiquetas */
+    }
+
+    .boton {
+        width: 100%; /* Asegúrate de que los botones ocupen el ancho completo */
+    }
+}

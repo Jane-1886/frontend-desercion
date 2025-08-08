@@ -1,0 +1,418 @@
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    background-color: #f0f0f0;
+    background-image: url('/Img/BackgroundsNormal.png');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+html, body {
+    overflow: hidden; /* Elimina las barras de desplazamiento en la pantalla */
+    height: 100%; /* Asegura que el cuerpo ocupe toda la altura */
+}
+
+.form-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: flex;
+    flex-direction: row; /* Mantiene ambos divs en línea */
+}
+
+.izquierda {
+    width: 14%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    margin: 0 20px; /* Ajusta el margen */
+}
+
+.derecha {
+    flex: 1; /* Permite que el div derecho ocupe el espacio restante */
+    max-width: 1110px; /* Limita el ancho máximo */
+    height: 80%;
+    padding: 15px;
+    background: white;
+    margin: 20px; /* Ajusta el margen si es necesario */
+    display: flex;
+    flex-direction: column; /* Asegura que los hijos se alineen en columna */
+    align-items: center; /* Alinea todos los elementos al centro */
+}
+
+.titulo {
+    color: #00304D;
+    font-size: 32px; 
+    font-weight: 700; 
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+.nuevo-titulo-container {
+    display: flex;
+    justify-content: flex-start; /* Cambiar a flex-start para alinear a la izquierda */
+    width: 100%;
+    align-items: center;
+    margin-top: 30px; /* Espacio superior */
+}
+
+.nuevo-titulo {
+    color: #00304D;
+    font-size: 24px;
+    font-weight: 700; /* Mayor grosor */
+    text-align: left; /* Alineación a la izquierda */
+    margin-left: 20px; /* Añadir margen a la izquierda para desplazar a la derecha */
+}
+
+.linea-titulo {
+    width: 100%; /* Asegura que la línea use todo el ancho disponible */
+    max-width: 1370px; /* Establece un ancho máximo */
+    height: 2px; /* Grosor de la línea */
+    background-color: #00304D; /* Color de la línea */
+    border: none; /* Sin borde */
+    margin-top: 10px; /* Espacio arriba de la línea */
+    align-self: flex-start; /* Alinea la línea a la izquierda */
+}
+
+.fichas-container {
+    display: flex;
+    flex-direction: column; /* Para que los divs estén en una columna */
+    align-items: center; /* Centra los divs horizontalmente */
+    margin-top: 20px; /* Espacio superior */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    max-height: 400px; /* Limita la altura para mostrar la barra de desplazamiento */
+    overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
+}
+
+/* Barra de desplazamiento personalizada */
+.fichas-container::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento */
+}
+
+.fichas-container::-webkit-scrollbar-thumb {
+    background-color: #00304D; /* Color de la barra de desplazamiento */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.fichas-container::-webkit-scrollbar-thumb:hover {
+    background-color: #39A900; /* Color de la barra de desplazamiento al pasar el mouse */
+}
+
+.fichas-container::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Color de fondo de la pista */
+    border-radius: 10px; /* Bordes redondeados para la pista */
+}
+
+.ficha {
+    background-color: white; /* Color de fondo blanco */
+    border: 1px solid #ccc; /* Borde ligero */
+    border-radius: 25px; /* Bordes más redondeados */
+    padding: 5px; /* Espacio interno */
+    width: 95%; /* Ancho de las fichas más amplio */
+    margin: 10px 0; /* Espacio entre las fichas */
+    display: flex; /* Para alinear la imagen y el texto */
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: space-between; /* Espacio entre el texto y el botón */
+    color: #00304D; /* Cambiar el color del texto */
+    font-weight: 700; /* Hacer la letra más gruesa */
+    font-size: 22px; /* Aumentar el tamaño de la letra */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra muy sutil */
+}
+
+.imagen-ficha {
+    width: 40px; /* Ancho de la imagen */
+    height: 40px; /* Alto de la imagen */
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.texto-ficha {
+    flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.boton-ficha {
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 25px; /* Bordes más redondeados */
+    cursor: pointer;
+    text-align: center;
+    padding: 10px 40px; /* Padding horizontal */
+    font-weight: bold; /* Texto en negrita */
+    min-width: 150px; /* Ancho mínimo */
+    font-size: 18px; /* Aumentar el tamaño de la letra del botón */
+}
+
+.boton-ficha:hover {
+    background-color: #39A900; /* Color al pasar el ratón */
+}
+
+.pie-de-pagina {
+    color: #aaa;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: auto; /* Asegura que el pie de página esté al final del div */
+    margin-bottom: 0; /* Quita el margen inferior */
+}
+
+.boton {
+    padding: 15px;
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px 0;
+    width: calc(100% - 10px);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.boton:hover {
+    background-color: #39A900; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.boton-generar {
+    background-color: #00304D; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    padding: 10px 20px; /* Espaciado interno */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 18px; /* Tamaño de la fuente */
+    transition: background-color 0.3s ease; /* Transición suave */
+    margin-left: 282px; /* Ajusta este valor para mover el botón hacia la izquierda */
+}
+
+.boton-generar:hover {
+    background-color: #39A900; /* Color al pasar el ratón */
+}
+
+.busqueda {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.izquierda .busqueda input {
+    padding: 15px 40px; 
+    border: 1px solid #999; 
+    border-radius: 15px; 
+    background-color: white; 
+    color: black; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: block;
+    width: calc(100% - 80px);
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.icono-lupa {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 30px; 
+    pointer-events: none; 
+}
+
+.izquierda .busqueda input::placeholder {
+    color: #aaa; 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+.botones-container {
+    margin-top: auto; 
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.imagen-header {
+    width: 150px; 
+    height: 150px; 
+    margin-bottom: 20px;
+}
+
+
+/* Estilo para el modal */
+.modal {
+    display: none; /* Ocultado por defecto */
+    position: fixed;
+    z-index: 1; /* Asegurarse de que esté encima */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Hacer que se pueda desplazar si el contenido es grande */
+    background-color: rgba(0,0,0,0.4); /* Fondo semitransparente */
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    width: 40%; /* Puedes ajustar el tamaño */
+    text-align: center;
+    position: relative; /* Para el botón de cerrar */
+}
+
+/* Estilo para el texto dentro de los modales */
+.modal-content p {
+    color: #00304D; /* Color del texto */
+    font-size: 24px; /* Tamaño de la fuente más grande */
+    font-weight: bold; /* Fuente más gruesa */
+}
+
+/* Contenedor para los botones dentro del modal */
+.botones-modal {
+    display: flex;
+    flex-direction: column; /* Colocar los botones en columna */
+    gap: 10px; /* Espacio entre los botones */
+    align-items: center; /* Centrar los botones */
+}
+
+/* Estilo del botón dentro del modal */
+.boton-generar-modal {
+    background-color: #00304D; /* Color base del botón */
+    color: white;
+    padding: 12px 20px; /* Reducir el padding para que el botón sea menos ancho */
+    font-size: 18px; /* Mantener el tamaño de la fuente */
+    font-weight: bold; /* Haciendo la letra más gruesa */
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+    width: auto; /* Usar el tamaño mínimo necesario */
+}
+
+/* Efecto hover para el botón "Generar reporte" */
+.boton-generar-modal:hover {
+    background-color: #39A900; /* Color verde cuando el botón está en hover */
+}
+
+/* Botón de cerrar */
+.boton-generar-modal.cerrar {
+    background-color: #00304D; /* Color inicial */
+}
+
+/* Efecto hover para el botón "Cerrar" */
+.boton-generar-modal.cerrar:hover {
+    background-color: #39A900; /* Color verde para el hover */
+}
+
+
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .izquierda {
+        width: 25%; /* Aumentar el ancho para pantallas pequeñas */
+        margin: 0 20px; /* Menor margen */
+    }
+
+    .derecha {
+        flex: 1; /* Asegura que el div derecho ocupe el espacio restante */
+        margin: 20px; /* Menor margen */
+    }
+
+    .titulo {
+        font-size: 24px; /* Reducir tamaño de fuente */
+    }
+
+    .nuevo-titulo {
+        font-size: 20px; /* Reducir tamaño de fuente */
+    }
+
+    .pie-de-pagina {
+        font-size: 18px; /* Reducir tamaño de fuente */
+    }
+
+    .boton {
+        font-size: 16px; /* Reducir tamaño de fuente */
+        padding: 10px; /* Reducir padding */
+    }
+
+    .imagen-header {
+        width: 100px; /* Reducir tamaño de imagen */
+        height: 100px; /* Reducir tamaño de imagen */
+    }
+}
+
+@media (max-width: 480px) {
+    .izquierda {
+        width: 40%; /* Aumentar el ancho para pantallas muy pequeñas */
+    }
+
+    .derecha {
+        flex: 1; /* Asegura que el div derecho ocupe el espacio restante */
+    }
+
+    .titulo {
+        font-size: 20px; /* Reducir tamaño de fuente */
+    }
+
+    .nuevo-titulo {
+        font-size: 18px; /* Reducir tamaño de fuente */
+    }
+
+    .pie-de-pagina {
+        font-size: 16px; /* Reducir tamaño de fuente */
+    }
+
+    .boton {
+        font-size: 14px; /* Reducir tamaño de fuente */
+        padding: 8px; /* Reducir padding */
+    }
+}
+.layout-dos-columnas {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+.flecha-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.boton-flecha {
+  background-color: #00304D;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
