@@ -57,9 +57,13 @@ const ReporteGeneral = ({ setVista }) => {
             Visualizar listados
           </button>
 
-          <button className="boton" onClick={() => setVista('listadoFichas')}>
-            Desactivación
-          </button>
+          <button
+  className="boton"
+  onClick={() => setVista("desactivacion")}
+>
+  Desactivación
+</button>
+
 
           <button className="boton" onClick={() => setVista('notificaciones')}>
             Notificaciones
@@ -91,12 +95,18 @@ const ReporteGeneral = ({ setVista }) => {
             <div className="ficha" key={ficha}>
               <img src={folderIcon} className="imagen-ficha" alt={`Ficha ${index}`} />
               <span className="texto-ficha">Ficha - {ficha}</span>
-              <button
-                className="boton-ficha"
-                onClick={() => setVista({ vista: 'listaAprendices', fichaId: ficha })}
-              >
-                Seleccionar
-              </button>
+             <button
+  className="boton-ficha"
+  onClick={() =>
+    setVista({
+      nombre: "listaAprendices",
+      props: { fichaId: ficha, modo: "reportes" },
+    })
+  }
+>
+  Seleccionar
+</button>
+
             </div>
           ))}
         </div>

@@ -7,6 +7,9 @@ import ReporteGeneral from './pages/ReporteGeneral';
 import ListaAprendices from './pages/ListaAprendices';
 import Notificaciones from './pages/Notificaciones';
 import ListadoFichasReportes from './pages/ListadoFichasReportes';
+import Desactivacion from './pages/Desactivacion';
+import ListadoFichasDesactivar from './pages/ListadoFichasDesactivar';
+
 
 function App() {
   const [vista, setVista] = useState({ vista: 'login' });
@@ -44,10 +47,17 @@ function App() {
         <ListadoFichasReportes setVista={cambiarVista} fichaId={vista.fichaId} />
       )}
       {vista.vista === 'listaAprendices' && (
-        <ListaAprendices setVista={cambiarVista} fichaId={vista.fichaId} />
+        <ListaAprendices setVista={cambiarVista} fichaId={vista.fichaId} modo={vista.modo}/>
       )}
       {vista.vista === 'notificaciones' && <Notificaciones setVista={cambiarVista} />}
-    </>
+      {vista.vista === "desactivacion" && <Desactivacion setVista={cambiarVista} />}
+       {vista.vista === "listadoFichasDesactivar" && (
+  <ListadoFichasDesactivar setVista={cambiarVista} />
+)}
+
+
+          
+          </>
   );
 }
 

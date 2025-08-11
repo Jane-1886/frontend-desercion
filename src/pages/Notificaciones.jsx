@@ -3,6 +3,8 @@ import "../styles/notificaciones.css";
 import logoSena from "/Img/logoSena.png";
 import lupaIcono from "/Img/lupa_icono.png";
 import notiIcon from "/Img/notifications.png";
+import { useNavigate } from "react-router-dom";
+
 
 const Notificaciones = ({ setVista }) => {
   return (
@@ -32,6 +34,7 @@ const Notificaciones = ({ setVista }) => {
 
         <div className="subtitulo-notificaciones">Notificaciones más recientes:</div>
         <div className="linea"></div>
+        
 
         <div className="scrollable-recent-notifications">
           <div className="sub-div">
@@ -84,10 +87,18 @@ const Notificaciones = ({ setVista }) => {
             </div>
           </div>
         </div>
+        
+<button
+  className="boton volver"
+  onClick={() => setVista("reporteGeneral")}
+>
+  ← Volver a Reporte General
+</button>
 
         <p className="pie-de-pagina">2024 - Servicio Nacional de Aprendizaje Sena</p>
       </div>
     </div>
+    
   );
 };
 

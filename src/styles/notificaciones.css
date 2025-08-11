@@ -281,3 +281,19 @@
     height: 120px; /* Aseguramos que el contenedor tenga el mismo tamaño */
     margin-right: 15px; /* Espacio entre la imagen y el contenido del sub-div */
 }
+.boton.volver {
+  background-color: #00304D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.boton.volver:hover {
+  background-color: #005070;
+}
+
