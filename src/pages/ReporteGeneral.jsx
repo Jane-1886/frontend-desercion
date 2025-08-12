@@ -53,7 +53,7 @@ const ReporteGeneral = ({ setVista }) => {
         </div>
 
         <div className="botones-container">
-          <button className="boton" onClick={() => setVista('listadoFichas')}>
+          <button className="boton" onClick={() => setVista('listadoFichasReportes')}>
             Visualizar listados
           </button>
 
