@@ -1,0 +1,497 @@
+body {
+    height: 100vh;
+    background-image: url('../Resources/Img/Backgrounds2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Estilos de la página de login*/
+ 
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card {
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos de contenedor login */
+#containerLogin {
+    border-radius: 20px;
+}
+
+/* Estilos de inputs */
+#emailInput,
+#passwordInput,
+#selectRol,
+#selectMes,
+#selectSemana,
+#selectAsistencia,
+#selectBloque {
+    margin: 1vh 0;
+    border-radius: 20px;
+    font-family: "Work Sans", sans-serif;
+    font-size: 20px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos de botones*/
+#btnLogin,
+#btnCloseModal,
+#btnSaveData,
+#btnSaveIndividualReport,
+#btnreplyMessage,
+#btnSendMessage, #btnSendFillUpPlan,
+#btnDownload {
+    width: 100%;
+    color: #ffffff;
+    font-family: "Work Sans", sans-serif;
+    font-size: 25px;
+    background-color: #00304D;
+    border-color: #ff583300;
+    border-radius: 20px;
+}
+
+/* Estilos de botones de navegación */
+#btnNavegation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#btnCheckCourse,
+#btnCheckNotifications,
+#btnFollowUpPlan,
+#btnCheckUserManual,
+#moreOptionBtn,
+#btnMakeAssistance,
+#btnCheckHistory,
+#btnMakeReport,
+#btnReport,
+#btnSelect,
+#btnSelectAttendance,
+#btnSelectHistory,
+#btnSelectReport,
+#btnSelectReportEstudent,
+#btnGenerateReport,
+#btnMakeAttendance,
+#btnSeguimientoFicha,
+#btnSeguimientoEstudiante,
+#btnNotification,
+#btnManualDownload,
+#btnFiltrerDay,#btnFiltrerDayHistory {
+    width: 100%;
+    color: #ffffff;
+    margin: 0.5vh;
+    font-family: "Work Sans", sans-serif;
+    font-size: 20px;
+    background-color: #00304D;
+    border-color: #ff583300;
+    border-radius: 20px;
+}
+
+#btnUploadFile {
+    width: 100%;
+    font-family: "Work Sans", sans-serif;
+    font-size: 20px;
+    background-color: #00304D;
+    border-color: #ff583300;
+    border-radius: 20px;
+}
+
+#btnLogin:hover,
+#btnCloseModal:hover,
+#btnSaveData:hover,
+#btnSaveIndividualReport:hover,
+#btnreplyMessage:hover,
+#btnSendMessage:hover,
+#btnSendFillUpPlan:hover,
+#btnCheckNotifications:hover,
+#btnCheckUserManual:hover,
+#btnCheckCourse:hover,
+#moreOptionBtn:hover,
+#btnFollowUpPlan:hover,
+#btnCheckUserManual:hover,
+#btnFiltrerDayHistory:hover,
+#btnFiltrerDay:hover,
+#btnFiltrerCourse:hover,
+#btnReport:hover,
+#btnUploadFile:hover,
+#btnDownload:hover,
+#btnMakeAssistance:hover,
+#btnCheckHistory:hover,
+#btnMakeReport:hover,
+#btnSelect:hover,
+#btnSelectAttendance:hover,
+#btnSelectHistory:hover,
+#btnSelectReport:hover,
+#btnSelectReport:hover #btnSelectReportEstudent:hover,
+#btnGenerateReport:hover,
+#btnMakeAttendance:hover,
+#btnSeguimientoFicha:hover,
+#btnSeguimientoEstudiante:hover,
+#btnNotification:hover,
+#btnManualDownload:hover {
+    background-color: #39A900;
+}
+
+#btnReport {
+    display: none;
+}
+
+/* Estilos de la pantalla de principal */
+#containerPrincipal {
+    width: 50%;
+    border-radius: 20px;
+}
+
+/* Estilos de subencabezado */
+.line {
+    height: 2px;
+    width: 90%;
+    background-color: #00304D;
+}
+
+/* Estilos de barra de busqueda */
+.search-container {
+    width: 90%;
+    margin: 2%;
+    position: relative;
+    display: inline-block;
+    font-family: "Work Sans", sans-serif;
+    color: #CCCCCC;
+}
+
+#searchBar::placeholder,
+#searchBarSpaceWork::placeholder {
+    color: #CCCCCC;
+}
+
+#searchBar,
+#searchBarSpaceWork {
+    padding: 10px 40px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    font-weight: bold;
+    color: #ccc;
+}
+
+svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #CCCCCC;
+}
+
+/* Estilos de la area de trabajo */
+#workArea {
+    width: 80%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos del espacio de trabajo */
+#spaceWork {
+    gap: 10px;
+    width: 150vh;
+    height: 80vh;
+    margin: 2%;
+    padding: 20px;
+    display: flex;
+    border-radius: 20px;
+    justify-content: center;
+}
+
+/* Estilos de subencabezado */
+.linea-horizontal {
+    border: none;
+    height: 2px;
+    background-color: #00304D;
+    width: 100%;
+    margin: 0 auto 20px;
+    justify-content: center;
+}
+
+/* Estilos de contenido de pantalla */
+#dynamicContentContainer {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    /* Asegura que los elementos se apilen verticalmente */
+    overflow-y: auto;
+    border-radius: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #c7c7c7;
+}
+
+.text-left {
+    text-align: left;
+}
+
+/* Estilos del menú de navegación */
+#optionMenu {
+    margin: 1%;
+    width: 45vh;
+    height: 80vh;
+    font-family: "Work Sans", sans-serif;
+    background-color: #ffffff;
+    border-color: #CCCCCC;
+    border-radius: 20px;
+    align-items: center;
+    overflow-y: auto;
+}
+
+#SenaLogo {
+    width: 50%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+#btnNavegationMenu {
+    margin-top: 30vh;
+}
+
+/* Estilos de la card interactiva */
+#contentCard,
+#contentCardCourse,
+#contentCardNotificatión,
+#contentCardStudent,
+#contentCardManual,
+#contentCardCourseHistory,
+#contentCardGenerateReport,
+#contentCardStudentHistory,
+#contentCardGenerateReportStudent,
+#contentCardCourseTracking,
+#contentCardStudentTracking {
+    width: 150vh;
+    border-radius: 50px;
+    border: 1px solid #c7c7c7;
+    padding: 10px;
+    margin-top: 1vh;
+}
+
+#asistContainer, #historyDayContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+
+#dayContentCard, #HistoryDayContentCard {
+    width: 100%;
+    max-width: 1100px;
+    border-radius: 20px;
+    border: 1px solid #c7c7c7;
+    padding: 10px;
+    margin-top: 1vh;
+    height: auto;
+}
+
+#btnHistoryAsist{
+    width: 35%;
+    margin-right: 0.5vh;
+    font-family: "Work Sans", sans-serif;
+    font-size: 20px;
+    align-items: center;
+    border-color: #ff583300;
+    border-radius: 20px;
+}
+
+#iconImg {
+    margin-left: 1vh;
+}
+
+#moreOptionBtn,
+#btnDownload,
+#btnSelect,
+#btnSelectAttendance,
+#btnSelectHistory,
+#btnSelectReport,
+#btnSelectReportEstudent {
+    width: 20%;
+}
+
+#btnGenerateReport,
+#btnMakeAttendance,
+#btnNotification,
+#btnManualDownload {
+    width: 30%;
+}
+
+#btnSeguimientoFicha,
+#btnSeguimientoEstudiante {
+    width: 40%;
+}
+
+/* Estilos del modal de notificaciones */
+#messageInput {
+    margin: 1vh 0;
+    border-radius: 20px;
+    font-family: "Work Sans", sans-serif;
+}
+
+/* Estilos del modal de marcar asistencia*/
+#asistModal .modal-dialog {
+    max-width: 50%;
+    width: 1200px;
+}
+
+#asistModal .modal-content {
+    width: 100%;
+}
+
+/* Estilos del modal de ver el historial de asistencia*/
+#historyAsistModal .modal-dialog {
+    max-width: 50%;
+    width: 1200px;
+}
+
+#historyAsistModal .modal-content {
+    width: 100%;
+}
+
+
+/* Estilos de contenedor de filtrado */
+#filtrerContainerAsist, #filtrerContainerAsistHistory{
+    width: 100%;
+    padding: 10px;
+    height: 8vh;
+    min-height: 5vh;
+    margin-bottom: 0;
+    border-radius: 20px;
+    background-color: transparent;
+    gap: 10px;
+}
+
+#filtrerContainerAsist, #filtrerContainerAsistHistory {
+    margin-top: 1vh;
+}
+
+#filtrerContainerAsist {
+    margin-top: 0vh;
+}
+
+#asistContainer, #historyDayContainer{
+    width: 100%;
+    padding: 10px;
+    height: 8vh;
+    min-height: 5vh;
+    margin-bottom: 0;
+    border-radius: 20px;
+    border: 2px solid #dee2e6;
+    background-color: transparent;
+    gap: 10px;
+}
+
+#asistContaine, #historyDayContainer {
+    margin-top: 1vh;
+}
+
+#btnFiltrerCourse, #btnFiltrerDay, #btnFiltrerDayHistory {
+    width: 20%;
+    font-family: "Work Sans", sans-serif;
+    font-size: 20px;
+    align-items: center;
+    background-color: #00304D;
+    border-color: #ff583300;
+    border-radius: 20px;
+}
+
+  .login-container {
+    position: relative;
+    background-color: #F4F8FA;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .login-form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 2px solid #39A900;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-form h2 {
+    color: #00304D;
+    margin-bottom: 15px;
+  }
+
+  .login-form input {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .login-form button {
+    background-color: #39A900;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .login-form button:hover {
+    background-color: #2e8d00;
+  }
+
+  #mensajeLogin {
+    color: red;
+    margin-top: 10px;
+    
+  }
+
+  .boton-login {
+  background-color: ;
+  color:white ;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-login {
+  background-color: #00304D;
+  
+}
+
+

@@ -316,3 +316,92 @@ label {
 .close-button {
     margin-top: 20px; /* Espacio ajustado para el botón */
 }
+/* Modal base */
+.modal {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;                 /* top/right/bottom/left: 0 */
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #fff;
+  width: 90%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid #888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-content img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: #00304D;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 6px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.modal-button {
+  background-color: #00304D;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 12px;
+  transition: background-color .2s ease;
+}
+
+.modal-button:hover {
+  background-color: #39A900;
+}
+
+/* Textos de éxito */
+.confirmation-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #000;
+}
+
+.confirmation-subtitle {
+  font-size: 20px;
+  color: #00304D;
+}
+
+/* Si usas layout-2col, recuerda quitar márgenes en columnas y usar gap */
+.layout-2col {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 90%;
+  max-width: 1400px;
+}
+
+.form-container.izquierda,
+.form-container.derecha {
+  margin: 0;
+}
+
+
+

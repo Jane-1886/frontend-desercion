@@ -1,3 +1,8 @@
 {
+<<<<<<< HEAD
     "liveServer.settings.port": 5501
+=======
+    "window.zoomLevel": -1,
+    "window.zoomPerWindow": false
+>>>>>>> f7d8a66fe7d38b4dea49d94708713cbd6214a00a
 }
