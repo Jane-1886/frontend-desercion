@@ -76,7 +76,7 @@ const ListadoFichas = ({ setVista }) => {
   className="seleccionar-boton"
   onClick={() => {
     console.log('➡️ Navegando a listaAprendices con ficha:', ficha);
-    setVista('listaAprendices', { fichaId: ficha });
+    setVista('listaAprendices', { fichaId: ficha,  modo: 'visualizar' });
   }}
 >
   Seleccionar

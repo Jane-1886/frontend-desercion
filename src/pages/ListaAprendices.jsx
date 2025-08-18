@@ -14,6 +14,7 @@ const HISTORIAL_URL = (aprendizId, fichaId) =>
     fichaId
   )}`;
 
+// ✅ ÚNICA definición del componente, con 'modo' por defecto = "visualizar"
 export default function ListaAprendices({ setVista, fichaId, modo = "visualizar" }) {
   const [busqueda, setBusqueda] = useState("");
   const [aprendices, setAprendices] = useState([]);
@@ -21,9 +22,11 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
   const [aprendizSeleccionado, setAprendizSeleccionado] = useState(null);
   const [historial, setHistorial] = useState([]);
   const [cargandoHistorial, setCargandoHistorial] = useState(false);
+
+  // Derivado del 'modo' para mostrar/ocultar funciones de reportes
   const esModoReportes = modo === "reportes";
 
-  // Carga de aprendices por ficha (si ya tienes endpoint real, úsalo aquí)
+  // Carga de aprendices por ficha (usa tu endpoint real cuando lo tengas listo)
   useEffect(() => {
     let cancel = false;
 
@@ -53,7 +56,7 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
             row?.nombre ??
             row?.Nombre ??
             [row?.nombres, row?.apellidos].filter(Boolean).join(" ").trim();
-        const instructor = row?.instructor ?? row?.Instructor ?? "Sin instructor";
+          const instructor = row?.instructor ?? row?.Instructor ?? "Sin instructor";
           return { ...row, id: String(id), nombre: nombre || "(Sin nombre)", instructor };
         });
 
@@ -64,10 +67,13 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
       }
     })();
 
+    console.log("📌 Modo recibido:", modo);
+    console.log("📌 Ficha ID recibido:", fichaId);
+
     return () => {
       cancel = true;
     };
-  }, [fichaId]);
+  }, [fichaId, modo]);
 
   // Buscar por nombre
   const filtrar = (lista, term) => {
@@ -76,7 +82,7 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
     return lista.filter((a) => (a?.nombre || "").toLowerCase().includes(t));
   };
 
-  // Abrir modal y cargar historial desde el backend
+  // Abrir modal y cargar historial desde el backend (solo en modo reportes)
   const abrirModalHistorial = async (aprendiz) => {
     if (!esModoReportes) return; // seguridad: solo en modo reportes
     setAprendizSeleccionado(aprendiz);
@@ -192,7 +198,10 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
         <div className="form-container derecha">
           {/* Botón fijo para regresar */}
           {typeof setVista === "function" && (
-            <button className="volver-btn-fijo" onClick={() => setVista("listadoFichasReportes")}>
+            <button
+              className="volver-btn-fijo"
+              onClick={() => setVista(esModoReportes ? "listadoFichasReportes" : "listadoFichas")}
+            >
               ⬅ Volver
             </button>
           )}
@@ -310,7 +319,11 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
             </div>
 
             <div className="acciones-modal">
-              <button className="btn" onClick={generarPDF} disabled={cargandoHistorial || historial.length === 0}>
+              <button
+                className="btn"
+                onClick={generarPDF}
+                disabled={cargandoHistorial || historial.length === 0}
+              >
                 Descargar PDF
               </button>
               <button className="btn btn-secundario" onClick={cerrarModal}>
