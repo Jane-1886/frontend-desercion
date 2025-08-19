@@ -60,16 +60,18 @@ const PaginaPrincipalCoordinacion = ({ setVista }) => {
   Reporte general
 </button>
 
-   <button className="btn btn-ancho btn-ajustado" id="btn-roles">
-  Creación de roles
+   <button className="boton" onClick={() => setVista("crearUsuario2")}>
+  Crear usuario
 </button>
+
 
   </div>
 
   <div className="fila-botones">
-    <button className="btn btn-centrado" id="btn-desactivar">
-      Desactivar usuarios y fichas
-    </button>
+    <button className="boton" onClick={() => setVista("desactivacion")}>
+  Desactivar fichas y usuarios
+</button>
+
   </div>
 
   <div className="fila-botones">

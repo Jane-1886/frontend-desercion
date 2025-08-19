@@ -15,6 +15,7 @@ import Notificaciones from "./pages/Notificaciones";
 import ListadoFichasReportes from "./pages/ListadoFichasReportes";
 import Desactivacion from "./pages/Desactivacion";
 import ListadoFichasDesactivar from "./pages/ListadoFichasDesactivar";
+import DesactivarUsuario from "./pages/DesactivarUsuario";
 
 function App() {
   const [vista, setVista] = useState({ vista: "login" });
@@ -82,6 +83,8 @@ function App() {
       {vista.vista === "listadoFichasDesactivar" && (
         <ListadoFichasDesactivar setVista={cambiarVista} />
       )}
+      {vista.vista === "desactivarUsuario" && <DesactivarUsuario setVista={cambiarVista} />}
+
     </>
   );
 }
