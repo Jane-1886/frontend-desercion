@@ -189,7 +189,7 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
             </div>
           </div>
           <div className="botones-container">
-            <button className="boton btn">Notificaciones</button>
+            
             <button className="boton btn">¿Necesitas ayuda?</button>
           </div>
         </div>

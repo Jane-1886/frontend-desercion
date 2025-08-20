@@ -18,26 +18,15 @@ const Desactivacion = ({ setVista }) => {
           <img src={logoSena} alt="Logo SENA" className="imagen-header" />
 
           <div className="busqueda-container">
-            <div className="busqueda">
-              <input type="text" placeholder="Buscar" />
-              <img src={lupaIcono} alt="Buscar" className="icono-lupa" />
-            </div>
+            
           </div>
 
           <div className="botones-container">
-            <button className="boton" onClick={() => setVista("visualizarFichasReporte")}>
-              Visualizar listados
-            </button>
-            <button className="boton" onClick={() => setVista("reporteGeneral")}>
-              Reporte general
-            </button>
-            <button className="boton" onClick={() => setVista("desactivacion")}>
-              Desactivación
-            </button>
-            <button className="boton" onClick={() => setVista("notificaciones")}>
-              Notificaciones
-            </button>
-            <button className="boton" onClick={() => setVista("ayuda")}>
+            
+            
+            
+            
+         <button className="boton" onClick={() => setVista("ayuda")}>
               ¿Necesitas ayuda?
             </button>
           </div>
@@ -57,7 +46,12 @@ const Desactivacion = ({ setVista }) => {
             <div className="espaciado-boton">
               <div className="boton-con-imagen">
                 <img src={personOff} alt="Desactivar usuario" className="imagen-boton" />
-                <button className="boton-desactivar">Desactivar usuario</button>
+                <button
+              className="btn"
+              onClick={() => setVista("desactivarUsuario")} // <- aquí navega a DesactivarUsuario
+            >
+              Desactivar usuarios
+            </button>
               </div>
               <div className="boton-con-imagen">
                 <img src={folderOff} alt="Desactivar ficha" className="imagen-boton" />
@@ -74,7 +68,13 @@ const Desactivacion = ({ setVista }) => {
             <div className="espaciado-boton">
               <div className="boton-con-imagen">
                 <img src={personCheck} alt="Activar usuario" className="imagen-boton" />
-                <button className="boton-activar">Activar usuario</button>
+               <button
+  className="boton-activar"
+  onClick={() => setVista("listadoInstructoresActivar")}
+>
+  Activar usuario
+</button>
+
               </div>
               <div className="boton-con-imagen">
                 <img src={folderOpen} alt="Activar ficha" className="imagen-boton" />

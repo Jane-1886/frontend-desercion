@@ -12,16 +12,12 @@ const Notificaciones = ({ setVista }) => {
       <div className="form-container izquierda navegacion">
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
         <div className="busqueda-container">
-          <div className="busqueda">
-            <input type="text" placeholder="Buscar" />
-            <img src={lupaIcono} alt="Buscar" className="icono-lupa" />
-          </div>
+
         </div>
         <div className="botones-container">
-          <button className="boton" onClick={() => setVista("visualizarFichasReporte")}>Visualizar listados</button>
-          <button className="boton" onClick={() => setVista("reporteGeneral")}>Reporte general</button>
-          <button className="boton" onClick={() => setVista("listadoFichas")}>Desactivacion</button>
-          <button className="boton">Notificaciones</button>
+          
+          
+          
           <button className="boton">¿Necesitas ayuda?</button>
         </div>
       </div>

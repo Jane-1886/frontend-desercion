@@ -40,15 +40,7 @@ const ReporteGeneral = ({ setVista }) => {
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
 
         <div className="busqueda-container">
-          <div className="busqueda">
-            <input
-              type="text"
-              placeholder="Buscar"
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
-            <img src={lupaIcono} alt="Buscar" className="icono-lupa" />
-          </div>
+          
         </div>
 
         <div className="botones-container">

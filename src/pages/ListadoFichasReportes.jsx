@@ -31,7 +31,7 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
     f.toString().includes(searchTerm.trim())
   );
 
-  const botonesIzquierda = ['Notificaciones', '¿Necesitas ayuda?'].filter((op) =>
+  const botonesIzquierda = [ '¿Necesitas ayuda?'].filter((op) =>
     op.toLowerCase().includes(busquedaIzquierda)
   );
 

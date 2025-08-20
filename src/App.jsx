@@ -16,6 +16,7 @@ import ListadoFichasReportes from "./pages/ListadoFichasReportes";
 import Desactivacion from "./pages/Desactivacion";
 import ListadoFichasDesactivar from "./pages/ListadoFichasDesactivar";
 import DesactivarUsuario from "./pages/DesactivarUsuario";
+import ListadoInstructoresActivar from "./pages/ListadoInstructoresActivar";
 
 function App() {
   const [vista, setVista] = useState({ vista: "login" });
@@ -29,7 +30,7 @@ function App() {
     }
   };
 
-  // Des-anidador defensivo
+  // Des-anidador defensivo: si por error llega { vista: { vista: "x" } } lo corrige
   useEffect(() => {
     if (
       vista &&
@@ -40,11 +41,6 @@ function App() {
       setVista(vista.vista);
     }
   }, [vista]);
-
-  // (Opcional) Guards por rol:
-  // const rol = Number(localStorage.getItem("rol")); // 2=Coordinador, 3=Admin (ajusta si difiere)
-  // const puedeCrearCoordinador = rol === 3;          // p.ej. solo Admin
-  // const puedeVincularUsuarios = rol === 2 || rol === 3;
 
   return (
     <>
@@ -62,29 +58,52 @@ function App() {
         // Guard ejemplo: {puedeVincularUsuarios ? <CrearUsuario2 .../> : <NoAutorizado .../>}
       )}
 
-      {vista.vista === "menu" && <PaginaPrincipalCoordinacion setVista={cambiarVista} />}
+      {vista.vista === "menu" && (
+        <PaginaPrincipalCoordinacion setVista={cambiarVista} />
+      )}
 
-      {vista.vista === "listadoFichas" && <ListadoFichas setVista={cambiarVista} />}
+      {vista.vista === "listadoFichas" && (
+        <ListadoFichas setVista={cambiarVista} />
+      )}
 
-      {vista.vista === "reporteGeneral" && <ReporteGeneral setVista={cambiarVista} />}
+      {vista.vista === "reporteGeneral" && (
+        <ReporteGeneral setVista={cambiarVista} />
+      )}
 
       {vista.vista === "listadoFichasReportes" && (
-        <ListadoFichasReportes setVista={cambiarVista} fichaId={vista.fichaId} />
+        <ListadoFichasReportes
+          setVista={cambiarVista}
+          fichaId={vista.fichaId}
+        />
       )}
 
       {vista.vista === "listaAprendices" && (
-        <ListaAprendices setVista={cambiarVista} fichaId={vista.fichaId} modo={vista.modo} />
+        <ListaAprendices
+          setVista={cambiarVista}
+          fichaId={vista.fichaId}
+          modo={vista.modo}
+        />
       )}
 
-      {vista.vista === "notificaciones" && <Notificaciones setVista={cambiarVista} />}
+      {vista.vista === "notificaciones" && (
+        <Notificaciones setVista={cambiarVista} />
+      )}
 
-      {vista.vista === "desactivacion" && <Desactivacion setVista={cambiarVista} />}
+      {vista.vista === "desactivacion" && (
+        <Desactivacion setVista={cambiarVista} />
+      )}
+
+      {vista.vista === "listadoInstructoresActivar" && (
+        <ListadoInstructoresActivar setVista={cambiarVista} />
+      )}
 
       {vista.vista === "listadoFichasDesactivar" && (
         <ListadoFichasDesactivar setVista={cambiarVista} />
       )}
-      {vista.vista === "desactivarUsuario" && <DesactivarUsuario setVista={cambiarVista} />}
 
+      {vista.vista === "desactivarUsuario" && (
+        <DesactivarUsuario setVista={cambiarVista} />
+      )}
     </>
   );
 }

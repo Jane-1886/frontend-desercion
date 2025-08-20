@@ -16,7 +16,7 @@ const ListadoFichas = ({ setVista }) => {
     ficha.toString().includes(searchTerm)
   );
 
-  const botonesIzquierda = ['Notificaciones', '¿Necesitas ayuda?'].filter(opcion =>
+  const botonesIzquierda = [ '¿Necesitas ayuda?'].filter(opcion =>
     opcion.toLowerCase().includes(busquedaIzquierda)
   );
 
@@ -25,20 +25,7 @@ const ListadoFichas = ({ setVista }) => {
       {/* COLUMNA IZQUIERDA */}
       <div className="form-container izquierda navegacion">
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
-        <div className="busqueda-container">
-          <div className="busqueda">
-            <input
-              type="text"
-              placeholder="Buscar"
-              className="input-busqueda-fichas"
-              value={busquedaIzquierda}
-              onChange={(e) => setBusquedaIzquierda(e.target.value.toLowerCase())}
-            />
-            <div className="icono-lupa">
-              <img src={lupaIcono} alt="Icono de lupa" />
-            </div>
-          </div>
-        </div>
+        
         <div className="botones-container">
           {botonesIzquierda.map((opcion, index) => (
             <button className="boton" key={index}>
