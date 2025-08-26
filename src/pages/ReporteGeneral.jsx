@@ -57,9 +57,7 @@ const ReporteGeneral = ({ setVista }) => {
             Notificaciones
           </button>
 
-          <button className="boton" onClick={() => setVista("menuAyuda")}>
-            ¿Necesitas ayuda?
-          </button>
+         
         </div>
       </div>
 

@@ -17,6 +17,10 @@ import Desactivacion from "./pages/Desactivacion";
 import ListadoFichasDesactivar from "./pages/ListadoFichasDesactivar";
 import DesactivarUsuario from "./pages/DesactivarUsuario";
 import ListadoInstructoresActivar from "./pages/ListadoInstructoresActivar";
+import ListadoFichasActivar from "./pages/ListadoFichasActivar";
+
+
+
 
 function App() {
   const [vista, setVista] = useState({ vista: "login" });
@@ -100,6 +104,13 @@ function App() {
       {vista.vista === "listadoFichasDesactivar" && (
         <ListadoFichasDesactivar setVista={cambiarVista} />
       )}
+
+      {vista.vista === "listadoFichasActivar" && (
+     <ListadoFichasActivar setVista={cambiarVista} />
+      )}
+
+     
+
 
       {vista.vista === "desactivarUsuario" && (
         <DesactivarUsuario setVista={cambiarVista} />

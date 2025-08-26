@@ -52,7 +52,7 @@ const [modalAbierto, setModalAbierto] = useState(false);
           </div>
           <div className="botones-container">
             <button className="boton" onClick={() => setVista("notificaciones")}>Notificaciones</button>
-            <button className="boton" onClick={() => setVista("ayuda")}>¿Necesitas ayuda?</button>
+            
           </div>
         </div>
 

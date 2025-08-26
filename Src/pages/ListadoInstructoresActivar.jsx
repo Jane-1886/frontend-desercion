@@ -16,7 +16,7 @@ const ListadoInstructoresActivar = ({ setVista }) => {
 
   const botonesIzquierda = useMemo(
     () =>
-      ["Notificaciones", "¿Necesitas ayuda?"].filter((txt) =>
+      ["Notificaciones"].filter((txt) =>
         txt.toLowerCase().includes(busquedaIzquierda.trim().toLowerCase())
       ),
     [busquedaIzquierda]

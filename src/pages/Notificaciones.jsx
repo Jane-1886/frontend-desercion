@@ -14,12 +14,7 @@ const Notificaciones = ({ setVista }) => {
         <div className="busqueda-container">
 
         </div>
-        <div className="botones-container">
-          
-          
-          
-          <button className="boton">¿Necesitas ayuda?</button>
-        </div>
+        
       </div>
 
       <div className="form-container derecha">

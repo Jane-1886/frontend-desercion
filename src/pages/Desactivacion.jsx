@@ -21,15 +21,7 @@ const Desactivacion = ({ setVista }) => {
             
           </div>
 
-          <div className="botones-container">
-            
-            
-            
-            
-         <button className="boton" onClick={() => setVista("ayuda")}>
-              ¿Necesitas ayuda?
-            </button>
-          </div>
+          
         </div>
 
         {/* Columna derecha */}
@@ -78,7 +70,13 @@ const Desactivacion = ({ setVista }) => {
               </div>
               <div className="boton-con-imagen">
                 <img src={folderOpen} alt="Activar ficha" className="imagen-boton" />
-                <button className="boton-activar">Activar ficha</button>
+                <button
+  className="boton-activar"
+  onClick={() => setVista("listadoFichasActivar")}
+>
+  Activar ficha
+</button>
+
               </div>
             </div>
           </div>

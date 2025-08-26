@@ -1,3 +1,4 @@
+// src/pages/ListadoFichasReportes.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/ListadoFichasReportes.css';
 import logoSena from '/Img/logoSena.png';
@@ -7,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 // Usa .env: VITE_API_URL=http://localhost:3000 (ajústalo a tu backend)
-const API_BASE = import.meta.env.VITE_API_URL || "";
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
   useEffect(() => {
@@ -15,7 +16,6 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
   }, [fichaId]);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [busquedaIzquierda, setBusquedaIzquierda] = useState('');
   const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
   const [mostrarModalFicha, setMostrarModalFicha] = useState(false);
 
@@ -26,13 +26,10 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
 
   const fetchCtrlRef = useRef(null);
 
+  // Fichas dummy (cámbialas por las reales si hace falta)
   const fichas = [2617001, 2617543, 2618129, 2614968, 2612387, 2615014, 2618902];
   const fichasFiltradas = fichas.filter((f) =>
     f.toString().includes(searchTerm.trim())
-  );
-
-  const botonesIzquierda = [ '¿Necesitas ayuda?'].filter((op) =>
-    op.toLowerCase().includes(busquedaIzquierda)
   );
 
   const abrirModal = async (ficha) => {
@@ -59,12 +56,17 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
         console.error(err);
         // Fallback mock para visualizar mientras conectas backend
         setReporte({
-          resumen: { totalSesiones: 12, presentes: 10, ausentes: 2, porcentajeAsistencia: 83.3 },
+          resumen: {
+            totalSesiones: 12,
+            presentes: 10,
+            ausentes: 2,
+            porcentajeAsistencia: 83.3
+          },
           detalle: [
             { fecha: '2025-08-01', presentes: 15, ausentes: 5, porcentaje: '75%' },
             { fecha: '2025-08-05', presentes: 18, ausentes: 2, porcentaje: '90%' },
-            { fecha: '2025-08-08', presentes: 19, ausentes: 1, porcentaje: '95%' },
-          ],
+            { fecha: '2025-08-08', presentes: 19, ausentes: 1, porcentaje: '95%' }
+          ]
         });
         setErrorReporte('No se pudo cargar desde el servidor. Mostrando datos de ejemplo.');
       }
@@ -74,7 +76,6 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
   };
 
   const cerrarModal = () => {
-    // aborta fetch en curso si cierras
     if (fetchCtrlRef.current) fetchCtrlRef.current.abort();
     setMostrarModalFicha(false);
     setFichaSeleccionada(null);
@@ -121,32 +122,10 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
   };
 
   return (
-    <div className="layout-listado-fichas-reportes">
-      {/* IZQUIERDA */}
+    <div className="layout-listado-fichas-reportes fondo-listados">
+      {/* IZQUIERDA (solo logo) */}
       <div className="form-container-reportes izquierda">
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
-        <div className="busqueda-container">
-          <div className="busqueda">
-            <input
-              type="text"
-              placeholder="Buscar"
-              className="input-busqueda-fichas"
-              value={busquedaIzquierda}
-              onChange={(e) => setBusquedaIzquierda(e.target.value.toLowerCase())}
-            />
-            <div className="icono-lupa">
-              <img src={lupaIcono} alt="Icono de lupa" />
-            </div>
-          </div>
-        </div>
-
-        <div className="botones-container">
-          {botonesIzquierda.map((opcion, index) => (
-            <button className="boton" key={index}>
-              {opcion}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* DERECHA */}
@@ -156,7 +135,10 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
           <span style={{ color: '#39A900' }}>fichas:</span>
         </div>
 
-        <div className="busqueda-fichas" style={{ position: 'relative', width: '100%', maxWidth: '1000px' }}>
+        <div
+          className="busqueda-fichas"
+          style={{ position: 'relative', width: '100%', maxWidth: '1000px' }}
+        >
           <input
             type="text"
             placeholder="Buscar ficha"
@@ -179,14 +161,17 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
           </button>
         </div>
 
-        <div className="linea"></div>
+        <div className="linea" />
 
         <div className="sub-div">
           {fichasFiltradas.map((ficha) => (
             <div key={ficha} className="sub-item">
               <img src={folderIcon} alt="Icono Ficha" className="icono-sub-item" />
               Ficha - {ficha}
-              <button className="seleccionar-boton" onClick={() => abrirModal(ficha)}>
+              <button
+                className="seleccionar-boton"
+                onClick={() => abrirModal(ficha)}
+              >
                 Seleccionar
               </button>
             </div>
@@ -209,7 +194,6 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
             </p>
 
             {loadingReporte && <p className="estado-cargando">Cargando reporte...</p>}
-
             {errorReporte && <p className="estado-error">{errorReporte}</p>}
 
             {!loadingReporte && reporte && (
@@ -280,3 +264,4 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
 };
 
 export default ListadoFichasReportes;
+

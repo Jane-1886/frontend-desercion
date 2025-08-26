@@ -1,33 +1,5 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Work Sans", sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  background-color: #f0f0f0;
-  background-image: url('/Img/BackgroundsNormal.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-}
 
-/* CONTENEDOR PRINCIPAL */
-.layout-listado-fichas-reportes {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-  width: 100vw;
-  padding: 40px;
-  gap: 30px;
-  box-sizing: border-box;
-}
-
-/* CONTENEDORES IZQUIERDA Y DERECHA */
-.form-container-reportes {
+.form-container {
   background: white;
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -36,16 +8,20 @@ body {
   flex-direction: column;
 }
 
-.form-container-reportes.izquierda {
+/* Columna izquierda genérica */
+.izquierda {
   width: 14%;
   height: 80%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: white;
   margin: 0 20px;
 }
 
-.form-container-reportes.derecha {
+/* Columna derecha genérica */
+.derecha {
   width: 58%;
   height: 80%;
   padding: 15px;
@@ -56,7 +32,6 @@ body {
   align-items: center;
 }
 
-/* TÍTULO Y BÚSQUEDA */
 .titulo {
   color: #00304D;
   font-size: 32px;
@@ -69,14 +44,13 @@ body {
   width: 100%;
   height: 2px;
   background-color: #00304D;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
 
 .busqueda-fichas {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  margin: 10px 0 20px 0;
 }
 
 .input-busqueda-fichas {
@@ -92,20 +66,6 @@ body {
   font-weight: bold;
 }
 
-.icono-lupa {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-/* RESULTADOS */
 .sub-div {
   display: flex;
   flex-direction: column;
@@ -148,18 +108,20 @@ body {
 .sub-div::-webkit-scrollbar-thumb {
   background: #00304D;
   border-radius: 10px;
+  height: 30px;
 }
 .sub-div::-webkit-scrollbar-thumb:hover {
   background: #39A900;
 }
 
-/* BOTONES LATERALES */
-.botones-container {
+label { margin-bottom: 5px; font-weight: bold; }
+
+.pie-de-pagina {
+  color: #aaa;
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
   margin-top: auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .boton {
@@ -172,23 +134,22 @@ body {
   text-align: center;
   margin: 5px 0;
   width: calc(100% - 10px);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   font-weight: 700;
   font-size: 18px;
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .boton:hover {
   background-color: #39A900;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* BUSCADOR LATERAL */
+/* Buscador en la izquierda */
 .izquierda .busqueda {
   position: relative;
   width: 100%;
   margin-bottom: 20px;
 }
-
 .izquierda .busqueda input {
   padding: 15px 30px;
   border: 1px solid #999;
@@ -200,12 +161,31 @@ body {
   width: calc(100% - 60px);
   font-size: 18px;
   font-weight: bold;
+  margin-right: 10px;
 }
-
 .izquierda .busqueda input::placeholder {
   color: #aaa;
   font-size: 18px;
   font-weight: bold;
+}
+.izquierda .icono-lupa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.izquierda .icono-lupa img {
+  width: 30px;
+  height: 30px;
+}
+
+.botones-container {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .imagen-header {
@@ -214,7 +194,7 @@ body {
   margin-bottom: 20px;
 }
 
-/* BOTÓN SELECCIONAR */
+/* Botón seleccionar */
 .seleccionar-boton {
   padding: 16px 30px;
   background-color: #00304D;
@@ -232,24 +212,18 @@ body {
   justify-content: center;
   align-items: center;
 }
+.seleccionar-boton:hover { background-color: #39A900; }
 
-.seleccionar-boton:hover {
-  background-color: #39A900;
-}
-
-/* MODAL */
+/* Modal genérico */
 .modal {
   display: none;
   position: fixed;
   z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0,0,0,0.5);
 }
-
 .modal-content {
   background-color: white;
   margin: 15% auto;
@@ -263,20 +237,18 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
+.modal img { max-width: 100%; height: auto; margin-bottom: 10px; }
 .modal p {
   color: #00304D;
   font-size: 24px;
   font-weight: bold;
   margin: 0;
 }
-
 .modal-buttons {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
-
 .modal-button {
   background-color: #00304D;
   color: white;
@@ -288,60 +260,65 @@ body {
   font-weight: bold;
   border-radius: 12px;
 }
+.modal-button:hover { background-color: #39A900; }
 
-.modal-button:hover {
-  background-color: #39A900;
-}
-
-/* BOTÓN SALIR */
-.flecha-container {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-}
-
-.boton-flecha {
-  background-color: #00304D;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 12px;
+#confirmationModal p { margin: 10px 0; }
+.modal p.confirmation-title {
+  font-size: 26px;
   font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
+  color: black;
+  margin: 0;
+}
+.modal p.confirmation-subtitle {
+  font-size: 22px;
+  color: #00304D;
+  margin: 0;
+}
+.close-button { margin-top: 20px; }
+
+/* Fondo sólo para listados (no afecta Login) */
+.fondo-listados {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #f0f0f0;
+  background-image: url('/Img/BackgroundsNormal.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-.boton-flecha:hover {
-  background-color: #39A900;
+/* Layout estable para REPORTES */
+.layout-listado-fichas-reportes {
+  display: grid;
+  grid-template-columns: 440px minmax(0, 1fr);
+  gap: 30px;
+  padding: 40px;
+  min-height: 100vh;
+  width: 100%;
+  align-items: start;
+  justify-content: start;
+  align-items: start;
 }
-
-/* PIE DE PÁGINA */
-.pie-de-pagina {
-  color: #aaa;
-  font-size: 24px;
-  font-weight: 800;
-  text-align: center;
-  margin-top: auto;
+.form-container-reportes { position: relative; }
+.form-container-reportes.izquierda {
+  width: auto !important;
+  margin: 0 !important;
+  overflow: auto;
+  z-index: 1;
 }
-/* Modal + estados */
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:9999; }
-.modal-content { background:#fff; width:90%; max-width:600px; padding:20px; border-radius:12px; text-align:center; border:1px solid #888; display:flex; flex-direction:column; align-items:center; }
-.modal-title { color:#00304D; font-size:20px; font-weight:700; margin:6px 0 12px; }
-.modal-buttons { display:flex; gap:16px; justify-content:center; margin-top:16px; }
-.modal-button { background:#00304D; color:#fff; border:none; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer; transition:background-color .2s; }
-.modal-button:hover { background:#39A900; }
-
-.estado-cargando { color:#00304D; font-weight:700; }
-.estado-error { color:#b00020; font-weight:700; }
-.estado-vacio { color:#aaa; font-weight:bold; margin-top:20px; text-align:center; }
-
-/* Resumen + tabla */
-.preview-resumen { display:grid; grid-template-columns: repeat(2, minmax(160px,1fr)); gap:8px 16px; margin:12px 0 16px; }
-.tabla-wrapper { width:100%; overflow:auto; }
-.tabla-reporte { width:100%; border-collapse:collapse; }
-.tabla-reporte th, .tabla-reporte td { border:1px solid #ddd; padding:8px; text-align:center; }
-.tabla-reporte thead th { background:#00304D; color:#fff; position:sticky; top:0; }
-
-/* Buscador */
-.buscador-ancho { position:relative; width:100%; max-width:1000px; }
-
+.form-container-reportes.derecha {
+  min-width: 0;
+  z-index: 2;
+}
+ .form-container-reportes.izquierda { position: relative; z-index: 1; margin: 0 !important; width: auto !important; }
+.form-container-reportes.derecha   { position: relative; z-index: 2; min-width: 0; }
+/* Lupa en buscador de reportes */
+.layout-listado-fichas-reportes .busqueda-fichas { position: relative; }
+.layout-listado-fichas-reportes .icono-lupa {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: 0; padding: 0;
+}

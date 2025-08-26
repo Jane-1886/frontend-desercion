@@ -1,0 +1,354 @@
+/* Estilo general del body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    background-color: #f0f0f0;
+    background-image: url('/Img/BackgroundsNormal.png');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Estilo general para los contenedores */
+.form-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.izquierda {
+    width: 14%; /* Mantener en 14% */
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    margin: 0 20px; /* Margen del div izquierdo */
+}
+
+.derecha {
+    width: 58%; /* Ajustado a 58% para ser más ancho */
+    height: 80%;
+    padding: 15px;
+    background: white;
+    margin: 40px 20px 0; /* Margen del div derecho */
+    display: flex;
+    flex-direction: column; /* Los sub-divs se alinean verticalmente */
+    align-items: center; /* Centra los sub-divs horizontalmente */
+    gap: 20px; /* Espacio entre los sub-divs */
+    justify-content: flex-start; /* Alinea los sub-divs hacia arriba */
+}
+
+/* Estilo para el título */
+.titulo {
+    color: #00304D;
+    font-size: 32px; 
+    font-weight: 700; 
+    margin-bottom: 10px;
+    text-align: left;  /* Cambié de 'center' a 'left' */
+}
+
+/* Estilo para el subtítulo */
+.subtitulo {
+    color: #00304D;
+    font-size: 24px; /* Tamaño de la fuente del subtítulo */
+    font-weight: bold;
+    margin-top: 0px; /* Reducido el margen superior para que esté más cerca del título */
+    text-align: left; /* Alineación a la izquierda */
+    border-bottom: 4px solid #00304D; /* Línea de 4px de grosor */
+    width: 100%; /* Asegura que la línea tenga el mismo tamaño que el contenedor */
+    margin-bottom: 10px; /* Espacio debajo del subtítulo */
+    padding-bottom: 10px; /* Añadido espacio entre el subtítulo y la línea */
+}
+
+/* Estilo para los sub-divs */
+.sub-div {
+    display: flex; 
+    flex-direction: row; /* Cambié a fila para alinear el contenido horizontalmente */
+    align-items: center; /* Centra el contenido dentro del sub-div */
+    width: 95%; /* Aumenta el ancho de los sub-divs (95% del contenedor) */
+    max-width: 800px; /* Controla el tamaño máximo */
+    padding: 10px; 
+    overflow: hidden;  /* Evita las barras de desplazamiento */
+    border: 1px solid #aaa;  /* Borde de color #aaa */
+    border-radius: 10px;  /* Bordes redondeados */
+    margin: 0 auto; /* Centra cada sub-div */
+    justify-content: space-between; /* Espacia los elementos, dejando el botón a la derecha */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra sutil alrededor de cada sub-div */
+    margin-bottom: 15px; /* Añadido margen inferior para separar los sub-divs */
+}
+
+/* Estilo para el contenedor con barra de desplazamiento */
+.scroll-container {
+    height: 300px; /* Ajustamos la altura para que se muestre la barra de desplazamiento */
+    overflow-y: auto; /* Barra de desplazamiento cuando el contenido se desborda */
+    padding-right: 10px; /* Espacio para la barra de desplazamiento */
+    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
+}
+
+/* Personalización de la barra de desplazamiento */
+.scroll-container::-webkit-scrollbar {
+    width: 16px;  /* Aumenté el ancho de la barra de desplazamiento a 16px */
+}
+
+/* Estilo para el track (parte de la barra donde se desliza el thumb) */
+.scroll-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Color del fondo de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/* Estilo para el thumb (parte que se mueve dentro de la barra) */
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #00304D;  /* Color del thumb cuando está en reposo */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 3px solid #f0f0f0; /* Borde alrededor del thumb */
+}
+
+/* Estilo para el thumb cuando se encuentra en hover */
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #39A900;  /* Color del thumb en hover */
+}
+
+/* Estilo para los párrafos dentro de los sub-divs */
+.sub-div p {
+    color: #00304D;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0; /* Eliminar márgenes adicionales */
+    flex: 1; /* Esto hace que el texto ocupe el espacio disponible */
+}
+
+/* Estilo para el pie de página */
+.pie-de-pagina {
+    color: #aaa;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* Estilo para los botones generales */
+.boton {
+    padding: 15px;
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px 0;
+    width: calc(100% - 10px);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.boton:hover {
+    background-color: #39A900; 
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el contenedor de búsqueda */
+.busqueda {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Estilo para el input de búsqueda */
+.izquierda .busqueda input {
+    padding: 15px 30px; /* Reducir padding lateral */
+    border: 1px solid #999; 
+    border-radius: 15px; 
+    background-color: white; 
+    color: black; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: block;
+    width: calc(100% - 60px); /* Mantener este valor o ajustarlo ligeramente */
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+/* Estilo para el icono de búsqueda */
+.icono-lupa {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 30px; 
+    pointer-events: none; 
+}
+
+/* Estilo para el texto del placeholder del input */
+.izquierda .busqueda input::placeholder {
+    color: #aaa; 
+    font-size: 18px; 
+    font-weight: bold; 
+}
+
+/* Estilo para los botones */
+.botones-container {
+    margin-top: auto; 
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+/* Estilo para la imagen en el encabezado */
+.imagen-header {
+    width: 150px; 
+    height: 150px; 
+    margin-bottom: 20px;
+}
+
+/* Estilo para los botones "Ver" en los sub-divs */
+.boton-ver {
+    padding: 10px 20px;
+    background-color: #00304D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para los botones "Ver" */
+.boton-ver:hover {
+    background-color: #39A900; 
+}
+
+/* Consultas de medios (Media Queries) */
+
+/* Para pantallas grandes */
+@media (max-width: 1200px) {
+    .izquierda {
+        width: 20%;
+    }
+
+    .derecha {
+        width: 60%;
+    }
+}
+
+/* Para pantallas medianas (tablets) */
+@media (max-width: 992px) {
+    .izquierda {
+        width: 30%;
+    }
+
+    .derecha {
+        width: 65%;
+    }
+
+    .titulo {
+        font-size: 28px;
+    }
+
+    .subtitulo {
+        font-size: 20px;
+    }
+
+    .sub-div p {
+        font-size: 18px;
+    }
+}
+
+/* Para pantallas pequeñas (smartphones grandes) */
+@media (max-width: 768px) {
+    .izquierda {
+        width: 40%;
+    }
+
+    .derecha {
+        width: 80%;
+    }
+
+    .boton {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .sub-div p {
+        font-size: 16px;
+    }
+
+    .scroll-container {
+        height: 200px;
+    }
+
+    .imagen-header {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Para pantallas muy pequeñas (smartphones pequeños) */
+@media (max-width: 480px) {
+    .izquierda {
+        width: 50%;
+    }
+
+    .derecha {
+        width: 90%;
+    }
+
+    .titulo {
+        font-size: 24px;
+    }
+
+    .subtitulo {
+        font-size: 18px;
+    }
+
+    .sub-div p {
+        font-size: 14px;
+    }
+
+    .boton {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* Para pantallas ultra pequeñas */
+@media (max-width: 320px) {
+    .izquierda {
+        width: 60%;
+    }
+
+    .derecha {
+        width: 100%;
+    }
+
+    .boton {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .imagen-header {
+        width: 100px;
+        height: 100px;
+    }
+
+    .titulo {
+        font-size: 20px;
+    }
+}

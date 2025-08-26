@@ -176,22 +176,9 @@ export default function ListaAprendices({ setVista, fichaId, modo = "visualizar"
         <div className="form-container izquierda navegacion">
           <img src={logoSena} alt="Logo SENA" className="imagen-header" />
           <div className="busqueda-container">
-            <div className="busqueda">
-              <input
-                type="text"
-                placeholder="Buscar"
-                aria-label="Buscar"
-                className="input-busqueda"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
-              <img src={lupaIcono} alt="Icono de búsqueda" className="icono-lupa" aria-hidden="true" />
-            </div>
+           
           </div>
-          <div className="botones-container">
-            
-            <button className="boton btn">¿Necesitas ayuda?</button>
-          </div>
+          
         </div>
 
         {/* COLUMNA DERECHA */}
