@@ -215,27 +215,35 @@ label { margin-bottom: 5px; font-weight: bold; }
 .seleccionar-boton:hover { background-color: #39A900; }
 
 /* Modal genérico */
+/* --- CAMBIO 1: el modal ya no se oculta siempre --- */
 .modal {
-  display: none;
+  /* antes: display: none;  <-- QUITADO */
   position: fixed;
-  z-index: 1;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  overflow: auto;
+  inset: 0;
+  display: none;           /* por defecto oculto */
+  align-items: center;     /* centrado vertical (al abrir) */
+  justify-content: center; /* centrado horizontal (al abrir) */
+  z-index: 9999;           /* antes 1: quedaba detrás de la derecha */
   background-color: rgba(0,0,0,0.5);
 }
+
+/* Cuando React agrega la clase "open", lo mostramos */
+.modal.open {
+  display: flex;           /* << muestra el modal */
+}
+/* Contenido centrado y responsivo */
 .modal-content {
   background-color: white;
-  margin: 15% auto;
+  width: min(90vw, 800px);
+  max-height: 80vh;
+  overflow: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
-  max-width: 600px;
   text-align: center;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch; /* para que la tabla ocupe el ancho */
 }
 .modal img { max-width: 100%; height: auto; margin-bottom: 10px; }
 .modal p {
@@ -249,18 +257,23 @@ label { margin-bottom: 5px; font-weight: bold; }
   justify-content: center;
   margin-top: 20px;
 }
-.modal-button {
-  background-color: #00304D;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  margin: 0 20px;
-  cursor: pointer;
-  font-size: 18px;
+
+/* Título del modal */
+.modal-title {
+  color: #00304D;
+  font-size: 24px;
   font-weight: bold;
-  border-radius: 12px;
+  margin: 0 0 10px 0;
 }
-.modal-button:hover { background-color: #39A900; }
+
+/* Botonera del modal */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
 
 #confirmationModal p { margin: 10px 0; }
 .modal p.confirmation-title {

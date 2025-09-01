@@ -258,58 +258,64 @@ html, body {
 }
 
 
-/* Estilo para el modal */
+/* --- MODAL: visible solo cuando tiene la clase .open --- */
 .modal {
-    display: none; /* Ocultado por defecto */
-    position: fixed;
-    z-index: 1; /* Asegurarse de que esté encima */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Hacer que se pueda desplazar si el contenido es grande */
-    background-color: rgba(0,0,0,0.4); /* Fondo semitransparente */
+  /* antes: display: none; z-index: 1; */
+  position: fixed;
+  inset: 0;
+  display: none;            /* oculto por defecto */
+  align-items: center;      /* centrado vertical */
+  justify-content: center;  /* centrado horizontal */
+  background-color: rgba(0,0,0,0.5);
+  z-index: 9999;            /* por encima de todo */
+}
+
+.modal.open {
+  display: flex;            /* se muestra al abrir */
 }
 
 /* Contenido del modal */
 .modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 10px; /* Bordes redondeados */
-    width: 40%; /* Puedes ajustar el tamaño */
-    text-align: center;
-    position: relative; /* Para el botón de cerrar */
+  background-color: white;
+  width: min(90vw, 600px);
+  max-height: 80vh;
+  overflow: auto;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-/* Estilo para el texto dentro de los modales */
+/* Texto dentro del modal */
 .modal-content p {
-    color: #00304D; /* Color del texto */
-    font-size: 24px; /* Tamaño de la fuente más grande */
-    font-weight: bold; /* Fuente más gruesa */
+  color: #00304D;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 12px 0;
 }
 
-/* Contenedor para los botones dentro del modal */
+/* Contenedor y botones del modal */
 .botones-modal {
-    display: flex;
-    flex-direction: column; /* Colocar los botones en columna */
-    gap: 10px; /* Espacio entre los botones */
-    align-items: center; /* Centrar los botones */
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
-/* Estilo del botón dentro del modal */
 .boton-generar-modal {
-    background-color: #00304D; /* Color base del botón */
-    color: white;
-    padding: 12px 20px; /* Reducir el padding para que el botón sea menos ancho */
-    font-size: 18px; /* Mantener el tamaño de la fuente */
-    font-weight: bold; /* Haciendo la letra más gruesa */
-    border: none;
-    border-radius: 10px; /* Bordes redondeados */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Transición suave para el hover */
-    width: auto; /* Usar el tamaño mínimo necesario */
+  background-color: #00304D;
+  color: white;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
 
 /* Efecto hover para el botón "Generar reporte" */
 .boton-generar-modal:hover {

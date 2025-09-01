@@ -1,6 +1,5 @@
-
 // src/pages/ReporteGeneral.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Reporte_general.css";
 import logoSena from "/Img/logoSena.png";
 import folderIcon from "/Img/folder_icon.png";
@@ -26,7 +25,16 @@ const ReporteGeneral = ({ setVista }) => {
     setModalAbierto(null);
   };
 
-  // ✅ Navega a ListaAprendices con la forma que espera App:
+  // Cerrar con tecla ESC
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") cerrarModal();
+    };
+    if (modalAbierto) window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [modalAbierto]);
+
+  // Navega a ListaAprendices con la forma que espera App:
   // setVista('listaAprendices', { fichaId, modo: 'reportes' })
   const generarReporte = (ficha) => {
     setVista("listaAprendices", { fichaId: ficha, modo: "reportes" });
@@ -40,7 +48,7 @@ const ReporteGeneral = ({ setVista }) => {
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
 
         <div className="busqueda-container">
-          
+          {/* (opcional) buscador aquí */}
         </div>
 
         <div className="botones-container">
@@ -48,7 +56,7 @@ const ReporteGeneral = ({ setVista }) => {
             Visualizar listados
           </button>
 
-          {/* ✅ Botón que pediste: lleva a la vista Desactivacion.jsx */}
+          {/* Lleva a la vista Desactivacion.jsx */}
           <button className="boton" onClick={() => setVista("desactivacion")}>
             Desactivar usuarios y fichas
           </button>
@@ -56,8 +64,6 @@ const ReporteGeneral = ({ setVista }) => {
           <button className="boton" onClick={() => setVista("notificaciones")}>
             Notificaciones
           </button>
-
-         
         </div>
       </div>
 
@@ -80,19 +86,13 @@ const ReporteGeneral = ({ setVista }) => {
               <img src={folderIcon} className="imagen-ficha" alt={`Ficha ${index}`} />
               <span className="texto-ficha">Ficha - {ficha}</span>
 
-              {/* Puedes abrir el modal de confirmación... */}
-              <button className="boton-ficha" onClick={() => abrirModal(ficha)}>
-                Seleccionar
-              </button>
-
-              {/* ...o navegar directo sin modal:
               <button
+                type="button"
                 className="boton-ficha"
-                onClick={() => setVista("listaAprendices", { fichaId: ficha, modo: "reportes" })}
+                onClick={() => abrirModal(ficha)}
               >
                 Seleccionar
               </button>
-              */}
             </div>
           ))}
         </div>
@@ -108,26 +108,42 @@ const ReporteGeneral = ({ setVista }) => {
       </div>
 
       {/* MODAL DE CONFIRMACIÓN PARA GENERAR REPORTE */}
-      {modalAbierto && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>
-              ¿Deseas generar el <strong>reporte de asistencia</strong> de los aprendices de la
-              ficha <strong>{modalAbierto}</strong>?
-            </p>
-            <div className="botones-modal">
-              <button className="boton-generar-modal" onClick={() => generarReporte(modalAbierto)}>
-                Generar reporte
-              </button>
-              <button className="boton-generar-modal cerrar" onClick={cerrarModal}>
-                Cancelar
-              </button>
-            </div>
+      <div
+        className={`modal ${modalAbierto ? "open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-titulo-reporte"
+        onClick={(e) => {
+          // cerrar al hacer click en el fondo
+          if (e.target.classList.contains("modal")) cerrarModal();
+        }}
+      >
+        <div className="modal-content">
+          <p id="modal-titulo-reporte">
+            ¿Deseas generar el <strong>reporte de asistencia</strong> de los aprendices de la
+            ficha <strong>{modalAbierto ?? ""}</strong>?
+          </p>
+          <div className="botones-modal">
+            <button
+              type="button"
+              className="boton-generar-modal"
+              onClick={() => generarReporte(modalAbierto)}
+            >
+              Generar reporte
+            </button>
+            <button
+              type="button"
+              className="boton-generar-modal cerrar"
+              onClick={cerrarModal}
+            >
+              Cancelar
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 export default ReporteGeneral;
+

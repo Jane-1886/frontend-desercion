@@ -26,6 +26,15 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
 
   const fetchCtrlRef = useRef(null);
 
+  // Cerrar modal con tecla ESC
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') cerrarModal();
+    };
+    if (mostrarModalFicha) window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [mostrarModalFicha]);
+
   // Fichas dummy (cámbialas por las reales si hace falta)
   const fichas = [2617001, 2617543, 2618129, 2614968, 2612387, 2615014, 2618902];
   const fichasFiltradas = fichas.filter((f) =>
@@ -112,9 +121,6 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
       a.click();
       a.remove();
       URL.revokeObjectURL(blobUrl);
-
-      // si prefieres abrir en pestaña nueva:
-      // window.open(blobUrl, '_blank');
     } catch (err) {
       console.error(err);
       alert('No se pudo generar/descargar el PDF.');
@@ -147,6 +153,7 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
+            type="button"
             className="icono-lupa"
             onClick={() => {
               if (searchTerm.trim() === '') {
@@ -169,6 +176,7 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
               <img src={folderIcon} alt="Icono Ficha" className="icono-sub-item" />
               Ficha - {ficha}
               <button
+                type="button"
                 className="seleccionar-boton"
                 onClick={() => abrirModal(ficha)}
               >
@@ -186,72 +194,80 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
       </div>
 
       {/* MODAL: PREVIEW + GENERAR PDF */}
-      {mostrarModalFicha && (
-        <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-confirmacion-titulo">
-          <div className="modal-content">
-            <p id="modal-confirmacion-titulo" className="modal-title">
-              Reporte de asistencia — Ficha {fichaSeleccionada}
-            </p>
+      <div
+        className={`modal ${mostrarModalFicha ? 'open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-confirmacion-titulo"
+        onClick={(e) => {
+          // cerrar haciendo click en el backdrop
+          if (e.target.classList.contains('modal')) cerrarModal();
+        }}
+      >
+        <div className="modal-content">
+          <p id="modal-confirmacion-titulo" className="modal-title">
+            {fichaSeleccionada ? `Reporte de asistencia — Ficha ${fichaSeleccionada}` : 'Reporte'}
+          </p>
 
-            {loadingReporte && <p className="estado-cargando">Cargando reporte...</p>}
-            {errorReporte && <p className="estado-error">{errorReporte}</p>}
+          {loadingReporte && <p className="estado-cargando">Cargando reporte...</p>}
+          {errorReporte && <p className="estado-error">{errorReporte}</p>}
 
-            {!loadingReporte && reporte && (
-              <div className="preview-reporte">
-                {reporte.resumen && (
-                  <div className="preview-resumen">
-                    <div><strong>Total sesiones:</strong> {reporte.resumen.totalSesiones ?? '-'}</div>
-                    <div><strong>Presentes:</strong> {reporte.resumen.presentes ?? '-'}</div>
-                    <div><strong>Ausentes:</strong> {reporte.resumen.ausentes ?? '-'}</div>
-                    <div><strong>Asistencia:</strong> {reporte.resumen.porcentajeAsistencia ?? '-'}%</div>
-                  </div>
-                )}
+          {!loadingReporte && reporte && (
+            <div className="preview-reporte">
+              {reporte.resumen && (
+                <div className="preview-resumen">
+                  <div><strong>Total sesiones:</strong> {reporte.resumen.totalSesiones ?? '-'}</div>
+                  <div><strong>Presentes:</strong> {reporte.resumen.presentes ?? '-'}</div>
+                  <div><strong>Ausentes:</strong> {reporte.resumen.ausentes ?? '-'}</div>
+                  <div><strong>Asistencia:</strong> {reporte.resumen.porcentajeAsistencia ?? '-'}%</div>
+                </div>
+              )}
 
-                {Array.isArray(reporte.detalle) && reporte.detalle.length > 0 ? (
-                  <div className="tabla-wrapper">
-                    <table className="tabla-reporte">
-                      <thead>
-                        <tr>
-                          <th>Fecha</th>
-                          <th>Presentes</th>
-                          <th>Ausentes</th>
-                          <th>% Asistencia</th>
+              {Array.isArray(reporte.detalle) && reporte.detalle.length > 0 ? (
+                <div className="tabla-wrapper">
+                  <table className="tabla-reporte">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Presentes</th>
+                        <th>Ausentes</th>
+                        <th>% Asistencia</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reporte.detalle.map((d, i) => (
+                        <tr key={i}>
+                          <td>{d.fecha ?? '-'}</td>
+                          <td>{d.presentes ?? '-'}</td>
+                          <td>{d.ausentes ?? '-'}</td>
+                          <td>{d.porcentaje ?? '-'}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {reporte.detalle.map((d, i) => (
-                          <tr key={i}>
-                            <td>{d.fecha ?? '-'}</td>
-                            <td>{d.presentes ?? '-'}</td>
-                            <td>{d.ausentes ?? '-'}</td>
-                            <td>{d.porcentaje ?? '-'}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  !loadingReporte && <p className="estado-vacio">No hay información para mostrar.</p>
-                )}
-              </div>
-            )}
-
-            <div className="modal-buttons">
-              <button
-                className="modal-button"
-                onClick={generarPDF}
-                disabled={loadingReporte}
-                title={API_BASE ? 'Generar PDF' : 'Configura VITE_API_URL en .env'}
-              >
-                Generar PDF
-              </button>
-              <button className="modal-button" onClick={cerrarModal}>
-                Cerrar
-              </button>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                !loadingReporte && <p className="estado-vacio">No hay información para mostrar.</p>
+              )}
             </div>
+          )}
+
+          <div className="modal-buttons">
+            <button
+              type="button"
+              className="modal-button"
+              onClick={generarPDF}
+              disabled={loadingReporte}
+              title={API_BASE ? 'Generar PDF' : 'Configura VITE_API_URL en .env'}
+            >
+              Generar PDF
+            </button>
+            <button type="button" className="modal-button" onClick={cerrarModal}>
+              Cerrar
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Salir */}
       <div className="flecha-container">
@@ -264,4 +280,3 @@ const ListadoFichasReportes = ({ setVista, setFichaId, fichaId }) => {
 };
 
 export default ListadoFichasReportes;
-

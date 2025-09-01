@@ -1,117 +1,50 @@
-/*import React, { useState } from "react";
-import "../styles/Login.css"; // sube dos niveles desde src/pages
-
-const Login = ({ setVista }) => {
-  const [email, setEmail] = useState("");
-  const [contrasena, setContrasena] = useState("");
-
-  const manejarLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const respuesta = await fetch("http://localhost:3000/api/usuarios/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, contrasena }),
-      });
-
-      const data = await respuesta.json();
-      console.log("📦 Respuesta completa:", data);
-
-
-      if (respuesta.ok) {
-        // ✅ Guardar información importante para acceder a rutas protegidas
-        localStorage.setItem("token", data.token);               // ← token JWT
-        localStorage.setItem("rol", data.rol);                   // ← rol del usuario
-        localStorage.setItem("nombreUsuario", data.nombre);      // ← nombre visible
-
-        // ✅ Solo permitir acceso si es coordinador (rol 3)
-        if (data.idRol === 3) {
-          setVista("menu");
-        } else {
-          alert("⚠️ Tu rol no tiene acceso a esta vista.");
-        }
-      } else {
-        alert("❌ Credenciales inválidas");
-      }
-    } catch (error) {
-      alert("⚠️ Error al conectar con el servidor");
-      console.error("Error en login:", error);
-    }
-  };
-
-  return (
-    <div className="form-container">
-      <h1 className="title">Iniciar Sesión</h1>
-      <form onSubmit={manejarLogin}>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-          />
-        </div>
-        <button type="submit">Ingresar</button>
-      </form>
-      <p className="crear-cuenta-link">
-        ¿Eres nuevo?{" "}
-        <span onClick={() => setVista("crear")}>Crear cuenta</span>
-      </p>
-    </div>
-  );
-};
-
-export default Login;
-*/
 import React, { useState } from "react";
 import "../styles/Login.css";
 
 const Login = ({ setVista }) => {
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   const manejarLogin = async (e) => {
     e.preventDefault();
+    setCargando(true);
 
     try {
-      const respuesta = await fetch("http://localhost:3000/api/usuarios/login", {
+      const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+      const respuesta = await fetch(`${baseURL}/api/auth/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ email, contrasena }),
       });
 
-      const data = await respuesta.json();
-      console.log("📦 Respuesta completa:", data);
+      // Intenta parsear JSON incluso en error para mostrar mensaje del backend
+      const data = await respuesta.json().catch(() => ({}));
 
-      if (respuesta.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("rol", data.rol);
-        localStorage.setItem("nombreUsuario", data.nombre);
+      if (!respuesta.ok) {
+        const msg = data?.mensaje || "❌ Credenciales inválidas";
+        alert(msg);
+        return;
+      }
 
-        if (data.idRol === 3) {
-          setVista("menu");
-        } else {
-          alert("⚠️ Tu rol no tiene acceso a esta vista.");
-        }
+      // El backend devuelve { token, usuario: { id, nombre, rol, email } }
+      const { token, usuario } = data || {};
+      localStorage.setItem("token", token || "");
+      localStorage.setItem("rol", String(usuario?.rol ?? ""));            // ej. 3
+      localStorage.setItem("nombreUsuario", usuario?.nombre || "");
+
+      // Si quieres exigir coordinador (rol 3), deja esta validación:
+      if ((usuario?.rol ?? usuario?.idRol) === 3) {
+        setVista("menu");
       } else {
-        alert("❌ Credenciales inválidas");
+        alert("⚠️ Tu rol no tiene acceso a esta vista.");
       }
     } catch (error) {
-      alert("⚠️ Error al conectar con el servidor");
       console.error("Error en login:", error);
+      alert("⚠️ Error al conectar con el servidor");
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -127,6 +60,7 @@ const Login = ({ setVista }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="username"
             />
           </div>
           <div className="form-group">
@@ -136,9 +70,12 @@ const Login = ({ setVista }) => {
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               required
+              autoComplete="current-password"
             />
           </div>
-          <button type="submit" className="login-btn">Ingresar</button>
+          <button type="submit" className="login-btn" disabled={cargando}>
+            {cargando ? "Ingresando..." : "Ingresar"}
+          </button>
         </form>
         <p className="crear-cuenta-link">
           ¿Eres nuevo?{" "}
