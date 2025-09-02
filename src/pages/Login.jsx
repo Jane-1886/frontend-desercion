@@ -1,7 +1,10 @@
+// src/pages/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 
-const Login = ({ setVista }) => {
+const Login = () => {
+  const navigate = useNavigate(); // ✅ para navegar después del login
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -19,7 +22,6 @@ const Login = ({ setVista }) => {
         body: JSON.stringify({ email, contrasena }),
       });
 
-      // Intenta parsear JSON incluso en error para mostrar mensaje del backend
       const data = await respuesta.json().catch(() => ({}));
 
       if (!respuesta.ok) {
@@ -28,15 +30,14 @@ const Login = ({ setVista }) => {
         return;
       }
 
-      // El backend devuelve { token, usuario: { id, nombre, rol, email } }
       const { token, usuario } = data || {};
       localStorage.setItem("token", token || "");
-      localStorage.setItem("rol", String(usuario?.rol ?? ""));            // ej. 3
+      localStorage.setItem("rol", String(usuario?.rol ?? ""));
       localStorage.setItem("nombreUsuario", usuario?.nombre || "");
 
-      // Si quieres exigir coordinador (rol 3), deja esta validación:
+      // ✅ Si es coordinador (rol 3), navega al menú
       if ((usuario?.rol ?? usuario?.idRol) === 3) {
-        setVista("menu");
+        navigate("/menu"); // 👈 usamos navigate en lugar de setVista
       } else {
         alert("⚠️ Tu rol no tiene acceso a esta vista.");
       }
@@ -79,7 +80,7 @@ const Login = ({ setVista }) => {
         </form>
         <p className="crear-cuenta-link">
           ¿Eres nuevo?{" "}
-          <span onClick={() => setVista("crear")}>Crear cuenta</span>
+          <span onClick={() => navigate("/crear")}>Crear cuenta</span> {/* 👈 también cambiamos esto */}
         </p>
       </div>
     </div>

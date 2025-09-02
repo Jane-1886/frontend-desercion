@@ -1,11 +1,13 @@
 // src/pages/PaginaPrincipalCoordinacion.jsx
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ importamos hook de navegación
 import "../styles/pagina_principal.css";
 import lupaIcono from "/Img/lupa_icono.png";
 
-const PaginaPrincipalCoordinacion = ({ setVista }) => {
+const PaginaPrincipalCoordinacion = () => {
+  const navigate = useNavigate(); // ✅ usamos navigate
+
   useEffect(() => {
-    // 👇 Lógica del buscador
     const input = document.getElementById("busqueda");
     const botonesContainer = document.getElementById("botones-container");
 
@@ -46,40 +48,35 @@ const PaginaPrincipalCoordinacion = ({ setVista }) => {
           <img src={lupaIcono} alt="Buscar" className="icono-busqueda" />
         </div>
       </div>
-<div className="botones" id="botones-container">
-  <div className="fila-botones">
-    <button
-  className="btn btn-ancho"
-  id="btn-visualizar"
-  onClick={() => setVista("listadoFichas")}
->
-  Visualizar listados
-</button>
 
-   <button className="btn btn-ancho" id="btn-reporte-general" onClick={() => setVista("reporteGeneral")}>
-  Reporte general
-</button>
+      <div className="botones" id="botones-container">
+        <div className="fila-botones">
+          <button className="btn btn-ancho" onClick={() => navigate("/visualizar")}>
+            Visualizar listados
+          </button>
 
-   <button className="boton" onClick={() => setVista("crearUsuario2")}>
-  Crear usuario
-</button>
+          <button className="btn btn-ancho" onClick={() => navigate("/reporteGeneral")}>
+            Reporte general
+          </button>
 
+          <button className="boton" onClick={() => navigate("/crearUsuario2")}>
+            Crear usuario
+          </button>
+        </div>
 
-  </div>
+        <div className="fila-botones">
+          <button className="boton" onClick={() => navigate("/desactivacion")}>
+            Desactivar fichas y usuarios
+          </button>
+        </div>
 
-  <div className="fila-botones">
-    <button className="boton" onClick={() => setVista("desactivacion")}>
-  Desactivar fichas y usuarios
-</button>
+        <div className="fila-botones">
+          <button className="btn btn-ayuda" id="btn-ayuda">
+            ¿Necesitas ayuda?
+          </button>
+        </div>
+      </div>
 
-  </div>
-
-  <div className="fila-botones">
-    <button className="btn btn-ayuda" id="btn-ayuda">¿Necesitas ayuda?</button>
-  </div>
-</div>
-
-      
       <p className="pie-de-pagina">2024 - Servicio Nacional de Aprendizaje Sena</p>
     </div>
   );
