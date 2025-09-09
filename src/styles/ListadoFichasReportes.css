@@ -295,7 +295,7 @@ label { margin-bottom: 5px; font-weight: bold; }
   width: 100%;
   overflow-x: hidden;
   background-color: #f0f0f0;
-  background-image: url('/Img/BackgroundsNormal.png');
+  background-image: url('/img/BackgroundsNormal.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

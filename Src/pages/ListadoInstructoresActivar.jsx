@@ -1,13 +1,17 @@
+// src/pages/ListadoInstructoresActivar.jsx
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Listado_instructores_activar.css";
-import logoSena from "/Img/logoSena.png";
-import lupaIcono from "/Img/lupa_icono.png";
-import personIcon from "/Img/person_icon.png";
-import helpIcon from "/Img/help_icon.png";
-import checkIcon from "/Img/check_circle.png";
+import logoSena from "/img/logoSena.png";
+import lupaIcono from "/img/lupa_icono.png";
+import personIcon from "/img/person_icon.png";
+import helpIcon from "/img/help_icon.png";
+import checkIcon from "/img/check_circle.png";
 import { FaArrowLeft } from "react-icons/fa";
 
-const ListadoInstructoresActivar = ({ setVista }) => {
+const ListadoInstructoresActivar = () => {
+  const navigate = useNavigate();
+
   const [busquedaIzquierda, setBusquedaIzquierda] = useState("");
   const [busquedaInstructores, setBusquedaInstructores] = useState("");
   const [instructorSeleccionado, setInstructorSeleccionado] = useState(null);
@@ -22,15 +26,9 @@ const ListadoInstructoresActivar = ({ setVista }) => {
     [busquedaIzquierda]
   );
 
+  // TODO: reemplazar por datos reales del backend cuando conectes /api/instructores
   const instructores = useMemo(
-    () => [
-      "Instructor 1",
-      "Instructor 2",
-      "Instructor 3",
-      "Instructor 4",
-      "Instructor 5",
-      "Instructor 6",
-    ],
+    () => ["Instructor 1", "Instructor 2", "Instructor 3", "Instructor 4", "Instructor 5", "Instructor 6"],
     []
   );
 
@@ -52,9 +50,9 @@ const ListadoInstructoresActivar = ({ setVista }) => {
     setInstructorSeleccionado(null);
   };
 
-  const confirmarAccion = () => {
-    // Aquí podrías llamar a tu API para activar el usuario
-    // await fetch(`${API_URL}/instructores/activar`, { ... })
+  const confirmarAccion = async () => {
+    // Aquí podrías llamar a tu API para activar:
+    // await api.post('/api/instructores/activar', { nombre: instructorSeleccionado })
     setMostrarConfirmacion(false);
     setMostrarExito(true);
   };
@@ -75,6 +73,7 @@ const ListadoInstructoresActivar = ({ setVista }) => {
             <input
               type="text"
               placeholder="Buscar"
+              value={busquedaIzquierda}
               onChange={(e) => setBusquedaIzquierda(e.target.value)}
             />
             <img src={lupaIcono} alt="Buscar" className="icono-lupa" />
@@ -83,7 +82,13 @@ const ListadoInstructoresActivar = ({ setVista }) => {
 
         <div className="botones-container">
           {botonesIzquierda.map((txt, idx) => (
-            <button className="boton" key={idx}>
+            <button
+              className="boton"
+              key={idx}
+              onClick={() => {
+                if (txt === "Notificaciones") navigate("/notificaciones");
+              }}
+            >
               {txt}
             </button>
           ))}
@@ -114,11 +119,7 @@ const ListadoInstructoresActivar = ({ setVista }) => {
           <div className="instructor-container">
             {instructoresFiltrados.map((nombre, i) => (
               <div className="instructor" key={i}>
-                <img
-                  src={personIcon}
-                  alt={nombre}
-                  className="instructor-imagen"
-                />
+                <img src={personIcon} alt={nombre} className="instructor-imagen" />
                 {nombre}
                 <button
                   className="seleccionar-boton"
@@ -145,7 +146,7 @@ const ListadoInstructoresActivar = ({ setVista }) => {
       {/* MODAL CONFIRMACIÓN */}
       {mostrarConfirmacion && (
         <div className="modal" role="dialog" aria-modal="true" style={{ display: "flex" }}>
-    <div className="modal-content"> 
+          <div className="modal-content">
             <img src={helpIcon} alt="Ayuda" className="modal-image" />
             <p className="modal-question">
               ¿Está seguro de activar al usuario <strong>{instructorSeleccionado}</strong>?
@@ -164,8 +165,8 @@ const ListadoInstructoresActivar = ({ setVista }) => {
 
       {/* MODAL ÉXITO */}
       {mostrarExito && (
-         <div className="modal" role="dialog" aria-modal="true" style={{ display: "flex" }}>
-    <div className="modal-content"> 
+        <div className="modal" role="dialog" aria-modal="true" style={{ display: "flex" }}>
+          <div className="modal-content">
             <img src={checkIcon} alt="Éxito" className="modal-image" />
             <p className="modal-text">Acción confirmada.</p>
             <p className="modal-subtext">Usuario Activado.</p>
@@ -176,12 +177,9 @@ const ListadoInstructoresActivar = ({ setVista }) => {
         </div>
       )}
 
-      {/* Botón de salir */}
+      {/* Botón salir */}
       <div className="flecha-container">
-        <button
-          className="boton-flecha"
-          onClick={() => setVista("desactivacion")}
-        >
+        <button className="boton-flecha" onClick={() => navigate("/desactivacion")}>
           <FaArrowLeft /> Salir
         </button>
       </div>

@@ -1,13 +1,19 @@
+// src/pages/ListadoFichasActivar.jsx
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Listado_fichas_Activar.css";
-import logoSena from "/Img/logoSena.png";
-import lupaIcono from "/Img/lupa_icono.png";
-import folderIcon from "/Img/folder_icon.png";
-import helpIcon from "/Img/help_icon.png";
-import checkIcon from "/Img/check_circle.png";
+import logoSena from "/img/logoSena.png";
+import lupaIcono from "/img/lupa_icono.png";
+import folderIcon from "/img/folder_icon.png";
+import helpIcon from "/img/help_icon.png";
+import checkIcon from "/img/check_circle.png";
 import { FaArrowLeft } from "react-icons/fa";
+// Si luego conectas backend:
+// import api from "../controlador/api.js";
 
-const ListadoFichasActivar = ({ setVista }) => {
+const ListadoFichasActivar = () => {
+  const navigate = useNavigate();
+
   const [busquedaIzquierda, setBusquedaIzquierda] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -23,14 +29,14 @@ const ListadoFichasActivar = ({ setVista }) => {
     [busquedaIzquierda]
   );
 
+  // TODO: reemplazar por datos reales del backend cuando los tengas
   const fichas = useMemo(
     () => [2617001, 2617543, 2618129, 2614968, 2612387, 2615014, 2618902],
     []
   );
 
   const fichasFiltradas = useMemo(
-    () =>
-      fichas.filter((f) => f.toString().includes(searchTerm.trim())),
+    () => fichas.filter((f) => f.toString().includes(searchTerm.trim())),
     [fichas, searchTerm]
   );
 
@@ -46,12 +52,8 @@ const ListadoFichasActivar = ({ setVista }) => {
 
   const confirmarActivacion = async () => {
     try {
-      // 🔗 Aquí puedes llamar a tu backend si lo deseas:
-      // await fetch(`${import.meta.env.VITE_API_URL}/fichas/activar`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ fichaId: fichaSeleccionada }),
-      // });
+      // Ejemplo para cuando conectes backend (Opción A: /api/...):
+      // await api.post("/api/fichas/activar", { fichaId: fichaSeleccionada });
 
       setMostrarConfirmacion(false);
       setMostrarExito(true);
@@ -85,7 +87,11 @@ const ListadoFichasActivar = ({ setVista }) => {
 
         <div className="botones-container" id="button-container">
           {botonesIzquierda.map((txt, i) => (
-            <button className="boton" key={i}>
+            <button
+              className="boton"
+              key={i}
+              onClick={() => navigate("/notificaciones")}
+            >
               {txt}
             </button>
           ))}
@@ -100,14 +106,14 @@ const ListadoFichasActivar = ({ setVista }) => {
           <span style={{ color: "#39A900" }}>fichas:</span>
         </div>
 
-        <div className="busqueda-fichas" style={{ width: "100%", maxWidth: 1000 }}>
+        {/* Buscador a la derecha */}
+        <div className="info-pequeña">
           <input
             type="text"
             placeholder="Buscar ficha"
             className="input-busqueda-fichas"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ width: "100%" }}
           />
         </div>
 
@@ -142,9 +148,7 @@ const ListadoFichasActivar = ({ setVista }) => {
         <div className="modal" role="dialog" aria-modal="true" style={{ display: "flex" }}>
           <div className="modal-content">
             <img src={helpIcon} alt="Confirmación" className="modal-image" />
-            <p className="modal-question">
-              ¿Está seguro de realizar esta acción?
-            </p>
+            <p className="modal-question">¿Está seguro de realizar esta acción?</p>
             <div className="modal-buttons">
               <button className="modal-button" onClick={confirmarActivacion}>Sí</button>
               <button className="modal-button" onClick={cerrarModalConfirmacion}>No</button>
@@ -167,7 +171,7 @@ const ListadoFichasActivar = ({ setVista }) => {
 
       {/* Botón Salir */}
       <div className="flecha-container">
-        <button className="boton-flecha" onClick={() => setVista("desactivacion")}>
+        <button className="boton-flecha" onClick={() => navigate("/desactivacion")}>
           <FaArrowLeft /> Salir
         </button>
       </div>

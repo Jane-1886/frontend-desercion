@@ -8,7 +8,7 @@ body {
   height: 100vh;
   position: relative;
   background-color: #f0f0f0;
-  background-image: url('/Img/BackgroundsNormal.png'); /* ✅ sin /public */
+  background-image: url('/img/BackgroundsNormal.png'); /* ✅ sin /public */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -203,4 +203,26 @@ body {
     width: 90%;
   }
 }
+
+.logout-container {
+  text-align: left;     /* lo alinea a la izquierda */
+  margin: 10px 0;       /* un poco de espacio arriba/abajo */
+}
+
+.btn-logout {
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  background-color: #00304D;
+  background-color:; /* rojo */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-logout:hover {
+  background-color: #39A900; /* un rojo más oscuro al pasar el mouse */
+}
+
 

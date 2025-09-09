@@ -1,8 +1,8 @@
 // src/pages/ListadoFichas.jsx
 import React, { useEffect, useState } from 'react';
 import '../styles/Listado_fichas_Activar.css';
-import logoSena from '/Img/logoSena.png';
-import folderIcon from '/Img/folder_icon.png';
+import logoSena from '/img/logoSena.png';
+import folderIcon from '/img/folder_icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -71,6 +71,12 @@ const ListadoFichas = () => {
       {/* COLUMNA IZQUIERDA */}
       <div className="izquierda navegacion">
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
+        
+      </div>
+
+      {/* COLUMNA DERECHA */}
+      <div className="derecha contenido">
+        <h2 className="titulo-principal">Listado de fichas</h2>
         <div className="busqueda-container">
           <input
             type="text"
@@ -79,11 +85,6 @@ const ListadoFichas = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-      </div>
-
-      {/* COLUMNA DERECHA */}
-      <div className="derecha contenido">
-        <h2 className="titulo-principal">Listado de fichas</h2>
 
         {cargando && <p className="cargando">Cargando fichas...</p>}
         {error && <p className="error">{error}</p>}
@@ -93,7 +94,7 @@ const ListadoFichas = () => {
             <div key={ficha._id} className="ficha-item">
               <img src={folderIcon} alt="Icono" className="icono-carpeta" />
               <div className="ficha-info">
-                <div className="ficha-codigo">Código: {ficha._id}</div>
+                <div className="ficha-codigo">ficha: {ficha._id}</div>
                 {ficha._nombre && <div className="ficha-programa">Programa: {ficha._nombre}</div>}
                 <div className="ficha-estado">Estado: {ficha._estado}</div>
               </div>

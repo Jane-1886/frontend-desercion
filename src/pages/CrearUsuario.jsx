@@ -1,12 +1,16 @@
 // src/pages/CrearUsuario.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/formulario_creacion_usuarios.css";
-import eyeOn from "/Img/eye_on.png";
-import eyeOff from "/Img/eye_off.png";
-import errorImg from "/Img/error.png";
-import okImg from "/Img/check_circle.png";
+import eyeOn from "/img/eye_on.png";
+import eyeOff from "/img/eye_off.png";
+import errorimg from "/img/error.png";
+import okimg from "/img/check_circle.png";
+import api from "../controlador/api.js"; // ✅ axios con baseURL + token
 
-export default function CrearUsuario({ setVista }) {
+export default function CrearUsuario() {
+  const navigate = useNavigate();
+
   // Form
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +22,7 @@ export default function CrearUsuario({ setVista }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Modales (ocultos por defecto)
+  // Modales
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Por favor, llena todos los campos.");
   const [successOpen, setSuccessOpen] = useState(false);
@@ -61,50 +65,30 @@ export default function CrearUsuario({ setVista }) {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-
       // 👇 NOMBRES EXACTOS QUE PIDE TU BACKEND:
       // { nombre, contrasena, idRol, email }
       const payload = {
         nombre: username,
-        contrasena: password,      // sin ñ
-        idRol: COORDINADOR_ID,     // 3
-        email: email,              // no "correo"
+        contrasena: password,   // sin ñ
+        idRol: COORDINADOR_ID,  // 3
+        email: email,
       };
 
-      console.log("🚀 Enviando payload a /api/usuarios:", payload);
+      await api.post("/api/usuarios", payload);
 
-      const res = await fetch("http://localhost:3000/api/usuarios", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify(payload),
-      });
-
-      // Lee respuesta del backend (mensaje + id)
-      const data = await (async () => {
-        try { return await res.json(); } catch { return null; }
-      })();
-
-      if (!res.ok) {
-        const msg = data?.mensaje || data?.message || `Error ${res.status}`;
-        throw new Error(msg);
-      }
-
-      // ✅ Solo aquí se muestra el modal de éxito
+      // Éxito
       setSuccessOpen(true);
-
-      // Limpia el formulario
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirm("");
     } catch (err) {
-      setErrorMsg(
-        `No se pudo crear el coordinador. ${err?.message ? `Detalles: ${err.message}` : ""}`
-      );
+      const msg =
+        err?.response?.data?.mensaje ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "No se pudo crear el coordinador.";
+      setErrorMsg(`No se pudo crear el coordinador. ${msg ? `Detalles: ${msg}` : ""}`);
       setErrorOpen(true);
     } finally {
       setLoading(false);
@@ -181,23 +165,19 @@ export default function CrearUsuario({ setVista }) {
           </button>
         </form>
 
-        {/* Botón de salir */}
+        {/* Botón Salir */}
         <div className="flecha-container">
-          <button
-            className="boton-flecha"
-            type="button"
-            onClick={() => setVista && setVista("menu")}
-          >
-            <i className="fas fa-arrow-left" /> Salir
+          <button className="boton-flecha" type="button" onClick={() => navigate("/menu")}>
+            ← Salir
           </button>
         </div>
       </div>
 
-      {/* Modales solo se montan si están abiertos */}
+      {/* Modales */}
       {errorOpen && (
         <div className="modal" onClick={() => setErrorOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={errorImg} alt="Error" />
+            <img src={errorimg} alt="Error" />
             <h2>ERROR</h2>
             <p>{errorMsg}</p>
             <button className="ok-button" onClick={() => setErrorOpen(false)}>
@@ -210,14 +190,14 @@ export default function CrearUsuario({ setVista }) {
       {successOpen && (
         <div className="modal" onClick={() => setSuccessOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={okImg} alt="Éxito" />
+            <img src={okimg} alt="Éxito" />
             <h2>¡ÉXITOSO!</h2>
             <p>El coordinador ha sido creado con éxito.</p>
             <button
               className="ok-button"
               onClick={() => {
                 setSuccessOpen(false);
-                setVista && setVista("menu");
+                navigate("/menu");
               }}
             >
               Ok

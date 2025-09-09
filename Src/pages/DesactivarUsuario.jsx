@@ -1,18 +1,15 @@
 // src/pages/DesactivarUsuario.jsx
 import React, { useEffect, useState } from "react";
-import "../styles/formulario_creacion_usuarios.css"; // ajusta si usas otro CSS
-import logoSena from "/Img/logoSena.png";
-import errorImg from "/Img/error.png";
-import okImg from "/Img/check_circle.png";
+import { useNavigate } from "react-router-dom";
+import "../styles/formulario_creacion_usuarios.css";
+import logoSena from "/img/logoSena.png";
+import errorimg from "/img/error.png";
+import okimg from "/img/check_circle.png";
+import api from "../controlador/api.js"; // ✅ axios con token
 
-// ⛳️ Ajusta estas rutas si tu backend usa otras
-const API_BASE = "http://localhost:3000";
-const BUSCAR_POR_CORREO = (email) =>
-  `${API_BASE}/api/usuarios/by-email/${encodeURIComponent(email)}`; // ← EJEMPLO GET
-const DESACTIVAR_URL = (id) =>
-  `${API_BASE}/api/usuarios/${id}/desactivar`; // ← EJEMPLO PUT/PATCH
+export default function DesactivarUsuario() {
+  const navigate = useNavigate();
 
-export default function DesactivarUsuario({ setVista }) {
   // Form/búsqueda
   const [correo, setCorreo] = useState("");
   const [cargandoBusqueda, setCargandoBusqueda] = useState(false);
@@ -33,12 +30,12 @@ export default function DesactivarUsuario({ setVista }) {
   const [successOpen, setSuccessOpen] = useState(false);
 
   useEffect(() => {
-    // asegurar modales cerrados al entrar
     setErrorOpen(false);
     setSuccessOpen(false);
     setConfirmOpen(false);
   }, []);
 
+  // GET /api/usuarios/by-email/:email
   const buscarUsuario = async () => {
     const email = correo.trim();
     if (!email) {
@@ -49,43 +46,19 @@ export default function DesactivarUsuario({ setVista }) {
     setCargandoBusqueda(true);
     setUsuario(null);
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(BUSCAR_POR_CORREO(email), {
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+      const { data } = await api.get(`/api/usuarios/by-email/${encodeURIComponent(email)}`);
 
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        data = null;
-      }
-
-      if (!res.ok) {
-        const msg =
-          data?.mensaje || data?.message || `No se pudo buscar el usuario (${res.status}).`;
-        throw new Error(msg);
-      }
-
-      // ✅ Arreglo: evitar mezclar ?? y || sin paréntesis
+      // 🔧 Fix: paréntesis al mezclar ?? con || (o usa este patrón compacto)
       const fullName = [data?.nombres, data?.apellidos].filter(Boolean).join(" ").trim();
       const nombreNormalizado =
-        data?.nombre ??
-        data?.Nombre ??
-        data?.Nombre_Usuario ??
-        (fullName || "(Sin nombre)");
+        (data?.nombre ?? data?.Nombre ?? data?.Nombre_Usuario ?? fullName) ||
+        "(Sin nombre)";
 
       const u = {
         id: data?.id ?? data?.ID_Usuario ?? data?.ID ?? data?.usuarioId ?? null,
         nombre: nombreNormalizado,
         email: data?.email ?? data?.correo ?? data?.Correo ?? email,
-        rol:
-          data?.rolNombre ??
-          data?.Rol ??
-          (data?.idRol ? `Rol ${data.idRol}` : "Rol desconocido"),
+        rol: data?.rolNombre ?? data?.Rol ?? (data?.idRol ? `Rol ${data.idRol}` : "Rol desconocido"),
         idRol: data?.idRol ?? data?.ID_Rol ?? null,
         activo:
           typeof data?.activo === "boolean"
@@ -99,8 +72,13 @@ export default function DesactivarUsuario({ setVista }) {
 
       setUsuario(u);
     } catch (err) {
+      const msg =
+        err?.response?.data?.mensaje ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "Error al buscar el usuario.";
       setUsuario(null);
-      setErrorMsg(err?.message || "Error al buscar el usuario.");
+      setErrorMsg(msg);
       setErrorOpen(true);
     } finally {
       setCargandoBusqueda(false);
@@ -122,50 +100,33 @@ export default function DesactivarUsuario({ setVista }) {
     setConfirmOpen(true);
   };
 
+  // PUT /api/usuarios/:id/desactivar
   const desactivarUsuario = async () => {
     if (confirmTexto.trim().toUpperCase() !== "DESACTIVAR") return;
 
     setCargandoAccion(true);
     try {
-      const token = localStorage.getItem("token");
-
-      // 🔁 ADAPTA ESTE PAYLOAD a tu backend si pide otros campos
       const payload = {
         motivo,
         observacion,
-        activo: false, // muchos backends lo usan
-        estado: "INACTIVO", // por si tu API usa estado textual
+        activo: false,
+        estado: "INACTIVO",
       };
 
-      const res = await fetch(DESACTIVAR_URL(usuario.id), {
-        method: "PUT", // o "PATCH" si tu API lo usa
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify(payload),
-      });
-
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        data = null;
-      }
-
-      if (!res.ok) {
-        const msg = data?.mensaje || data?.message || `No se pudo desactivar (${res.status}).`;
-        throw new Error(msg);
-      }
+      await api.put(`/api/usuarios/${usuario.id}/desactivar`, payload);
 
       setSuccessOpen(true);
       setConfirmOpen(false);
-      // Refresca estado local
       setUsuario((prev) => (prev ? { ...prev, activo: false } : prev));
       setMotivo("");
       setObservacion("");
     } catch (err) {
-      setErrorMsg(err?.message || "Error al desactivar el usuario.");
+      const msg =
+        err?.response?.data?.mensaje ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "Error al desactivar el usuario.";
+      setErrorMsg(msg);
       setErrorOpen(true);
     } finally {
       setCargandoAccion(false);
@@ -183,7 +144,7 @@ export default function DesactivarUsuario({ setVista }) {
               Desactivación de usuarios
             </div>
             <div className="botones-container">
-              <button className="boton btn" onClick={() => setVista && setVista("menu")}>
+              <button className="boton btn" onClick={() => navigate("/menu")}>
                 Menú principal
               </button>
             </div>
@@ -192,10 +153,7 @@ export default function DesactivarUsuario({ setVista }) {
           {/* Columna derecha */}
           <div className="form-container derecha">
             {/* Volver */}
-            <button
-              className="volver-btn-fijo"
-              onClick={() => setVista && setVista("desactivacion")}
-            >
+            <button className="volver-btn-fijo" onClick={() => navigate("/desactivacion")}>
               ⬅ Volver
             </button>
 
@@ -207,7 +165,7 @@ export default function DesactivarUsuario({ setVista }) {
             <div className="sub-div">
               {/* Búsqueda */}
               <div className="info-pequeña">
-                <div className="campo-busqueda" style={{ display: "flex", gap: 8 }}>
+                <div className="campo-busqueda" style={{ display: "flex", gap: 8, width: "100%" }}>
                   <input
                     type="email"
                     placeholder="Correo del usuario..."
@@ -275,11 +233,7 @@ export default function DesactivarUsuario({ setVista }) {
                   />
                 </label>
 
-                <button
-                  className="btn"
-                  onClick={abrirConfirmacion}
-                  disabled={!usuario || cargandoAccion}
-                >
+                <button className="btn" onClick={abrirConfirmacion} disabled={!usuario || cargandoAccion}>
                   Desactivar usuario
                 </button>
               </div>
@@ -296,8 +250,8 @@ export default function DesactivarUsuario({ setVista }) {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Confirmar desactivación</h2>
             <p>
-              Esta acción desactivará el usuario <strong>{usuario?.nombre}</strong> (
-              {usuario?.email}). Para confirmar, escribe <strong>DESACTIVAR</strong>:
+              Esta acción desactivará el usuario <strong>{usuario?.nombre}</strong> ({usuario?.email}
+              ). Para confirmar, escribe <strong>DESACTIVAR</strong>:
             </p>
             <input
               type="text"
@@ -347,7 +301,7 @@ export default function DesactivarUsuario({ setVista }) {
               className="ok-button"
               onClick={() => {
                 setSuccessOpen(false);
-                setVista && setVista("desactivacion");
+                navigate("/desactivacion"); // ✅ volvemos por Router
               }}
             >
               Ok

@@ -1,11 +1,11 @@
 // src/pages/PaginaPrincipalCoordinacion.jsx
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ importamos hook de navegación
+import { useNavigate } from "react-router-dom";
 import "../styles/pagina_principal.css";
-import lupaIcono from "/Img/lupa_icono.png";
+import lupaIcono from "/img/lupa_icono.png";
 
 const PaginaPrincipalCoordinacion = () => {
-  const navigate = useNavigate(); // ✅ usamos navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const input = document.getElementById("busqueda");
@@ -25,8 +25,21 @@ const PaginaPrincipalCoordinacion = () => {
     return () => input?.removeEventListener("input", filtrarBotones);
   }, []);
 
+  // 👉 función para cerrar sesión
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login", { replace: true });
+  };
+
   return (
     <div className="form-container principal">
+      {/* 🔹 Botón pequeño de logout (margen izquierdo) */}
+      <div className="logout-container">
+        <button className="btn-logout" onClick={handleLogout}>
+          ⬅ salir
+        </button>
+      </div>
+
       <div className="titulo">
         Bienvenido de nuevo,{" "}
         <strong style={{ color: "#00304D" }}>(</strong>
@@ -55,7 +68,7 @@ const PaginaPrincipalCoordinacion = () => {
             Visualizar listados
           </button>
 
-          <button className="btn btn-ancho" onClick={() => navigate("/reporteGeneral")}>
+          <button className="btn btn-ancho" onClick={() => navigate("/reporte-general")}>
             Reporte general
           </button>
 

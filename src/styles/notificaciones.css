@@ -22,7 +22,7 @@
     overflow-y: auto; /* permitimos scroll si se necesita */
     position: relative;
     background-color: #f0f0f0;
-    background-image: url('/Img/BackgroundsNormal.png');
+    background-image: url('/img/BackgroundsNormal.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

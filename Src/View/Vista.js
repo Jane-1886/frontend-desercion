@@ -33,7 +33,7 @@ class Vista {
     renderizarmarcarAsistenciaFicha(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardCourse" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Ficha ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" id="btnSelectAttendance">
@@ -45,7 +45,7 @@ class Vista {
     renderizarmarcarAsistenciaEstudiante(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardStudent" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.nombre}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#asistModal" id="btnMakeAttendance">
@@ -57,7 +57,7 @@ class Vista {
     renderizarhistorialFicha(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardCourseHistory" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Ficha ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" id="btnSelectHistory">
@@ -69,7 +69,7 @@ class Vista {
     renderizarhistorialAprendiz(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardStudentHistory" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.nombre}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#historyAsistModal" id="moreOptionBtn">
@@ -81,7 +81,7 @@ class Vista {
     renderizargenerareporte(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardGenerateReport" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Ficha ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" id="btnGenerateReport">
@@ -93,7 +93,7 @@ class Vista {
     renderizarseguimientoficha(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardCourseTracking" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Ficha ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seguimientoModal" id="btnSeguimientoFicha">
@@ -105,7 +105,7 @@ class Vista {
     renderizarseguimientoEstudiante(dato) {
         return `
             <div class="d-flex align-items-center mb-2" id="contentCardStudentTracking" style="width: 100%; max-width: 1100px;">
-                <img src="../Resources/Img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+                <img src="../Resources/img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
                 <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.nombre}</strong>
                 <div class="flex-grow-1"></div>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#warningFillUpModal" id="btnSeguimientoEstudiante">
@@ -117,7 +117,7 @@ class Vista {
     renderizarNotificacion(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardNotificatión" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/NotificationIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/NotificationIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <div class="text-left">
                 <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.titulo}</strong>
                 <p class="card-text"><small class="text-body-secondary" style="font-size: 20px; margin-left: 2vh;"><strong>Enviada ${dato.fecha}</strong></small></p>
@@ -135,7 +135,7 @@ class Vista {
     renderizarEstudiante(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardStudent" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/UserIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.nombre}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#asistModal" id="moreOptionBtn">
@@ -147,7 +147,7 @@ class Vista {
     renderizarReporte(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardCourse" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/FolderIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">Ficha ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#optionModal" id="moreOptionBtn">
@@ -159,7 +159,7 @@ class Vista {
     renderizarManual(dato) {
         return `
         <div class="d-flex align-items-center mb-2" id="contentCardManual" style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/QuestionIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg">
+            <img src="../Resources/img/QuestionIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.titulo}</strong>
             <div class="flex-grow-1"></div>
             <button type="button" class="btn btn-primary" id="btnManualDownload">
@@ -175,7 +175,7 @@ class Vista {
             data-semana="${dato.semana}" 
             data-bloque="${dato.bloque}"
             style="width: 100%; max-width: 1100px;">
-            <img src="../Resources/Img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconImg" style="width: 50px;">
+            <img src="../Resources/img/CalendarIcon.png" alt="Imagen 1" class="imagen-sub-div" id="iconimg" style="width: 50px;">
             <strong style="color: #00304D; font-size: 30px; margin-left: 2vh;">${dato.dia} ${dato.numero}</strong>
             <div class="flex-grow-1"></div>
             <div class="form-floating" style="width: 200px;">
@@ -202,11 +202,11 @@ class Vista {
     
         // Crear ícono de calendario
         const iconoCalendario = document.createElement('img');
-        iconoCalendario.src = '../Resources/Img/CalendarIcon.png';
+        iconoCalendario.src = '../Resources/img/CalendarIcon.png';
         iconoCalendario.alt = 'Imagen de calendario';
         iconoCalendario.className = 'imagen-sub-div';
         iconoCalendario.style.width = '50px';
-        iconoCalendario.id = 'iconImg';
+        iconoCalendario.id = 'iconimg';
     
         // Crear texto del día
         const textoDia = document.createElement('strong');

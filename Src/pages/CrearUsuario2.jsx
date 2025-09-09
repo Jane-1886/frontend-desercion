@@ -1,12 +1,16 @@
 // src/pages/CrearUsuario2.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/formulario_creacion_usuarios.css";
-import eyeOn from "/Img/eye_on.png";
-import eyeOff from "/Img/eye_off.png";
-import errorImg from "/Img/error.png";
-import okImg from "/Img/check_circle.png";
+import eyeOn from "/img/eye_on.png";
+import eyeOff from "/img/eye_off.png";
+import errorimg from "/img/error.png";
+import okimg from "/img/check_circle.png";
+import api from "../controlador/api.js"; // ✅ axios con baseURL y token
 
-export default function CrearUsuario2({ setVista }) {
+export default function CrearUsuario2() {
+  const navigate = useNavigate();
+
   // Form
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -64,33 +68,17 @@ export default function CrearUsuario2({ setVista }) {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-
       // 👇 Claves EXACTAS que requiere tu backend:
       // { nombre, contrasena, idRol, email }
       const payload = {
         nombre: username,
-        contrasena: password,    // sin ñ
-        idRol: Number(roleId),   // 1 | 2 | 3
+        contrasena: password,     // sin ñ
+        idRol: Number(roleId),    // 1 | 2 | 3
         email: email,
       };
 
-      const res = await fetch("http://localhost:3000/api/usuarios", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify(payload),
-      });
-
-      let data = null;
-      try { data = await res.json(); } catch {}
-
-      if (!res.ok) {
-        const msg = data?.mensaje || data?.message || `Error ${res.status}`;
-        throw new Error(msg);
-      }
+      // ✅ Opción A: siempre prefix /api aquí
+      await api.post("/api/usuarios", payload);
 
       // Éxito
       setSuccessOpen(true);
@@ -100,9 +88,12 @@ export default function CrearUsuario2({ setVista }) {
       setPassword("");
       setConfirm("");
     } catch (err) {
-      setErrorMsg(
-        `No se pudo crear el usuario. ${err?.message ? `Detalles: ${err.message}` : ""}`
-      );
+      const msg =
+        err?.response?.data?.mensaje ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "No se pudo crear el usuario.";
+      setErrorMsg(`No se pudo crear el usuario. ${msg ? `Detalles: ${msg}` : ""}`);
       setErrorOpen(true);
     } finally {
       setLoading(false);
@@ -194,9 +185,10 @@ export default function CrearUsuario2({ setVista }) {
           <button
             className="boton-flecha"
             type="button"
-            onClick={() => setVista && setVista("menu")}
+            onClick={() => navigate("/menu")}
           >
-            <i className="fas fa-arrow-left" /> Salir
+            {/* puedes usar react-icons si prefieres */}
+            ← Salir
           </button>
         </div>
       </div>
@@ -225,7 +217,7 @@ export default function CrearUsuario2({ setVista }) {
               className="ok-button"
               onClick={() => {
                 setSuccessOpen(false);
-                setVista && setVista("menu");
+                navigate("/menu");
               }}
             >
               Ok
@@ -236,4 +228,3 @@ export default function CrearUsuario2({ setVista }) {
     </>
   );
 }
-

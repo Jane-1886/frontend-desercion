@@ -1,6 +1,6 @@
 body {
     height: 100vh;
-    background-image: url('../Resources/Img/Backgrounds2.png');
+    background-image: url('../Resources/img/Backgrounds2.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -331,7 +331,7 @@ svg {
     border-radius: 20px;
 }
 
-#iconImg {
+#iconimg {
     margin-left: 1vh;
 }
 

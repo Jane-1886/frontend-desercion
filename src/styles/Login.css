@@ -65,7 +65,7 @@ button:hover {
   /* Fondo general con imagen institucional */
 .login-background {
   height: 100vh;
-  background: url('/Img/BackgroundsNormal.png') no-repeat center center fixed;
+  background: url('/img/BackgroundsNormal.png') no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: center;

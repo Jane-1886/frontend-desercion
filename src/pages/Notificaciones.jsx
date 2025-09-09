@@ -1,22 +1,22 @@
+// src/pages/Notificaciones.jsx
 import React from "react";
-import "../styles/notificaciones.css";
-import logoSena from "/Img/logoSena.png";
-import lupaIcono from "/Img/lupa_icono.png";
-import notiIcon from "/Img/notifications.png";
 import { useNavigate } from "react-router-dom";
+import "../styles/notificaciones.css";
+import logoSena from "/img/logoSena.png";
+import notiIcon from "/img/notifications.png";
 
+const Notificaciones = () => {
+  const navigate = useNavigate();
 
-const Notificaciones = ({ setVista }) => {
   return (
     <div className="layout-notificaciones">
+      {/* Columna izquierda */}
       <div className="form-container izquierda navegacion">
         <img src={logoSena} alt="Logo SENA" className="imagen-header" />
-        <div className="busqueda-container">
-
-        </div>
-        
+        <div className="busqueda-container">{/* (vacío por ahora) */}</div>
       </div>
 
+      {/* Columna derecha */}
       <div className="form-container derecha">
         <div className="titulo">
           Te encuentras <span style={{ color: "#00304D" }}>visualizando tu listado de</span>{" "}
@@ -25,7 +25,6 @@ const Notificaciones = ({ setVista }) => {
 
         <div className="subtitulo-notificaciones">Notificaciones más recientes:</div>
         <div className="linea"></div>
-        
 
         <div className="scrollable-recent-notifications">
           <div className="sub-div">
@@ -39,7 +38,9 @@ const Notificaciones = ({ setVista }) => {
                 <div className="sub-div-date">Fecha: 20/11/2024</div>
                 <div className="sub-div-status">Estado: Pendiente</div>
                 <div className="sub-div-time">Hora de la solicitud: 09:30 AM</div>
-                <div className="sub-div-description">Solicitud para desactivar la ficha 2617543 con formación terminada en etapa lectiva.</div>
+                <div className="sub-div-description">
+                  Solicitud para desactivar la ficha 2617543 con formación terminada en etapa lectiva.
+                </div>
               </div>
             </div>
 
@@ -53,7 +54,9 @@ const Notificaciones = ({ setVista }) => {
                 <div className="sub-div-date">Fecha: 21/11/2024</div>
                 <div className="sub-div-status">Estado: Pendiente</div>
                 <div className="sub-div-time">Hora de la solicitud: 02:00 PM</div>
-                <div className="sub-div-description">Solicitud para retirar a un aprendiz debido a motivos personales.</div>
+                <div className="sub-div-description">
+                  Solicitud para retirar a un aprendiz debido a motivos personales.
+                </div>
               </div>
             </div>
           </div>
@@ -73,23 +76,21 @@ const Notificaciones = ({ setVista }) => {
                 <div className="sub-div-date">Fecha: 15/11/2024</div>
                 <div className="sub-div-status">Estado: Aprobada</div>
                 <div className="sub-div-time">Hora de la solicitud: 03:00 PM</div>
-                <div className="sub-div-description">Solicitud para desactivar la ficha 2615014 con formación terminada en etapa lectiva.</div>
+                <div className="sub-div-description">
+                  Solicitud para desactivar la ficha 2615014 con formación terminada en etapa lectiva.
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-<button
-  className="boton volver"
-  onClick={() => setVista("reporteGeneral")}
->
-  ← Volver a Reporte General
-</button>
+
+        <button className="boton volver" onClick={() => navigate("/reporte-general")}>
+          ← Volver a Reporte General
+        </button>
 
         <p className="pie-de-pagina">2024 - Servicio Nacional de Aprendizaje Sena</p>
       </div>
     </div>
-    
   );
 };
 

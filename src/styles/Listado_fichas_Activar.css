@@ -1,102 +1,181 @@
+/* ============ RESET SUAVE Y CONTENEDOR RAÍZ ============ */
+html, body, #root { height: 100%; }
+* { box-sizing: border-box; }
+body { overflow-x: hidden; }
 
+/* ============ FONDO EXCLUSIVO PARA LISTADOS ============ */
+.fondo-listados {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #f0f0f0;
+  background-image: url('/img/BackgroundsNormal.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* Si el fondo “tapa” en algunos navegadores, quita la siguiente línea */
+  background-attachment: fixed;
+  position: relative;
+  z-index: 0; /* fondo por debajo */
+}
+
+/* ============ LAYOUT PRINCIPAL (GRID 2 COLUMNAS) ============ */
+.layout-listado-fichas {
+  display: grid;
+  grid-template-columns: 280px 1fr; /* izquierda fija + derecha flexible */
+  gap: 24px;
+  padding: 32px;
+  min-height: 100vh;
+  width: 100%;
+  align-items: start;
+  position: relative;
+  z-index: 1; /* por encima del fondo */
+}
+
+/* ============ CONTENEDOR GENERICO ============ */
 .form-container {
-  background: white;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============ COLUMNA IZQUIERDA (NAVEGACIÓN) ============ */
+.form-container.izquierda,
+.izquierda.navegacion {
+  position: sticky; /* se mantiene visible al hacer scroll */
+  top: 0;
+  height: calc(100vh - 32px - 32px); /* alto de la ventana menos padding del layout */
+  overflow-y: auto; /* scroll interno si crece */
+  background: #fcfdfd; /* color sólido */
+  color: #fff;
+  margin: 0 !important;   /* neutraliza márgenes previos */
+  width: auto !important; /* neutraliza anchos previos */
+  z-index: 2;             /* encima de decoraciones */
+}
+
+.imagen-header {
+  display: block;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin: 0 auto 16px;
+}
+
+/* Buscador en la izquierda */
+.izquierda .busqueda {
+  position: relative;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.izquierda .busqueda input {
+  width: 100%;
+  height: 40px;
+  padding: 0 40px 0 12px;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  padding: 15px;
+  background-color: #fff;
+  color: #111827;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+}
+.izquierda .busqueda input::placeholder { color: #94a3b8; }
+.izquierda .icono-lupa {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.izquierda .icono-lupa img { width: 24px; height: 24px; }
+
+.botones-container {
+  margin-top: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-/* Columna izquierda */
-.izquierda {
-  width: 14%;
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  margin: 0 20px;
-}
-
-/* Columna derecha */
-.derecha {
-  width: 58%;
-  height: 80%;
-  padding: 15px;
-  background: white;
-  margin: 40px 20px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.titulo {
-  color: #00304D;
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 30px;
+/* Botón genérico de la izquierda */
+.boton {
+  padding: 12px 14px;
+  background-color: #00304D;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
   text-align: center;
+  width: 100%;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 5px rgba(0,0,0,0.1);
+  transition: background-color .2s, box-shadow .2s, transform .06s;
+}
+.boton:hover { background-color: #39A900; box-shadow: 0 6px 10px rgba(0,0,0,0.2); }
+.boton:active { transform: translateY(1px); }
+
+/* ============ COLUMNA DERECHA (CONTENIDO) ============ */
+.form-container.derecha,
+.derecha.contenido {
+  position: relative;
+  min-width: 0;   /* CLAVE: evita que empuje a la izquierda */
+  padding: 24px;
+  z-index: 2;
+}
+
+.titulo-principal,
+.titulo {
+  color: #0C3147;
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  text-align: left;
 }
 
 .linea {
   width: 100%;
   height: 2px;
-  background-color: #00304D;
-  margin: 0 0 20px 0;
+  background-color: #0C3147;
+  margin: 0 0 16px 0;
 }
 
+/* Buscador grande (si lo usas arriba a la derecha) */
 .busqueda-fichas {
   display: flex;
   justify-content: center;
-  margin: 10px 0 20px 0;
+  margin: 8px 0 16px 0;
 }
-
 .input-busqueda-fichas {
-  padding: 10px 20px;
-  border: 1px solid #aaa;
-  border-radius: 10px;
-  background-color: white;
-  color: black;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1000px;
+  max-width: 900px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #111827;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  outline: none;
 }
 
+/* Contenedor scrollable para listas largas */
 .sub-div {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-  max-width: 1350px;
-  max-height: 350px;
+  max-width: 1200px;
+  max-height: 380px;
   overflow-y: auto;
-  padding: 10px;
-}
-
-.sub-item {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 25px;
   padding: 8px;
-  margin: 8px 0;
-  width: 90%;
-  color: #00304D;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.icono-sub-item {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  gap: 10px;
 }
 
 /* Scroll personalizado */
@@ -105,207 +184,122 @@
 .sub-div::-webkit-scrollbar-thumb {
   background: #00304D;
   border-radius: 10px;
-  height: 30px;
 }
 .sub-div::-webkit-scrollbar-thumb:hover { background: #39A900; }
 
-label { margin-bottom: 5px; font-weight: bold; }
-
-.pie-de-pagina {
-  color: #aaa;
-  font-size: 24px;
+.sub-item {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0C3147;
+  height: 56px;
+  font-size: 18px;
   font-weight: 800;
-  text-align: center;
-  margin-top: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+.icono-sub-item { width: 40px; height: 40px; object-fit: contain; }
+
+/* Lista de fichas en tarjetas (derecha) */
+.listado-fichas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
 }
 
-.boton {
-  padding: 15px;
-  background-color: #00304D;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
-  margin: 5px 0;
-  width: calc(100% - 10px);
-  font-weight: 700;
-  font-size: 18px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-.boton:hover {
-  background-color: #39A900;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Buscador en la izquierda */
-.izquierda .busqueda {
-  position: relative;
-  width: 100%;
-  margin-bottom: 20px;
-}
-.izquierda .busqueda input {
-  padding: 15px 30px;
-  border: 1px solid #999;
-  border-radius: 15px;
-  background-color: white;
-  color: black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: calc(100% - 60px);
-  font-size: 18px;
-  font-weight: bold;
-  margin-right: 10px;
-}
-.izquierda .busqueda input::placeholder {
-  color: #aaa;
-  font-size: 18px;
-  font-weight: bold;
-}
-.izquierda .icono-lupa {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-.izquierda .icono-lupa img { width: 30px; height: 30px; }
-
-.botones-container {
-  margin-top: auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.ficha-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
   align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.06);
 }
 
-.imagen-header {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
-}
+.icono-carpeta { width: 56px; height: 56px; object-fit: contain; }
 
-/* Botón seleccionar */
+.ficha-info {
+  display: grid;
+  gap: 2px;
+  min-width: 0; /* permite elipsis */
+}
+.ficha-codigo { font-weight: 800; color:#0C3147; }
+.ficha-programa { color:#334155; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.ficha-estado { font-size: 13px; color:#64748b; }
+
+/* Botón Seleccionar */
 .seleccionar-boton {
-  padding: 16px 30px;
+  padding: 10px 16px;
   background-color: #00304D;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 25px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-  margin-left: auto;
-  width: 150px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color .2s, transform .06s, box-shadow .2s;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 130px;
 }
-.seleccionar-boton:hover { background-color: #39A900; }
+.seleccionar-boton:hover { background-color: #39A900; box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+.seleccionar-boton:active { transform: translateY(1px); }
 
-/* Modal genérico */
+/* Mensajes */
+.cargando { font-weight: 700; color:#0C3147; }
+.error { color: #b91c1c; font-weight: 700; }
+.sin-resultados { color: #94a3b8; font-weight: 700; margin-top: 12px; }
+
+/* Pie y botón salir */
+.pie-de-pagina {
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 16px;
+}
+.flecha-container { margin-top: 12px; }
+.boton-flecha {
+  border: 0; padding: 10px 14px; border-radius: 10px;
+  background:#0C3147; color:#fff; cursor:pointer;
+}
+
+/* ============ MODAL GENÉRICO (si se usa en esta vista) ============ */
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.5);
+  z-index: 50;
+  inset: 0;
+  background-color: rgba(0,0,0,0.45);
 }
+.modal.open { display: block; }
 .modal-content {
-  background-color: white;
-  margin: 15% auto;
+  background-color: #fff;
+  margin: 8% auto;
   padding: 20px;
-  border: 1px solid #888;
-  width: 40%;
+  border: 1px solid #e5e7eb;
+  width: 90%;
   max-width: 600px;
   text-align: center;
-  border-radius: 15px;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 12px;
 }
-.modal img { max-width: 100%; height: auto; margin-bottom: 10px; }
-.modal p {
-  color: #00304D;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
-}
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+.modal-buttons { display: flex; justify-content: center; gap: 16px; }
 .modal-button {
-  background-color: #00304D;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  margin: 0 20px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 12px;
+  background-color: #00304D; color: #fff; border: none; padding: 12px 20px;
+  cursor: pointer; font-size: 16px; font-weight: 700; border-radius: 10px;
 }
 .modal-button:hover { background-color: #39A900; }
 
-#confirmationModal p { margin: 10px 0; }
-.modal p.confirmation-title {
-  font-size: 26px;
-  font-weight: bold;
-  color: black;
-  margin: 0;
-}
-.modal p.confirmation-subtitle {
-  font-size: 22px;
-  color: #00304D;
-  margin: 0;
-}
-.close-button { margin-top: 20px; }
-
-/* Fondo exclusivo para listados */
-.fondo-listados {
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden;
-  background-color: #f0f0f0;
-  background-image: url('/Img/BackgroundsNormal.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-}
-/* ===== Parche layout estable para ListadoFichas (ACTIVAS) ===== */
-.layout-listado-fichas {
-  display: grid;
-  grid-template-columns: 440px minmax(0, 1fr); /* ancho de la izquierda */
-  gap: 30px;
-  padding: 40px;
-  min-height: 100vh;
-  width: 100%;
-  align-items: start;
-  justify-content: start;
-}
-
-/* Que la izquierda exista siempre y no se esconda por márgenes/anchos previos */
-.form-container.izquierda {
-  width: auto !important;
-  margin: 0 !important;
-  overflow: auto;      /* si crece, scrollea solo la izquierda */
-  z-index: 1;
-}
-
-/* La derecha no debe desbordar ni tapar */
-.form-container.derecha {
-  min-width: 0;        /* CLAVE para que no empuje a la izquierda */
-  z-index: 2;
-}
-
-/* Si alguna clase 'navegacion' tenía estilos agresivos, la neutralizamos */
+/* ============ NEUTRALIZAR ESTILOS AGRESIVOS ANTERIORES ============ */
 .navegacion {
   position: relative !important;
   display: flex !important;
@@ -313,23 +307,25 @@ label { margin-bottom: 5px; font-weight: bold; }
   opacity: 1 !important;
 }
 
-/* El logo con un tamaño razonable */
-.imagen-header {
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
+/* Si hay figuras/rombos decorativos con z-index alto, bájalos */
+.shape, .fondo-azul, .fondo-verde, .ondas, .decoracion {
+  position: absolute;
+  z-index: 0 !important;
+  pointer-events: none;
 }
 
-/* El fondo solo para esta vista (no afecta Login) */
-.fondo-listados {
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden;
-  background-color: #f0f0f0;
-  background-image: url('/Img/BackgroundsNormal.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1024px) {
+  .layout-listado-fichas { grid-template-columns: 240px 1fr; padding: 24px; }
+}
+@media (max-width: 768px) {
+  .layout-listado-fichas { grid-template-columns: 1fr; padding: 16px; }
+  .form-container.izquierda,
+  .izquierda.navegacion {
+    position: relative; height: auto; overflow: visible;
+    background: #0C3147;
+  }
+  .form-container.derecha,
+  .derecha.contenido { padding: 16px; }
 }
 

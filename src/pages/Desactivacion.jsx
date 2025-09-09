@@ -1,14 +1,17 @@
+// src/pages/Desactivacion.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Desactivacion.css";
-import logoSena from "/Img/logoSena.png";
-import lupaIcono from "/Img/lupa_icono.png";
-import personOff from "/Img/person_off.png";
-import folderOff from "/Img/folder_off.png";
-import personCheck from "/Img/person_check.png";
-import folderOpen from "/Img/folder_open.png";
+import logoSena from "/img/logoSena.png";
+import personOff from "/img/person_off.png";
+import folderOff from "/img/folder_off.png";
+import personCheck from "/img/person_check.png";
+import folderOpen from "/img/folder_open.png";
 import { FaArrowLeft } from "react-icons/fa";
 
-const Desactivacion = ({ setVista }) => {
+const Desactivacion = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="layout-desactivacion">
       {/* CONTENEDOR PADRE DE 2 COLUMNAS */}
@@ -16,12 +19,6 @@ const Desactivacion = ({ setVista }) => {
         {/* Columna izquierda */}
         <div className="form-container izquierda navegacion">
           <img src={logoSena} alt="Logo SENA" className="imagen-header" />
-
-          <div className="busqueda-container">
-            
-          </div>
-
-          
         </div>
 
         {/* Columna derecha */}
@@ -38,45 +35,39 @@ const Desactivacion = ({ setVista }) => {
             <div className="espaciado-boton">
               <div className="boton-con-imagen">
                 <img src={personOff} alt="Desactivar usuario" className="imagen-boton" />
-                <button
-              className="btn"
-              onClick={() => setVista("desactivarUsuario")} // <- aquí navega a DesactivarUsuario
-            >
-              Desactivar usuarios
-            </button>
+                <button className="btn" onClick={() => navigate("/desactivar-usuario")}>
+                  Desactivar usuarios
+                </button>
               </div>
               <div className="boton-con-imagen">
                 <img src={folderOff} alt="Desactivar ficha" className="imagen-boton" />
                 <button
-  className="boton-desactivar"
-  onClick={() => setVista("listadoFichasDesactivar")}
->
-  Desactivar ficha
-</button>
-
+                  className="boton-desactivar"
+                  onClick={() => navigate("/listado-fichas-desactivar")}
+                >
+                  Desactivar ficha
+                </button>
               </div>
             </div>
 
             <div className="espaciado-boton">
               <div className="boton-con-imagen">
                 <img src={personCheck} alt="Activar usuario" className="imagen-boton" />
-               <button
-  className="boton-activar"
-  onClick={() => setVista("listadoInstructoresActivar")}
->
-  Activar usuario
-</button>
-
+                <button
+                  className="boton-activar"
+                  onClick={() => navigate("/listado-instructores-activar")}
+                >
+                  Activar usuario
+                </button>
               </div>
               <div className="boton-con-imagen">
                 <img src={folderOpen} alt="Activar ficha" className="imagen-boton" />
                 <button
-  className="boton-activar"
-  onClick={() => setVista("listadoFichasActivar")}
->
-  Activar ficha
-</button>
-
+                  className="boton-activar"
+                  onClick={() => navigate("/listado-fichas-activar")}
+                >
+                  Activar ficha
+                </button>
               </div>
             </div>
           </div>
@@ -87,7 +78,7 @@ const Desactivacion = ({ setVista }) => {
 
       {/* Botón salir */}
       <div className="flecha-container">
-        <button className="boton-flecha" onClick={() => setVista("reporteGeneral")}>
+        <button className="boton-flecha" onClick={() => navigate("/reporte-general")}>
           <FaArrowLeft /> Salir
         </button>
       </div>
