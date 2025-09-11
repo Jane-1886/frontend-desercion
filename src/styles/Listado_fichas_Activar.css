@@ -323,7 +323,7 @@ body { overflow-x: hidden; }
   .form-container.izquierda,
   .izquierda.navegacion {
     position: relative; height: auto; overflow: visible;
-    background: #0C3147;
+    background: #fff;
   }
   .form-container.derecha,
   .derecha.contenido { padding: 16px; }
