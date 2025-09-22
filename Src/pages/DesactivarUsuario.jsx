@@ -1,11 +1,11 @@
 // src/pages/DesactivarUsuario.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/formulario_creacion_usuarios.css";
 import logoSena from "/img/logoSena.png";
 import errorimg from "/img/error.png";
 import okimg from "/img/check_circle.png";
-import api from "../controlador/api.js"; // ✅ axios con token
+import api from "../controlador/api.js"; // axios con baseURL y token
 
 export default function DesactivarUsuario() {
   const navigate = useNavigate();
@@ -48,22 +48,21 @@ export default function DesactivarUsuario() {
     try {
       const { data } = await api.get(`/api/usuarios/by-email/${encodeURIComponent(email)}`);
 
-      // 🔧 Fix: paréntesis al mezclar ?? con || (o usa este patrón compacto)
       const fullName = [data?.nombres, data?.apellidos].filter(Boolean).join(" ").trim();
       const nombreNormalizado =
-        (data?.nombre ?? data?.Nombre ?? data?.Nombre_Usuario ?? fullName) ||
-        "(Sin nombre)";
+        (data?.nombre ?? data?.Nombre ?? data?.Nombre_Usuario ?? fullName) || "(Sin nombre)";
 
       const u = {
         id: data?.id ?? data?.ID_Usuario ?? data?.ID ?? data?.usuarioId ?? null,
         nombre: nombreNormalizado,
-        email: data?.email ?? data?.correo ?? data?.Correo ?? email,
+        email: data?.email ?? data?.Email ?? data?.correo ?? data?.Correo ?? email,
         rol: data?.rolNombre ?? data?.Rol ?? (data?.idRol ? `Rol ${data.idRol}` : "Rol desconocido"),
         idRol: data?.idRol ?? data?.ID_Rol ?? null,
         activo:
           typeof data?.activo === "boolean"
             ? data.activo
-            : data?.Estado === "ACTIVO" || data?.estado === "ACTIVO",
+            : (data?.Estado ?? data?.estado ?? "").toString().toUpperCase() === "ACTIVO",
+        estado: (data?.Estado ?? data?.estado ?? (data?.activo ? "ACTIVO" : "INACTIVO")).toString().toUpperCase(),
       };
 
       if (!u.id) {
@@ -100,24 +99,23 @@ export default function DesactivarUsuario() {
     setConfirmOpen(true);
   };
 
-  // PUT /api/usuarios/:id/desactivar
+  // PATCH /api/usuarios/:id/estado
   const desactivarUsuario = async () => {
     if (confirmTexto.trim().toUpperCase() !== "DESACTIVAR") return;
 
     setCargandoAccion(true);
     try {
       const payload = {
+        estado: "INACTIVO", // el backend normaliza ACTIVO/INACTIVO
         motivo,
         observacion,
-        activo: false,
-        estado: "INACTIVO",
       };
 
-      await api.put(`/api/usuarios/${usuario.id}/desactivar`, payload);
+      await api.patch(`/api/usuarios/${usuario.id}/estado`, payload);
 
       setSuccessOpen(true);
       setConfirmOpen(false);
-      setUsuario((prev) => (prev ? { ...prev, activo: false } : prev));
+      setUsuario((prev) => (prev ? { ...prev, activo: false, estado: "INACTIVO" } : prev));
       setMotivo("");
       setObservacion("");
     } catch (err) {
@@ -132,6 +130,13 @@ export default function DesactivarUsuario() {
       setCargandoAccion(false);
     }
   };
+
+  // Tooltip para explicar por qué está deshabilitado el botón
+  const disabledReason = useMemo(() => {
+    if (!usuario) return "Primero busca y selecciona un usuario";
+    if (!motivo) return "Selecciona un motivo";
+    return null;
+  }, [usuario, motivo]);
 
   return (
     <>
@@ -172,6 +177,7 @@ export default function DesactivarUsuario() {
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
                     style={{ flex: 1 }}
+                    onKeyDown={(e) => e.key === "Enter" && buscarUsuario()}
                   />
                   <button className="btn" onClick={buscarUsuario} disabled={cargandoBusqueda}>
                     {cargandoBusqueda ? "Buscando..." : "Buscar"}
@@ -187,15 +193,9 @@ export default function DesactivarUsuario() {
                     style={{ padding: 16, border: "1px solid #eee", borderRadius: 12 }}
                   >
                     <h3 style={{ marginTop: 0 }}>Usuario encontrado</h3>
-                    <p>
-                      <strong>Nombre:</strong> {usuario.nombre}
-                    </p>
-                    <p>
-                      <strong>Correo:</strong> {usuario.email}
-                    </p>
-                    <p>
-                      <strong>Rol:</strong> {usuario.rol}
-                    </p>
+                    <p><strong>Nombre:</strong> {usuario.nombre}</p>
+                    <p><strong>Correo:</strong> {usuario.email}</p>
+                    <p><strong>Rol:</strong> {usuario.rol}</p>
                     <p>
                       <strong>Estado:</strong>{" "}
                       <span style={{ color: usuario.activo ? "#39A900" : "#b00" }}>
@@ -213,9 +213,7 @@ export default function DesactivarUsuario() {
                 <label>
                   Motivo de desactivación
                   <select value={motivo} onChange={(e) => setMotivo(e.target.value)}>
-                    <option value="" disabled hidden>
-                      Selecciona un motivo
-                    </option>
+                    <option value="" disabled hidden>Selecciona un motivo</option>
                     <option value="retiro">Retiro voluntario</option>
                     <option value="sancion">Sanción disciplinaria</option>
                     <option value="egreso">Egreso / finalización</option>
@@ -233,7 +231,12 @@ export default function DesactivarUsuario() {
                   />
                 </label>
 
-                <button className="btn" onClick={abrirConfirmacion} disabled={!usuario || cargandoAccion}>
+                <button
+                  className="btn"
+                  onClick={abrirConfirmacion}
+                  disabled={!!disabledReason || cargandoAccion}
+                  title={disabledReason || ""}
+                >
                   Desactivar usuario
                 </button>
               </div>
@@ -244,14 +247,14 @@ export default function DesactivarUsuario() {
         </div>
       </div>
 
-      {/* Modal de confirmación */}
+      {/* Modal de confirmación (forzamos display:flex por si tu CSS tiene .modal { display:none }) */}
       {confirmOpen && (
-        <div className="modal" onClick={() => setConfirmOpen(false)}>
+        <div className="modal" style={{ display: "flex" }} onClick={() => setConfirmOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Confirmar desactivación</h2>
             <p>
-              Esta acción desactivará el usuario <strong>{usuario?.nombre}</strong> ({usuario?.email}
-              ). Para confirmar, escribe <strong>DESACTIVAR</strong>:
+              Esta acción desactivará el usuario <strong>{usuario?.nombre}</strong> ({usuario?.email}).<br />
+              Para confirmar, escribe <strong>DESACTIVAR</strong>:
             </p>
             <input
               type="text"
@@ -259,6 +262,7 @@ export default function DesactivarUsuario() {
               onChange={(e) => setConfirmTexto(e.target.value)}
               placeholder="DESACTIVAR"
               style={{ width: "100%", padding: 8, marginTop: 8 }}
+              onKeyDown={(e) => e.key === "Enter" && desactivarUsuario()}
             />
             <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
               <button
@@ -278,30 +282,28 @@ export default function DesactivarUsuario() {
 
       {/* Modal de error */}
       {errorOpen && (
-        <div className="modal" onClick={() => setErrorOpen(false)}>
+        <div className="modal" style={{ display: "flex" }} onClick={() => setErrorOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={errorImg} alt="Error" />
+            <img src={errorimg} alt="Error" />
             <h2>ERROR</h2>
             <p>{errorMsg}</p>
-            <button className="ok-button" onClick={() => setErrorOpen(false)}>
-              Ok
-            </button>
+            <button className="ok-button" onClick={() => setErrorOpen(false)}>Ok</button>
           </div>
         </div>
       )}
 
       {/* Modal de éxito */}
       {successOpen && (
-        <div className="modal" onClick={() => setSuccessOpen(false)}>
+        <div className="modal" style={{ display: "flex" }} onClick={() => setSuccessOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={okImg} alt="Éxito" />
+            <img src={okimg} alt="Éxito" />
             <h2>¡ÉXITOSO!</h2>
             <p>El usuario ha sido desactivado correctamente.</p>
             <button
               className="ok-button"
               onClick={() => {
                 setSuccessOpen(false);
-                navigate("/desactivacion"); // ✅ volvemos por Router
+                navigate("/desactivacion");
               }}
             >
               Ok

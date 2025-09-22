@@ -18,11 +18,12 @@ import ListadoFichasActivar from "./pages/ListadoFichasActivar";
 import CrearUsuario from "./pages/CrearUsuario";
 import CrearUsuario2 from "./pages/CrearUsuario2";
 
+
 /* --------- Guardias --------- */
 function RutaPrivadaCoordinador() {
   const token = localStorage.getItem("token");
   const rol = Number(localStorage.getItem("rol"));
-  if (!token) return <Navigate to="/login" replace />; // sin sesión → login
+  if (!token) return <Navigate to="/login" replace />;
   if (rol !== 3) return <Navigate to="/no-autorizado" replace />;
   return <Outlet />;
 }
@@ -53,13 +54,19 @@ function PaginaNoEncontrada() {
   );
 }
 
-/* --------- Aliases (compatibilidad con enlaces viejos) --------- */
+/* --------- Aliases (compat) --------- */
 const AliasMenu = () => <Navigate to="/menu" replace />;
 const AliasListadoFichas = () => <Navigate to="/listado-fichas" replace />;
 const AliasReporteGeneral = () => <Navigate to="/reporte-general" replace />;
-const AliasListInstrActivar = () => <Navigate to="/listado-instructores-activar" replace />;
-const AliasListFichasDesactivar = () => <Navigate to="/listado-fichas-desactivar" replace />;
-const AliasListFichasActivar = () => <Navigate to="/listado-fichas-activar" replace />;
+const AliasListInstrActivar = () => (
+  <Navigate to="/listado-instructores-activar" replace />
+);
+const AliasListFichasDesactivar = () => (
+  <Navigate to="/listado-fichas-desactivar" replace />
+);
+const AliasListFichasActivar = () => (
+  <Navigate to="/listado-fichas-activar" replace />
+);
 const AliasDesactivarUsuario = () => <Navigate to="/desactivar-usuario" replace />;
 const AliasCrearUsuario2 = () => <Navigate to="/crear-usuario2" replace />;
 
@@ -67,13 +74,12 @@ const AliasCrearUsuario2 = () => <Navigate to="/crear-usuario2" replace />;
 export default function App() {
   return (
     <Routes>
-      {/* Redirección raíz → login */}
+      {/* Raíz → login */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
       {/* Públicas (solo si NO estás logueado) */}
       <Route element={<RutaPublicaSoloSiNoLogueado />}>
         <Route path="/login" element={<Login />} />
-        <Route path="/crear" element={<CrearUsuario />} />
       </Route>
 
       {/* Privadas (rol 3) */}
@@ -90,6 +96,9 @@ export default function App() {
         <Route path="/listado-instructores-activar" element={<ListadoInstructoresActivar />} />
         <Route path="/listado-fichas-activar" element={<ListadoFichasActivar />} />
         <Route path="/crear-usuario2" element={<CrearUsuario2 />} />
+
+        {/* ✅ Ruta privada correcta para CrearUsuario */}
+        <Route path="/crear-usuario" element={<CrearUsuario />} />
       </Route>
 
       {/* Aliases rutas antiguas */}
@@ -103,6 +112,9 @@ export default function App() {
       <Route path="/listadoFichasActivar" element={<AliasListFichasActivar />} />
       <Route path="/desactivarUsuario" element={<AliasDesactivarUsuario />} />
       <Route path="/crearUsuario2" element={<AliasCrearUsuario2 />} />
+
+      {/* Alias cómodo: /crear → /crear-usuario */}
+      <Route path="/crear" element={<Navigate to="/crear-usuario" replace />} />
 
       {/* Estados especiales y 404 */}
       <Route path="/no-autorizado" element={<NoAutorizado />} />

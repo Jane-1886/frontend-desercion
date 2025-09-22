@@ -1,5 +1,5 @@
 // src/pages/ListadoFichasActivar.jsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Listado_fichas_Activar.css";
 import logoSena from "/img/logoSena.png";
@@ -8,8 +8,6 @@ import folderIcon from "/img/folder_icon.png";
 import helpIcon from "/img/help_icon.png";
 import checkIcon from "/img/check_circle.png";
 import { FaArrowLeft } from "react-icons/fa";
-// Si luego conectas backend:
-// import api from "../controlador/api.js";
 
 const ListadoFichasActivar = () => {
   const navigate = useNavigate();
@@ -17,55 +15,132 @@ const ListadoFichasActivar = () => {
   const [busquedaIzquierda, setBusquedaIzquierda] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [fichaSeleccionada, setFichaSeleccionada] = useState(null);
+  const [fichas, setFichas] = useState([]); // [{id, code}]
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState("");
+
+  const [fichaSeleccionada, setFichaSeleccionada] = useState(null); // {id, code}
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [mostrarExito, setMostrarExito] = useState(false);
 
+  const API_BASE = (import.meta.env.VITE_API_URL
+    ? String(import.meta.env.VITE_API_URL).replace(/\/+$/, "")
+    : "");
+  const url = (path) => (API_BASE ? `${API_BASE}${path}` : path);
+
+  const authHeaders = () => {
+    const token = localStorage.getItem("token") || "";
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+  };
+
+  // Normaliza distintas respuestas a [{id, code}]
+  const toItems = (raw) => {
+    const arr = Array.isArray(raw) ? raw
+      : Array.isArray(raw?.fichas) ? raw.fichas
+      : Array.isArray(raw?.data) ? raw.data
+      : [];
+
+    return arr
+      .map((x) => {
+        const id = x?.idFicha ?? x?.ID_Ficha ?? x?.id ?? x?.ID ?? x?.codigo ?? x?.Codigo ?? x?.numero ?? x?.Numero ?? x;
+        const code = x?.codigo ?? x?.Codigo ?? x?.numero ?? x?.Numero ?? id;
+        return { id: String(id), code: String(code) };
+      })
+      .filter((o) => o.id && o.code);
+  };
+
+  // Cargar inactivas intentando varias rutas
+  const cargarInactivas = useCallback(async () => {
+    setCargando(true);
+    setError("");
+
+    const endpoints = [
+      "/api/fichas?estado=inactivas",
+      "/api/fichas/inactivas",
+      "/api/fichas/estado/inactivas", // si usas router de estados
+      "/api/estados-fichas/inactivas", // alias opcional
+      "/api/estados-fichas/por-estado?estado=Inactivo",
+    ];
+
+    for (const ep of endpoints) {
+      try {
+        const resp = await fetch(url(ep), { headers: authHeaders() });
+        if (!resp.ok) {
+          if (resp.status === 401 || resp.status === 403) {
+            const body = await resp.json().catch(() => ({}));
+            setError(body?.mensaje || body?.message || "No autorizado.");
+            setCargando(false);
+            return;
+          }
+          continue;
+        }
+        const data = await resp.json().catch(() => ({}));
+        const items = toItems(data);
+        if (items.length > 0) {
+          setFichas(items);
+          setCargando(false);
+          return;
+        }
+      } catch {
+        // intenta siguiente
+      }
+    }
+
+    setError("No se pudieron obtener fichas inactivas.");
+    setCargando(false);
+  }, []);
+
+  useEffect(() => { cargarInactivas(); }, [cargarInactivas]);
+
   const botonesIzquierda = useMemo(
-    () =>
-      ["Notificaciones"].filter((txt) =>
-        txt.toLowerCase().includes(busquedaIzquierda.trim().toLowerCase())
-      ),
+    () => ["Notificaciones"].filter((txt) =>
+      txt.toLowerCase().includes(busquedaIzquierda.trim().toLowerCase())
+    ),
     [busquedaIzquierda]
   );
 
-  // TODO: reemplazar por datos reales del backend cuando los tengas
-  const fichas = useMemo(
-    () => [2617001, 2617543, 2618129, 2614968, 2612387, 2615014, 2618902],
-    []
-  );
-
   const fichasFiltradas = useMemo(
-    () => fichas.filter((f) => f.toString().includes(searchTerm.trim())),
+    () => fichas.filter((f) => f.code.toString().includes(searchTerm.trim())),
     [fichas, searchTerm]
   );
 
   const abrirModalConfirmacion = (ficha) => {
-    setFichaSeleccionada(ficha);
+    setFichaSeleccionada(ficha); // {id, code}
     setMostrarConfirmacion(true);
   };
-
   const cerrarModalConfirmacion = () => {
     setMostrarConfirmacion(false);
     setFichaSeleccionada(null);
   };
-
-  const confirmarActivacion = async () => {
-    try {
-      // Ejemplo para cuando conectes backend (Opción A: /api/...):
-      // await api.post("/api/fichas/activar", { fichaId: fichaSeleccionada });
-
-      setMostrarConfirmacion(false);
-      setMostrarExito(true);
-    } catch (e) {
-      console.error(e);
-      alert("No se pudo activar la ficha. Intenta nuevamente.");
-    }
-  };
-
   const cerrarExito = () => {
     setMostrarExito(false);
     setFichaSeleccionada(null);
+  };
+
+  const confirmarActivacion = async () => {
+    if (!fichaSeleccionada?.id) return;
+    try {
+      const resp = await fetch(url(`/api/fichas/${encodeURIComponent(fichaSeleccionada.id)}/estado`), {
+        method: "PATCH",
+        headers: authHeaders(),
+        body: JSON.stringify({ estado: "Activo" }),
+      });
+
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}));
+        alert("No se pudo activar la ficha. " + (body?.mensaje || body?.message || `HTTP ${resp.status}`));
+        return;
+      }
+
+      setMostrarConfirmacion(false);
+      setMostrarExito(true);
+      setFichas((prev) => prev.filter((x) => x.id !== fichaSeleccionada.id));
+    } catch (e) {
+      alert("No se pudo activar la ficha. " + (e?.message || "Error de red"));
+    }
   };
 
   return (
@@ -103,10 +178,9 @@ const ListadoFichasActivar = () => {
         <div className="titulo">
           Te encuentras visualizando{" "}
           <span style={{ color: "#00304D" }}>tu listado de</span>{" "}
-          <span style={{ color: "#39A900" }}>fichas:</span>
+          <span style={{ color: "#39A900" }}>fichas (inactivas):</span>
         </div>
 
-        {/* Buscador a la derecha */}
         <div className="info-pequeña">
           <input
             type="text"
@@ -119,11 +193,18 @@ const ListadoFichasActivar = () => {
 
         <div className="linea" />
 
+        {cargando && <p style={{ color: "#666", fontWeight: "bold" }}>Cargando…</p>}
+        {!cargando && error && (
+          <div style={{ color: "#c00", fontWeight: "bold", marginBottom: 8 }}>
+            {error} <button className="seleccionar-boton" onClick={cargarInactivas}>Reintentar</button>
+          </div>
+        )}
+
         <div className="sub-div" id="ficha-container">
           {fichasFiltradas.map((ficha) => (
-            <div className="sub-item" key={ficha}>
+            <div className="sub-item" key={`${ficha.id}::${ficha.code}`}>
               <img src={folderIcon} alt="Icono Ficha" className="icono-sub-item" />
-              Ficha - {ficha}
+              Ficha - {ficha.code}
               <button
                 className="seleccionar-boton"
                 onClick={() => abrirModalConfirmacion(ficha)}
@@ -133,7 +214,7 @@ const ListadoFichasActivar = () => {
             </div>
           ))}
 
-          {fichasFiltradas.length === 0 && (
+          {!cargando && !error && fichasFiltradas.length === 0 && (
             <p style={{ color: "#999", fontWeight: "bold" }}>
               No se encontraron fichas.
             </p>
@@ -148,7 +229,7 @@ const ListadoFichasActivar = () => {
         <div className="modal" role="dialog" aria-modal="true" style={{ display: "flex" }}>
           <div className="modal-content">
             <img src={helpIcon} alt="Confirmación" className="modal-image" />
-            <p className="modal-question">¿Está seguro de realizar esta acción?</p>
+            <p className="modal-question">¿Está seguro de activar la ficha {fichaSeleccionada?.code}?</p>
             <div className="modal-buttons">
               <button className="modal-button" onClick={confirmarActivacion}>Sí</button>
               <button className="modal-button" onClick={cerrarModalConfirmacion}>No</button>
@@ -163,13 +244,12 @@ const ListadoFichasActivar = () => {
           <div className="modal-content">
             <img src={checkIcon} alt="Confirmado" className="modal-image" />
             <p className="confirmation-title">Acción confirmada.</p>
-            <p className="confirmation-subtitle">Ficha activada.</p>
+            <p className="confirmation-subtitle">Ficha {fichaSeleccionada?.code} activada.</p>
             <button className="modal-button close-button" onClick={cerrarExito}>Ok</button>
           </div>
         </div>
       )}
 
-      {/* Botón Salir */}
       <div className="flecha-container">
         <button className="boton-flecha" onClick={() => navigate("/desactivacion")}>
           <FaArrowLeft /> Salir

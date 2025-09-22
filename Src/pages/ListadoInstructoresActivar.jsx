@@ -1,5 +1,5 @@
 // src/pages/ListadoInstructoresActivar.jsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Listado_instructores_activar.css";
 import logoSena from "/img/logoSena.png";
@@ -8,40 +8,75 @@ import personIcon from "/img/person_icon.png";
 import helpIcon from "/img/help_icon.png";
 import checkIcon from "/img/check_circle.png";
 import { FaArrowLeft } from "react-icons/fa";
+import api from "../controlador/api.js"; // ✅ axios con baseURL y token
 
 const ListadoInstructoresActivar = () => {
   const navigate = useNavigate();
 
   const [busquedaIzquierda, setBusquedaIzquierda] = useState("");
   const [busquedaInstructores, setBusquedaInstructores] = useState("");
+
+  const [instructores, setInstructores] = useState([]); // [{id, nombre, email, estado}]
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState("");
+
   const [instructorSeleccionado, setInstructorSeleccionado] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
   const [mostrarExito, setMostrarExito] = useState(false);
 
   const botonesIzquierda = useMemo(
-    () =>
-      ["Notificaciones"].filter((txt) =>
-        txt.toLowerCase().includes(busquedaIzquierda.trim().toLowerCase())
-      ),
+    () => ["Notificaciones"].filter((txt) =>
+      txt.toLowerCase().includes(busquedaIzquierda.trim().toLowerCase())
+    ),
     [busquedaIzquierda]
   );
 
-  // TODO: reemplazar por datos reales del backend cuando conectes /api/instructores
-  const instructores = useMemo(
-    () => ["Instructor 1", "Instructor 2", "Instructor 3", "Instructor 4", "Instructor 5", "Instructor 6"],
-    []
-  );
+  // Carga instructores INACTIVOS desde el backend (varias rutas tolerantes)
+  const cargarInstructores = useCallback(async () => {
+    setCargando(true);
+    setError("");
+
+    const endpoints = [
+      "/api/usuarios/instructores/inactivos",
+      "/api/usuarios/instructores?estado=INACTIVO",
+    ];
+
+    for (const ep of endpoints) {
+      try {
+        const { data } = await api.get(ep);
+        if (Array.isArray(data) && data.length) {
+          // Normaliza
+          const items = data.map((u) => ({
+            id: u?.id ?? u?.ID_Usuario ?? u?.ID ?? null,
+            nombre: u?.nombre ?? u?.Nombre_Usuario ?? u?.Nombre ?? "(Sin nombre)",
+            email: u?.email ?? u?.Email ?? "",
+            estado: (u?.estado ?? u?.Estado ?? "").toString().toUpperCase(),
+          })).filter(x => x.id);
+          setInstructores(items);
+          setCargando(false);
+          return;
+        }
+      } catch {
+        // prueba el siguiente endpoint
+      }
+    }
+
+    setError("No se pudieron obtener instructores inactivos.");
+    setCargando(false);
+  }, []);
+
+  useEffect(() => { cargarInstructores(); }, [cargarInstructores]);
 
   const instructoresFiltrados = useMemo(
     () =>
       instructores.filter((i) =>
-        i.toLowerCase().includes(busquedaInstructores.trim().toLowerCase())
+        [i.nombre, i.email].join(" ").toLowerCase().includes(busquedaInstructores.trim().toLowerCase())
       ),
     [instructores, busquedaInstructores]
   );
 
-  const abrirModalConfirmacion = (nombre) => {
-    setInstructorSeleccionado(nombre);
+  const abrirModalConfirmacion = (inst) => {
+    setInstructorSeleccionado(inst);
     setMostrarConfirmacion(true);
   };
 
@@ -50,11 +85,22 @@ const ListadoInstructoresActivar = () => {
     setInstructorSeleccionado(null);
   };
 
+  // PATCH /api/usuarios/:id/estado  { estado: "ACTIVO" }
   const confirmarAccion = async () => {
-    // Aquí podrías llamar a tu API para activar:
-    // await api.post('/api/instructores/activar', { nombre: instructorSeleccionado })
-    setMostrarConfirmacion(false);
-    setMostrarExito(true);
+    if (!instructorSeleccionado?.id) return;
+    try {
+      await api.patch(`/api/usuarios/${instructorSeleccionado.id}/estado`, { estado: "ACTIVO" });
+      setMostrarConfirmacion(false);
+      setMostrarExito(true);
+      setInstructores((prev) => prev.filter((x) => x.id !== instructorSeleccionado.id));
+    } catch (e) {
+      const msg =
+        e?.response?.data?.mensaje ||
+        e?.response?.data?.message ||
+        e?.message ||
+        "No se pudo activar el instructor.";
+      setError(msg);
+    }
   };
 
   const cerrarExito = () => {
@@ -85,9 +131,7 @@ const ListadoInstructoresActivar = () => {
             <button
               className="boton"
               key={idx}
-              onClick={() => {
-                if (txt === "Notificaciones") navigate("/notificaciones");
-              }}
+              onClick={() => txt === "Notificaciones" && navigate("/notificaciones")}
             >
               {txt}
             </button>
@@ -100,37 +144,47 @@ const ListadoInstructoresActivar = () => {
         <div className="titulo">
           Te encuentras visualizando{" "}
           <span style={{ color: "#00304D" }}>el listado de</span>{" "}
-          <span style={{ color: "#39A900" }}>instructores:</span>
+          <span style={{ color: "#39A900" }}>instructores (inactivos):</span>
         </div>
 
         <div className="sub-div">
           <input
             type="text"
             className="busqueda-instructores"
-            placeholder="Buscar instructores"
+            placeholder="Buscar instructores por nombre o email"
             value={busquedaInstructores}
             onChange={(e) => setBusquedaInstructores(e.target.value)}
           />
 
           <div className="linea" />
 
+          {cargando && <p style={{ color: "#666", fontWeight: "bold" }}>Cargando…</p>}
+          {!cargando && error && (
+            <div style={{ color: "#c00", fontWeight: "bold", marginBottom: 8 }}>
+              {error} <button className="seleccionar-boton" onClick={cargarInstructores}>Reintentar</button>
+            </div>
+          )}
+
           <div className="texto-lista">Lista de instructores:</div>
 
           <div className="instructor-container">
-            {instructoresFiltrados.map((nombre, i) => (
-              <div className="instructor" key={i}>
-                <img src={personIcon} alt={nombre} className="instructor-imagen" />
-                {nombre}
+            {instructoresFiltrados.map((inst) => (
+              <div className="instructor" key={inst.id}>
+                <img src={personIcon} alt={inst.nombre} className="instructor-imagen" />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span>{inst.nombre}</span>
+                  <small style={{ color: "#555" }}>{inst.email}</small>
+                </div>
                 <button
                   className="seleccionar-boton"
-                  onClick={() => abrirModalConfirmacion(nombre)}
+                  onClick={() => abrirModalConfirmacion(inst)}
                 >
                   Seleccionar
                 </button>
               </div>
             ))}
 
-            {instructoresFiltrados.length === 0 && (
+            {!cargando && !error && instructoresFiltrados.length === 0 && (
               <p style={{ color: "#999", fontWeight: "bold" }}>
                 No se encontraron instructores
               </p>
@@ -149,15 +203,11 @@ const ListadoInstructoresActivar = () => {
           <div className="modal-content">
             <img src={helpIcon} alt="Ayuda" className="modal-image" />
             <p className="modal-question">
-              ¿Está seguro de activar al usuario <strong>{instructorSeleccionado}</strong>?
+              ¿Está seguro de activar al usuario <strong>{instructorSeleccionado?.nombre}</strong>?
             </p>
             <div>
-              <button className="modal-button" onClick={confirmarAccion}>
-                Sí
-              </button>
-              <button className="modal-button" onClick={cerrarModalConfirmacion}>
-                No
-              </button>
+              <button className="modal-button" onClick={confirmarAccion}>Sí</button>
+              <button className="modal-button" onClick={cerrarModalConfirmacion}>No</button>
             </div>
           </div>
         </div>
@@ -170,9 +220,7 @@ const ListadoInstructoresActivar = () => {
             <img src={checkIcon} alt="Éxito" className="modal-image" />
             <p className="modal-text">Acción confirmada.</p>
             <p className="modal-subtext">Usuario Activado.</p>
-            <button className="modal-button" onClick={cerrarExito}>
-              Ok
-            </button>
+            <button className="modal-button" onClick={cerrarExito}>Ok</button>
           </div>
         </div>
       )}

@@ -8,7 +8,7 @@ import personIcon from "/img/person_icon.png";
 import api from "../controlador/api.js";
 
 const ListaAprendices = () => {
-  const { idFicha } = useParams();       // /lista-aprendices/:idFicha
+  const { idFicha } = useParams(); // /lista-aprendices/:idFicha
   const navigate = useNavigate();
 
   const [busqueda, setBusqueda] = useState("");
@@ -16,7 +16,14 @@ const ListaAprendices = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  // Helpers súper defensivos
+  // Modal Historial
+  const [modalOpen, setModalOpen] = useState(false);
+  const [aprendizSel, setAprendizSel] = useState(null);
+  const [historial, setHistorial] = useState([]);
+  const [cargandoHistorial, setCargandoHistorial] = useState(false);
+  const [errorHistorial, setErrorHistorial] = useState("");
+
+  // Helpers
   const toStr = (v) => (v == null ? "" : String(v));
   const nonEmpty = (s) => toStr(s).trim().length > 0;
   const coalesce = (...vals) => {
@@ -27,29 +34,20 @@ const ListaAprendices = () => {
     return "";
   };
   const buildNombre = (row) => {
-    // Construye nombre de forma segura con cualquier combinación posible
     const n1 = coalesce(row?.nombre, row?.Nombre);
     if (n1) return n1;
-
     const n = coalesce(row?.nombres, row?.Nombres);
     const a = coalesce(row?.apellidos, row?.Apellidos);
     const full = [n, a].filter(nonEmpty).join(" ").trim();
     if (full) return full;
-
-    // Otros campos que a veces llegan
     const alt = coalesce(row?.fullName, row?.FullName, row?.NOMBRE_COMPLETO);
     return alt || "(Sin nombre)";
   };
-
-  const buildInstructor = (row) => {
-    return (
-      coalesce(row?.instructor, row?.Instructor, row?.nombreInstructor, row?.NOMBRE_INSTRUCTOR) ||
-      "Sin instructor"
-    );
-  };
+  const buildInstructor = (row) =>
+    coalesce(row?.instructor, row?.Instructor, row?.nombreInstructor, row?.NOMBRE_INSTRUCTOR) ||
+    "Sin instructor";
 
   const buildId = (row) => {
-    // Acepta varias claves y convierte a string
     const idRaw =
       row?.id ??
       row?.ID ??
@@ -71,10 +69,8 @@ const ListaAprendices = () => {
       setCargando(true);
       setError("");
       try {
-        // Opción A: api.js sin /api => aquí sí incluimos /api
         const { data } = await api.get(`/api/aprendices`, { params: { ficha: idFicha } });
 
-        // Aceptar varios formatos: array directo, {rows:[...]}, {data:[...]} o {aprendices:[...]}
         const arr = Array.isArray(data)
           ? data
           : Array.isArray(data?.rows)
@@ -92,7 +88,7 @@ const ListaAprendices = () => {
             const instructor = buildInstructor(row);
             return { ...row, id, nombre, instructor };
           })
-          .filter((x) => nonEmpty(x.id)); // filtra solo válidos
+          .filter((x) => nonEmpty(x.id));
 
         if (!cancel) setAprendices(normalizados);
       } catch (e) {
@@ -107,15 +103,15 @@ const ListaAprendices = () => {
     };
 
     cargarAprendices();
-    return () => { cancel = true; };
+    return () => {
+      cancel = true;
+    };
   }, [idFicha]);
 
-  // Filtrado por nombre (insensible a mayúsculas)
+  // Filtrado por nombre
   const listaFiltrada = useMemo(() => {
     const t = busqueda.trim().toLowerCase();
-    return t
-      ? aprendices.filter((a) => toStr(a.nombre).toLowerCase().includes(t))
-      : aprendices;
+    return t ? aprendices.filter((a) => toStr(a.nombre).toLowerCase().includes(t)) : aprendices;
   }, [aprendices, busqueda]);
 
   // Agrupar por instructor
@@ -128,6 +124,79 @@ const ListaAprendices = () => {
     }
     return Array.from(map.entries()); // [ [instructor, [...aprendices]] ]
   }, [listaFiltrada]);
+
+  // Abrir modal y traer historial del backend
+  const abrirHistorial = async (aprendiz) => {
+    setAprendizSel(aprendiz);
+    setHistorial([]);
+    setErrorHistorial("");
+    setModalOpen(true);
+    setCargandoHistorial(true);
+    try {
+      // Ruta que ajustamos en el router: /api/asistencias/por-aprendiz/:id
+      const url = `/api/asistencias/por-aprendiz/${encodeURIComponent(aprendiz.id)}`;
+      const { data } = await api.get(url);
+
+      const lista = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.rows)
+        ? data.rows
+        : [];
+
+      setHistorial(lista);
+    } catch (e) {
+      console.error("[Historial] error:", e);
+      // 👇 Este es el catch que te comenté: mensaje claro por status
+      let msg = "No se pudo cargar el historial de asistencia.";
+      if (e?.response?.status === 401) msg = "No estás autenticada. Inicia sesión.";
+      else if (e?.response?.status === 403) msg = "No tienes permisos para ver el historial.";
+      setErrorHistorial(msg);
+    } finally {
+      setCargandoHistorial(false);
+    }
+  };
+
+  const cerrarHistorial = () => {
+    setModalOpen(false);
+    setAprendizSel(null);
+    setHistorial([]);
+    setErrorHistorial("");
+  };
+
+  // Estilos inline simples para modal
+  const overlayStyle = {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,.45)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 9999,
+  };
+  const modalStyle = {
+    background: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    width: "95%",
+    maxWidth: 900,
+    maxHeight: "85vh",
+    overflow: "auto",
+    boxShadow: "0 10px 30px rgba(0,0,0,.25)",
+  };
+  const headStyle = { marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "center" };
+  const tableStyle = { width: "100%", borderCollapse: "collapse" };
+  const thtd = { border: "1px solid #e5e7eb", padding: "8px", fontSize: 13, textAlign: "center" };
+
+  const cuenta = (r) => {
+    const v = [r.Lunes, r.Martes, r["Miércoles"], r.Jueves, r.Viernes];
+    let pres = 0,
+      aus = 0;
+    v.forEach((d) => {
+      if (d === "Sí asistió" || d === "Justificada") pres++;
+      else if (d === "No asistió" || d === "No justificada") aus++;
+    });
+    return { pres, aus };
+  };
 
   return (
     <div className="body-listado-aprendices">
@@ -183,10 +252,17 @@ const ListaAprendices = () => {
                       <div className="bloque-instructor" key={instructor}>
                         <h3>{instructor}</h3>
                         {lista.map((aprendiz) => (
-                          <div className="aprendiz-div" key={aprendiz.id}>
+                          <button
+                            type="button"
+                            className="aprendiz-div"
+                            key={aprendiz.id}
+                            onClick={() => abrirHistorial(aprendiz)}
+                            style={{ cursor: "pointer" }}
+                            title="Ver historial de asistencia"
+                          >
                             <img src={personIcon} alt="Aprendiz" className="imagen-aprendiz" />
                             <span>{aprendiz.nombre}</span>
-                          </div>
+                          </button>
                         ))}
                       </div>
                     ))
@@ -199,6 +275,78 @@ const ListaAprendices = () => {
           <p className="pie-de-pagina">2024 - Servicio Nacional de Aprendizaje SENA</p>
         </div>
       </div>
+
+      {/* MODAL HISTORIAL */}
+      {modalOpen && (
+        <div style={overlayStyle} onClick={cerrarHistorial}>
+          <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
+            <div style={headStyle}>
+              <h2 style={{ margin: 0 }}>
+                Historial de asistencia — {aprendizSel?.nombre} (ID: {aprendizSel?.id})
+              </h2>
+              <button onClick={cerrarHistorial} style={{ padding: "6px 10px" }}>
+                Cerrar ✖
+              </button>
+            </div>
+
+            {cargandoHistorial && <p>Cargando historial…</p>}
+            {errorHistorial && <p style={{ color: "#b00020" }}>{errorHistorial}</p>}
+
+            {!cargandoHistorial && !errorHistorial && (
+              <>
+                {historial.length === 0 ? (
+                  <p>No hay registros de asistencia.</p>
+                ) : (
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={tableStyle}>
+                      <thead>
+                        <tr>
+                          <th style={thtd}>#</th>
+                          <th style={thtd}>Semana / Fecha</th>
+                          <th style={thtd}>Lunes</th>
+                          <th style={thtd}>Martes</th>
+                          <th style={thtd}>Miércoles</th>
+                          <th style={thtd}>Jueves</th>
+                          <th style={thtd}>Viernes</th>
+                          <th style={thtd}>Pres</th>
+                          <th style={thtd}>Aus</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {historial.map((r, i) => {
+                          const { pres, aus } = cuenta(r);
+                          const fecha = r.Fecha_Semana || r.Fecha || r.fecha || "";
+                          return (
+                            <tr key={r.ID_Asistencia || i}>
+                              <td style={thtd}>{i + 1}</td>
+                              <td style={thtd}>{fecha ? String(fecha).slice(0, 10) : `Semana ${i + 1}`}</td>
+                              <td style={thtd}>{r.Lunes ?? "-"}</td>
+                              <td style={thtd}>{r.Martes ?? "-"}</td>
+                              <td style={thtd}>{r["Miércoles"] ?? "-"}</td>
+                              <td style={thtd}>{r.Jueves ?? "-"}</td>
+                              <td style={thtd}>{r.Viernes ?? "-"}</td>
+                              <td style={thtd}>{pres}</td>
+                              <td
+                                style={{
+                                  ...thtd,
+                                  color: aus >= 3 ? "#b00020" : "inherit",
+                                  fontWeight: aus >= 3 ? 700 : 400,
+                                }}
+                              >
+                                {aus}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

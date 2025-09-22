@@ -1,7 +1,6 @@
 // src/pages/Login.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Ajusta el nombre/caso según tu archivo real:
 import "../styles/Login.css";
 
 export default function Login() {
@@ -12,31 +11,56 @@ export default function Login() {
   const [cargando, setCargando] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Si ya hay sesión válida → al menú
-  useEffect(() => {
+  // ¿ya hay sesión?
+  const sesion = useMemo(() => {
     const token = localStorage.getItem("token");
-    const rol = Number(localStorage.getItem("rol"));
-    if (token && rol === 3) navigate("/menu", { replace: true });
+    const rol = Number(localStorage.getItem("rol") || 0);
+    const nombre = localStorage.getItem("nombreUsuario") || "";
+    return { token, rol, nombre };
+  }, []);
+
+  // Si ya hay sesión rol 3 → menú
+  useEffect(() => {
+    if (sesion.token && sesion.rol === 3) {
+      // Si quieres ver el botón en login, comenta esta línea temporalmente:
+      // return;
+      navigate("/menu", { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+
+  const safeDecodeJWT = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      if (!base64Url) return null;
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const json = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join("")
+      );
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  };
 
   const manejarLogin = async (e) => {
     e.preventDefault();
     setCargando(true);
     setErrorMsg("");
 
-    // 1) Si definiste VITE_API_URL, úsala. Si no, usa ruta relativa (proxy Vite).
     const API = (import.meta.env.VITE_API_URL
       ? String(import.meta.env.VITE_API_URL).replace(/\/+$/, "")
-      : ""
-    );
+      : "");
     const url = API ? `${API}/api/auth/login` : `/api/auth/login`;
 
-    // 2) Timeout para evitar “hangs” si el backend no responde
     const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 10000); // 10s
+    const t = setTimeout(() => ctrl.abort(), 10000);
 
     try {
-      const respuesta = await fetch(url, {
+      const resp = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), contrasena }),
@@ -45,37 +69,54 @@ export default function Login() {
       clearTimeout(t);
 
       let data = {};
-      try { data = await respuesta.json(); } catch { /* body vacío o no JSON */ }
+      try { data = await resp.json(); } catch {}
 
-      if (!respuesta.ok) {
+      if (!resp.ok) {
         const msg = data?.mensaje || data?.message || "❌ Credenciales inválidas";
         localStorage.clear();
         setErrorMsg(msg);
         return;
       }
 
-      // 3) Extrae token y rol desde distintas claves posibles
       const token = data?.token ?? "";
-      const u = data?.usuario ?? {};
-      const rolNum = Number(
-        u?.rol ?? u?.idRol ?? u?.ID_Rol ?? u?.role ?? u?.roleId ?? 0
-      );
-
       if (!token) {
         setErrorMsg("⚠️ El servidor no devolvió token.");
         return;
       }
-      if (!rolNum && rolNum !== 0) {
-        setErrorMsg("⚠️ No llegó el rol del usuario en la respuesta.");
+
+      let rolNum = Number(
+        data?.idRol ??
+        data?.rol ??
+        data?.usuario?.rol ??
+        data?.usuario?.idRol ??
+        data?.usuario?.ID_Rol ??
+        0
+      );
+      let nombreUsuario =
+        data?.nombre ??
+        data?.usuario?.nombre ??
+        data?.usuario?.Nombre_Usuario ??
+        "";
+
+      if (!rolNum) {
+        const payload = safeDecodeJWT(token);
+        rolNum = Number(
+          payload?.rol ?? payload?.role ?? payload?.idRol ?? payload?.ID_Rol ?? 0
+        );
+        if (!nombreUsuario) {
+          nombreUsuario = payload?.nombre ?? payload?.name ?? payload?.Nombre_Usuario ?? "";
+        }
+      }
+
+      if (!rolNum) {
+        setErrorMsg("⚠️ No se pudo determinar el rol del usuario.");
         return;
       }
 
-      // 4) Guarda sesión
       localStorage.setItem("token", token);
       localStorage.setItem("rol", String(rolNum));
-      localStorage.setItem("nombreUsuario", u?.nombre || "");
+      localStorage.setItem("nombreUsuario", nombreUsuario || "");
 
-      // 5) Solo Coordinación (3) entra a este módulo
       if (rolNum === 3) {
         navigate("/menu", { replace: true });
       } else {
@@ -85,7 +126,7 @@ export default function Login() {
     } catch (err) {
       clearTimeout(t);
       console.error("Error en login:", err);
-      if (err.name === "AbortError") {
+      if (err?.name === "AbortError") {
         setErrorMsg("⏱️ El servidor tardó demasiado en responder (timeout).");
       } else {
         setErrorMsg("⚠️ No se pudo conectar con el servidor.");
@@ -114,6 +155,7 @@ export default function Login() {
               autoComplete="username"
             />
           </div>
+
           <div className="form-group">
             <input
               type="password"
@@ -124,19 +166,22 @@ export default function Login() {
               autoComplete="current-password"
             />
           </div>
+
           <button type="submit" className="login-btn" disabled={cargando}>
             {cargando ? "Ingresando..." : "Ingresar"}
           </button>
         </form>
 
-        {/* Habilita esto solo si tienes la ruta /crear en App.jsx
-        <p className="crear-cuenta-link">
-          ¿Eres nuevo?{" "}
-          <span role="button" onClick={() => navigate("/crear")}>
-            Crear cuenta
-          </span>
-        </p>
-        */}
+        {/* Botones secundarios */}
+        <div style={{ marginTop: 16 }}>
+        <button
+  type="button"
+  className="login-secondary-btn"
+  onClick={() => navigate("/crear-usuario")}
+>
+  Crear usuario
+</button>       
+         </div>
       </div>
     </div>
   );
