@@ -297,3 +297,30 @@
   background-color: #005070;
 }
 
+.toast{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background: #333;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  z-index: 9999;
+}
+.toast.ok{ background:#2e7d32; }
+.toast.error{ background:#c62828; }
+
+.badge{
+  display:inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge.Pendiente{ background:#fff3cd; color:#856404; }
+.badge.Atendida{ background:#e8f5e9; color:#2e7d32; }
+.badge.Rechazada{ background:#ffebee; color:#c62828; }
+
+.boton[disabled]{ opacity:.6; cursor:not-allowed; }
+
