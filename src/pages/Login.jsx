@@ -177,7 +177,7 @@ export default function Login() {
         <button
   type="button"
   className="login-secondary-btn"
-  onClick={() => navigate("/crear-usuario")}
+  onClick={() => navigate("/crearUsuario")}
 >
   Crear usuario
 </button>       

@@ -1,354 +1,59 @@
-/* Estilo general del body */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Work Sans", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-    background-color: #f0f0f0;
-    background-image: url('/img/BackgroundsNormal.png');
-    background-size: cover; 
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+/* Layout general */
+.ayp-wrap { display: grid; grid-template-columns: 300px 1fr; gap: 16px; }
+.ayp-left, .ayp-right {
+  background:#fff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.06); padding:16px;
 }
 
-/* Estilo general para los contenedores */
-.form-container {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
+/* Colores base del diseño original */
+.ayp-blue { color:#00304D; }
+.ayp-green { color:#39A900; }
+
+/* Lateral */
+.ayp-logo { width:140px; display:block; margin:0 auto 12px; }
+.ayp-search { position:relative; margin-bottom:12px; }
+.ayp-search input {
+  width:100%; padding:10px 36px 10px 12px; border:1px solid #ddd; border-radius:10px; outline:none;
 }
+.ayp-search-icon { position:absolute; right:10px; top:50%; transform:translateY(-50%); width:18px; height:18px; opacity:.85; }
+.ayp-actions { display:grid; gap:8px; }
+.ayp-btn { background:#eee; border:0; padding:10px 12px; border-radius:10px; cursor:pointer; text-align:left; }
+.ayp-btn:hover { background:#e7e7e7; }
+.ayp-btn-primary { background:#00304D; color:#fff; }
 
-.izquierda {
-    width: 14%; /* Mantener en 14% */
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    margin: 0 20px; /* Margen del div izquierdo */
+/* Cabecera y texto */
+.ayp-title { margin:0 0 8px; font-size:22px; font-weight:600; }
+.ayp-sub { margin:0 0 12px; color:#343333; }
+
+/* Contenido principal: lista + visor */
+.ayp-content { display:grid; grid-template-columns: 1fr 2fr; gap:16px; align-items:start; }
+.ayp-list { max-height:60vh; overflow:auto; padding-right:6px; border:1px solid #eee; border-radius:10px; background:#fafafa; }
+.ayp-item {
+  display:block; width:100%; text-align:left; border:0; background:transparent; padding:10px 12px; cursor:pointer;
+  border-bottom:1px solid #eee;
 }
+.ayp-item:hover { background:#f2f2f2; }
+.ayp-item.active { background:#00304D; color:#fff; }
 
-.derecha {
-    width: 58%; /* Ajustado a 58% para ser más ancho */
-    height: 80%;
-    padding: 15px;
-    background: white;
-    margin: 40px 20px 0; /* Margen del div derecho */
-    display: flex;
-    flex-direction: column; /* Los sub-divs se alinean verticalmente */
-    align-items: center; /* Centra los sub-divs horizontalmente */
-    gap: 20px; /* Espacio entre los sub-divs */
-    justify-content: flex-start; /* Alinea los sub-divs hacia arriba */
+.ayp-viewer { border:1px solid #eee; border-radius:10px; padding:12px; background:#fafafa; }
+.ayp-view-title { margin:0 0 10px; color:#00304D; font-size:18px; }
+
+/* Carrusel */
+.ayp-carousel { position:relative; display:flex; align-items:center; justify-content:center; }
+.ayp-img { width:100%; height:auto; border-radius:12px; border:1px solid #eee; background:#fff; }
+.ayp-nav {
+  position:absolute; top:50%; transform:translateY(-50%); background:#00304D; color:#fff; border:0;
+  width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px;
 }
+.ayp-nav.prev { left:10px; }
+.ayp-nav.next { right:10px; }
+.ayp-count { text-align:center; margin-top:8px; color:#666; font-size:14px; }
 
-/* Estilo para el título */
-.titulo {
-    color: #00304D;
-    font-size: 32px; 
-    font-weight: 700; 
-    margin-bottom: 10px;
-    text-align: left;  /* Cambié de 'center' a 'left' */
+.ayp-footer { margin-top:14px; color:#777; font-size:12px; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .ayp-content { grid-template-columns: 1fr; }
 }
-
-/* Estilo para el subtítulo */
-.subtitulo {
-    color: #00304D;
-    font-size: 24px; /* Tamaño de la fuente del subtítulo */
-    font-weight: bold;
-    margin-top: 0px; /* Reducido el margen superior para que esté más cerca del título */
-    text-align: left; /* Alineación a la izquierda */
-    border-bottom: 4px solid #00304D; /* Línea de 4px de grosor */
-    width: 100%; /* Asegura que la línea tenga el mismo tamaño que el contenedor */
-    margin-bottom: 10px; /* Espacio debajo del subtítulo */
-    padding-bottom: 10px; /* Añadido espacio entre el subtítulo y la línea */
-}
-
-/* Estilo para los sub-divs */
-.sub-div {
-    display: flex; 
-    flex-direction: row; /* Cambié a fila para alinear el contenido horizontalmente */
-    align-items: center; /* Centra el contenido dentro del sub-div */
-    width: 95%; /* Aumenta el ancho de los sub-divs (95% del contenedor) */
-    max-width: 800px; /* Controla el tamaño máximo */
-    padding: 10px; 
-    overflow: hidden;  /* Evita las barras de desplazamiento */
-    border: 1px solid #aaa;  /* Borde de color #aaa */
-    border-radius: 10px;  /* Bordes redondeados */
-    margin: 0 auto; /* Centra cada sub-div */
-    justify-content: space-between; /* Espacia los elementos, dejando el botón a la derecha */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra sutil alrededor de cada sub-div */
-    margin-bottom: 15px; /* Añadido margen inferior para separar los sub-divs */
-}
-
-/* Estilo para el contenedor con barra de desplazamiento */
-.scroll-container {
-    height: 300px; /* Ajustamos la altura para que se muestre la barra de desplazamiento */
-    overflow-y: auto; /* Barra de desplazamiento cuando el contenido se desborda */
-    padding-right: 10px; /* Espacio para la barra de desplazamiento */
-    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
-}
-
-/* Personalización de la barra de desplazamiento */
-.scroll-container::-webkit-scrollbar {
-    width: 16px;  /* Aumenté el ancho de la barra de desplazamiento a 16px */
-}
-
-/* Estilo para el track (parte de la barra donde se desliza el thumb) */
-.scroll-container::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Color del fondo de la barra */
-    border-radius: 10px; /* Bordes redondeados */
-}
-
-/* Estilo para el thumb (parte que se mueve dentro de la barra) */
-.scroll-container::-webkit-scrollbar-thumb {
-    background-color: #00304D;  /* Color del thumb cuando está en reposo */
-    border-radius: 10px; /* Bordes redondeados */
-    border: 3px solid #f0f0f0; /* Borde alrededor del thumb */
-}
-
-/* Estilo para el thumb cuando se encuentra en hover */
-.scroll-container::-webkit-scrollbar-thumb:hover {
-    background-color: #39A900;  /* Color del thumb en hover */
-}
-
-/* Estilo para los párrafos dentro de los sub-divs */
-.sub-div p {
-    color: #00304D;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0; /* Eliminar márgenes adicionales */
-    flex: 1; /* Esto hace que el texto ocupe el espacio disponible */
-}
-
-/* Estilo para el pie de página */
-.pie-de-pagina {
-    color: #aaa;
-    font-size: 24px;
-    font-weight: 800;
-    text-align: center;
-    margin-top: auto;
-}
-
-/* Estilo para los botones generales */
-.boton {
-    padding: 15px;
-    background-color: #00304D;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    margin: 5px 0;
-    width: calc(100% - 10px);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    font-weight: 700;
-    font-size: 18px;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
-}
-
-.boton:hover {
-    background-color: #39A900; 
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilo para el contenedor de búsqueda */
-.busqueda {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-/* Estilo para el input de búsqueda */
-.izquierda .busqueda input {
-    padding: 15px 30px; /* Reducir padding lateral */
-    border: 1px solid #999; 
-    border-radius: 15px; 
-    background-color: white; 
-    color: black; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: block;
-    width: calc(100% - 60px); /* Mantener este valor o ajustarlo ligeramente */
-    font-size: 18px; 
-    font-weight: bold; 
-}
-
-/* Estilo para el icono de búsqueda */
-.icono-lupa {
-    position: absolute;
-    right: 10px; 
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px; 
-    height: 30px; 
-    pointer-events: none; 
-}
-
-/* Estilo para el texto del placeholder del input */
-.izquierda .busqueda input::placeholder {
-    color: #aaa; 
-    font-size: 18px; 
-    font-weight: bold; 
-}
-
-/* Estilo para los botones */
-.botones-container {
-    margin-top: auto; 
-    width: 100%;
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-}
-
-/* Estilo para la imagen en el encabezado */
-.imagen-header {
-    width: 150px; 
-    height: 150px; 
-    margin-bottom: 20px;
-}
-
-/* Estilo para los botones "Ver" en los sub-divs */
-.boton-ver {
-    padding: 10px 20px;
-    background-color: #00304D;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
-    transition: background-color 0.3s ease;
-}
-
-/* Efecto hover para los botones "Ver" */
-.boton-ver:hover {
-    background-color: #39A900; 
-}
-
-/* Consultas de medios (Media Queries) */
-
-/* Para pantallas grandes */
-@media (max-width: 1200px) {
-    .izquierda {
-        width: 20%;
-    }
-
-    .derecha {
-        width: 60%;
-    }
-}
-
-/* Para pantallas medianas (tablets) */
-@media (max-width: 992px) {
-    .izquierda {
-        width: 30%;
-    }
-
-    .derecha {
-        width: 65%;
-    }
-
-    .titulo {
-        font-size: 28px;
-    }
-
-    .subtitulo {
-        font-size: 20px;
-    }
-
-    .sub-div p {
-        font-size: 18px;
-    }
-}
-
-/* Para pantallas pequeñas (smartphones grandes) */
 @media (max-width: 768px) {
-    .izquierda {
-        width: 40%;
-    }
-
-    .derecha {
-        width: 80%;
-    }
-
-    .boton {
-        width: 100%;
-        font-size: 16px;
-        padding: 10px;
-    }
-
-    .sub-div p {
-        font-size: 16px;
-    }
-
-    .scroll-container {
-        height: 200px;
-    }
-
-    .imagen-header {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-/* Para pantallas muy pequeñas (smartphones pequeños) */
-@media (max-width: 480px) {
-    .izquierda {
-        width: 50%;
-    }
-
-    .derecha {
-        width: 90%;
-    }
-
-    .titulo {
-        font-size: 24px;
-    }
-
-    .subtitulo {
-        font-size: 18px;
-    }
-
-    .sub-div p {
-        font-size: 14px;
-    }
-
-    .boton {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
-
-/* Para pantallas ultra pequeñas */
-@media (max-width: 320px) {
-    .izquierda {
-        width: 60%;
-    }
-
-    .derecha {
-        width: 100%;
-    }
-
-    .boton {
-        font-size: 12px;
-        padding: 6px;
-    }
-
-    .imagen-header {
-        width: 100px;
-        height: 100px;
-    }
-
-    .titulo {
-        font-size: 20px;
-    }
+  .ayp-wrap { grid-template-columns: 1fr; }
 }

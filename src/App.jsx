@@ -1,6 +1,6 @@
 // src/App.jsx
-// src/App.jsx
 import { Routes, Route, Navigate, Outlet, Link } from "react-router-dom";
+import MenuAyuda from "./pages/MenuAyuda";
 
 // Páginas
 import Login from "./pages/Login";
@@ -17,7 +17,6 @@ import ListadoInstructoresActivar from "./pages/ListadoInstructoresActivar";
 import ListadoFichasActivar from "./pages/ListadoFichasActivar";
 import CrearUsuario from "./pages/CrearUsuario";
 import CrearUsuario2 from "./pages/CrearUsuario2";
-
 
 /* --------- Guardias --------- */
 function RutaPrivadaCoordinador() {
@@ -80,7 +79,10 @@ export default function App() {
       {/* Públicas (solo si NO estás logueado) */}
       <Route element={<RutaPublicaSoloSiNoLogueado />}>
         <Route path="/login" element={<Login />} />
+        {/* 👉 HAZ PÚBLICA ESTA RUTA para que funcione desde el Login */}
+  <Route path="/crearUsuario" element={<CrearUsuario />} />
       </Route>
+
 
       {/* Privadas (rol 3) */}
       <Route element={<RutaPrivadaCoordinador />}>
@@ -97,7 +99,10 @@ export default function App() {
         <Route path="/listado-fichas-activar" element={<ListadoFichasActivar />} />
         <Route path="/crear-usuario2" element={<CrearUsuario2 />} />
 
-        {/* ✅ Ruta privada correcta para CrearUsuario */}
+        {/* 🎯 Nueva ruta de página de ayuda */}
+        <Route path="/menu-ayuda" element={<MenuAyuda />} />
+
+        {/* Crear usuario (privado) */}
         <Route path="/crear-usuario" element={<CrearUsuario />} />
       </Route>
 

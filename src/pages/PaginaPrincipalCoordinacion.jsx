@@ -12,11 +12,10 @@ const PaginaPrincipalCoordinacion = () => {
     const botonesContainer = document.getElementById("botones-container");
 
     const filtrarBotones = () => {
-      const filtro = input.value.toLowerCase();
-      const botones = botonesContainer.querySelectorAll(".btn");
-
+      const filtro = (input?.value || "").toLowerCase();
+      const botones = botonesContainer?.querySelectorAll(".btn, .boton") || [];
       botones.forEach((btn) => {
-        const texto = btn.textContent.toLowerCase();
+        const texto = (btn.textContent || "").toLowerCase();
         btn.classList.toggle("hidden", !texto.includes(filtro));
       });
     };
@@ -25,7 +24,6 @@ const PaginaPrincipalCoordinacion = () => {
     return () => input?.removeEventListener("input", filtrarBotones);
   }, []);
 
-  // 👉 función para cerrar sesión
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login", { replace: true });
@@ -33,7 +31,7 @@ const PaginaPrincipalCoordinacion = () => {
 
   return (
     <div className="form-container principal">
-      {/* 🔹 Botón pequeño de logout (margen izquierdo) */}
+      {/* Botón pequeño de logout */}
       <div className="logout-container">
         <button className="btn-logout" onClick={handleLogout}>
           ⬅ salir
@@ -84,7 +82,7 @@ const PaginaPrincipalCoordinacion = () => {
         </div>
 
         <div className="fila-botones">
-          <button className="btn btn-ayuda" id="btn-ayuda">
+          <button className="btn btn-ayuda" onClick={() => navigate("/menu-ayuda")}>
             ¿Necesitas ayuda?
           </button>
         </div>
