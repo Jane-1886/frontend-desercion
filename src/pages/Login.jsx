@@ -21,7 +21,7 @@ export default function Login() {
 
   // Si ya hay sesión rol 3 → menú
   useEffect(() => {
-    if (sesion.token && sesion.rol === 3) {
+    if (sesion.token && sesion.rol === 2) {
       // Si quieres ver el botón en login, comenta esta línea temporalmente:
       // return;
       navigate("/menu", { replace: true });

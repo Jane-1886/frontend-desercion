@@ -214,7 +214,7 @@ export default function CrearUsuario2() {
           <div className="form-group">
             <select value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
               <option value="" disabled hidden>
-                Tipo de documento (opcional)
+                Tipo de documento 
               </option>
               <option value="CC">CC</option>
               <option value="TI">TI</option>
@@ -226,7 +226,7 @@ export default function CrearUsuario2() {
           <div className="form-group">
             <input
               type="text"
-              placeholder="Número de documento (opcional)"
+              placeholder="Número de documento "
               value={numeroDocumento}
               onChange={(e) => setNumeroDocumento(e.target.value)}
               inputMode="numeric"
@@ -236,7 +236,7 @@ export default function CrearUsuario2() {
           <div className="form-group">
             <input
               type="text"
-              placeholder="Celular (opcional)"
+              placeholder="Celular "
               value={celular}
               onChange={(e) => setCelular(e.target.value)}
               inputMode="tel"

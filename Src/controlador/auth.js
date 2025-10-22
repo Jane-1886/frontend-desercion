@@ -26,3 +26,12 @@ export function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("usuario");
 }
+export function decodeJwt(t) {
+  try { return JSON.parse(atob(t.split(".")[1])); } catch { return null; }
+}
+export function isTokenExpired(t) {
+  const p = decodeJwt(t);
+  if (!p?.exp) return true;
+  // exp viene en segundos
+  return Date.now() >= p.exp * 1000;
+}

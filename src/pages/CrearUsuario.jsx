@@ -1,12 +1,56 @@
 // src/pages/CrearUsuario.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/formulario_creacion_usuarios.css";
 import eyeOn from "/img/eye_on.png";
 import eyeOff from "/img/eye_off.png";
 import errorimg from "/img/error.png";
 import okimg from "/img/check_circle.png";
-import api from "../controlador/api.js"; // ✅ axios con baseURL + token
+import api from "../controlador/api.js"; // axios con baseURL + token
+
+/* =========================
+   Modal en el mismo archivo
+   ========================= */
+function Modal({ open, onClose, icon, title, children, okText = "Ok", onOk }) {
+  // Cerrar con ESC
+  const handleKey = useCallback(
+    (e) => {
+      if (!open) return;
+      if (e.key === "Escape") onClose?.();
+    },
+    [open, onClose]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [handleKey]);
+
+  // Click afuera
+  const handleBackdropClick = (e) => {
+    if (e.target.classList.contains("modal")) {
+      onClose?.();
+    }
+  };
+
+  return (
+    <div className={`modal ${open ? "open" : ""}`} onClick={handleBackdropClick}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {icon && <img src={icon} alt="" />}
+        {title && <h2>{title}</h2>}
+        {children}
+        <button
+          className="ok-button"
+          onClick={() => {
+            onOk ? onOk() : onClose?.();
+          }}
+        >
+          {okText}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function CrearUsuario() {
   const navigate = useNavigate();
@@ -14,6 +58,9 @@ export default function CrearUsuario() {
   // Form
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("CC");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
+  const [celular, setCelular] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
@@ -22,7 +69,7 @@ export default function CrearUsuario() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Modales
+  // Modales (usarán .modal.open del CSS)
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Por favor, llena todos los campos.");
   const [successOpen, setSuccessOpen] = useState(false);
@@ -34,6 +81,18 @@ export default function CrearUsuario() {
     setErrorOpen(false);
     setSuccessOpen(false);
   }, []);
+
+  // Bloquear scroll cuando cualquier modal esté abierto
+  useEffect(() => {
+    const anyOpen = errorOpen || successOpen;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = anyOpen ? "hidden" : original || "";
+    return () => {
+      document.body.style.overflow = original || "";
+    };
+  }, [errorOpen, successOpen]);
+
+  const soloDigitos = (s) => s.replace(/\D+/g, "");
 
   const validar = () => {
     if (!username.trim() || !email.trim() || !password || !confirm) {
@@ -53,43 +112,64 @@ export default function CrearUsuario() {
       setErrorMsg("Las contraseñas no coinciden.");
       return false;
     }
+    if (numeroDocumento && !/^\d{5,30}$/.test(numeroDocumento)) {
+      setErrorMsg("El número de documento debe tener solo dígitos (5–30).");
+      return false;
+    }
+    if (celular && !/^\d{7,20}$/.test(celular)) {
+      setErrorMsg("El celular debe tener solo dígitos (7–20).");
+      return false;
+    }
     return true;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     if (!validar()) {
-      setErrorOpen(true);
+      setErrorOpen(true); // muestra el modal de error
       return;
     }
 
     setLoading(true);
+
+    const payload = {
+      nombre: username.trim(),
+      contrasena: password, // sin 'ñ'
+      idRol: COORDINADOR_ID, // 3
+      email: email.trim(),
+      tipoDocumento: tipoDocumento || null,
+      numeroDocumento: numeroDocumento || null,
+      celular: celular || null,
+    };
+
     try {
-      // 👇 NOMBRES EXACTOS QUE PIDE TU BACKEND:
-      // { nombre, contrasena, idRol, email }
-      const payload = {
-        nombre: username,
-        contrasena: password,   // sin ñ
-        idRol: COORDINADOR_ID,  // 3
-        email: email,
-      };
+      // Asegura que la ruta salga a /api/usuarios (evita 404)
+      const res = await api.post("/api/usuarios", payload, { timeout: 10000 });
+      if (res?.status === 201) {
+        setErrorOpen(false);
+        setSuccessOpen(true); // muestra el modal de éxito
 
-      await api.post("/api/usuarios", payload);
-
-      // Éxito
-      setSuccessOpen(true);
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirm("");
+        // Limpia formulario
+        setUsername("");
+        setEmail("");
+        setTipoDocumento("CC");
+        setNumeroDocumento("");
+        setCelular("");
+        setPassword("");
+        setConfirm("");
+      } else {
+        throw new Error(`Estado inesperado: ${res?.status}`);
+      }
     } catch (err) {
       const msg =
         err?.response?.data?.mensaje ||
         err?.response?.data?.message ||
         err?.message ||
         "No se pudo crear el coordinador.";
-      setErrorMsg(`No se pudo crear el coordinador. ${msg ? `Detalles: ${msg}` : ""}`);
-      setErrorOpen(true);
+      setErrorMsg(`No se pudo crear el coordinador. Detalles: ${msg}`);
+      setErrorOpen(true); // muestra el modal de error
     } finally {
       setLoading(false);
     }
@@ -114,6 +194,34 @@ export default function CrearUsuario() {
             />
           </div>
 
+          <div
+            className="form-row"
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}
+          >
+            <div className="form-group">
+              <select
+                value={tipoDocumento}
+                onChange={(e) => setTipoDocumento(e.target.value)}
+              >
+                <option value="CC">Cédula (CC)</option>
+                <option value="TI">Tarjeta de Identidad (TI)</option>
+                <option value="CE">Cédula de Extranjería (CE)</option>
+                <option value="PAS">Pasaporte (PAS)</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Número de Documento"
+                value={numeroDocumento}
+                onChange={(e) => setNumeroDocumento(soloDigitos(e.target.value))}
+                autoComplete="off"
+                inputMode="numeric"
+              />
+            </div>
+          </div>
+
           <div className="form-group">
             <input
               type="email"
@@ -121,6 +229,18 @@ export default function CrearUsuario() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
+            />
+          </div>
+
+          {/* ✅ Campo Celular */}
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Número de Celular"
+              value={celular}
+              onChange={(e) => setCelular(soloDigitos(e.target.value))}
+              autoComplete="off"
+              inputMode="numeric"
             />
           </div>
 
@@ -173,38 +293,32 @@ export default function CrearUsuario() {
         </div>
       </div>
 
-      {/* Modales */}
-      {errorOpen && (
-        <div className="modal" onClick={() => setErrorOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={errorimg} alt="Error" />
-            <h2>ERROR</h2>
-            <p>{errorMsg}</p>
-            <button className="ok-button" onClick={() => setErrorOpen(false)}>
-              Ok
-            </button>
-          </div>
-        </div>
-      )}
+      {/* ======================
+           Modales persistentes
+         ====================== */}
+      <Modal
+        open={errorOpen}
+        onClose={() => setErrorOpen(false)}
+        icon={errorimg}
+        title="ERROR"
+        okText="Ok"
+      >
+        <p>{errorMsg}</p>
+      </Modal>
 
-      {successOpen && (
-        <div className="modal" onClick={() => setSuccessOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <img src={okimg} alt="Éxito" />
-            <h2>¡ÉXITOSO!</h2>
-            <p>El coordinador ha sido creado con éxito.</p>
-            <button
-              className="ok-button"
-              onClick={() => {
-                setSuccessOpen(false);
-                navigate("/menu");
-              }}
-            >
-              Ok
-            </button>
-          </div>
-        </div>
-      )}
+      <Modal
+        open={successOpen}
+        onClose={() => setSuccessOpen(false)}
+        icon={okimg}
+        title="¡ÉXITOSO!"
+        okText="Ok"
+        onOk={() => {
+          setSuccessOpen(false);
+          navigate("/menu");
+        }}
+      >
+        <p>El coordinador ha sido creado con éxito.</p>
+      </Modal>
     </>
   );
 }
